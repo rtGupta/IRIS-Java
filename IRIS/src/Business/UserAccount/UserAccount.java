@@ -1,6 +1,7 @@
 package Business.UserAccount;
 
 import Business.Role.Role;
+import Business.Utilities.Profile;
 import Business.WorkQueue.WorkQueue;
 
 /**
@@ -9,6 +10,7 @@ import Business.WorkQueue.WorkQueue;
  */
 public class UserAccount {
     
+    private Profile profileDetails;
     private String username;
     private String password;
     private Role role;
@@ -17,7 +19,15 @@ public class UserAccount {
     public UserAccount() {
         workQueue = new WorkQueue();
     }
-    
+
+    public Profile getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(Profile profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
     public String getUsername() {
         return username;
     }

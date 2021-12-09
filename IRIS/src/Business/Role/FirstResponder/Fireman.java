@@ -6,6 +6,6 @@ import Business.Role.Role;
  *
  * @author Yaswanth
  */
-public class Fireman extends Role{
-    
+public class Fireman extends Role {
+
 }
