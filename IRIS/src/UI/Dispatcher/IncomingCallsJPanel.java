@@ -4,18 +4,55 @@
  */
 package UI.Dispatcher;
 
+import Util.MapsUtil;
+import java.awt.Component;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author akshatajadhav
  */
 public class IncomingCallsJPanel extends javax.swing.JPanel {
 
+    JLayeredPane mainPane;
+    JLabel callCount;
+    JLayeredPane workPane;
+    boolean fromReset = false;
+
     /**
      * Creates new form IncomingCallsJPanel
      */
-    public IncomingCallsJPanel() {
+    public IncomingCallsJPanel(JLayeredPane mainPane, JLayeredPane workPane, JLabel callCount) {
         initComponents();
-        
+        this.mainPane = mainPane;
+        this.callCount = callCount;
+        this.workPane = workPane;
+        JPanel map = MapsUtil.defaultMap();
+        map.setBounds(callerLocation.getBounds());
+        callerLocation.removeAll();
+        callerLocation.add(map);
+        this.updateUI();
+        emergencyCategoryA.setActionCommand("A");
+        emergencyCategoryC.setActionCommand("C");
+        emergencyCategoryE.setActionCommand("E");
+        emergencyCategory.add(emergencyCategoryA);
+        emergencyCategory.add(emergencyCategoryC);
+        emergencyCategory.add(emergencyCategoryE);
+    }
+
+    public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        mainPane.repaint();
+        mainPane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
     }
 
     /**
@@ -29,10 +66,29 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        emergencyCategory = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        nameText = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        callerId = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        Address = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        messageText = new javax.swing.JTextArea();
+        emergencyCategoryA = new javax.swing.JRadioButton();
+        emergencyCategoryC = new javax.swing.JRadioButton();
+        emergencyCategoryE = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        resetMap = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        callerLocation = new javax.swing.JPanel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -48,7 +104,11 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(790, 550));
+        setMinimumSize(new java.awt.Dimension(790, 550));
+        setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(790, 550));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Incoming Calls"));
@@ -76,46 +136,174 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-        );
-
-        jTextField1.setText("jTextField1");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(359, 359, 359)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(189, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(290, Short.MAX_VALUE))
+
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 5, 766, -1));
+        add(nameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 174, 242, 37));
+
+        jLabel1.setText("Name:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 174, 113, 37));
+        add(callerId, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 229, 242, 37));
+
+        jLabel2.setText("Caller ID:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 229, 113, 37));
+        add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 284, 242, 40));
+
+        jLabel3.setText("Address:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 284, 113, 40));
+
+        jLabel4.setText("Message:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 335, 113, 86));
+
+        messageText.setColumns(20);
+        messageText.setRows(5);
+        jScrollPane3.setViewportView(messageText);
+
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 335, 242, -1));
+
+        emergencyCategoryA.setText("A");
+        emergencyCategoryA.setToolTipText("Emergency");
+        add(emergencyCategoryA, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 445, -1, 30));
+
+        emergencyCategoryC.setText("C");
+        emergencyCategoryC.setToolTipText("Doctor");
+        add(emergencyCategoryC, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 445, -1, 30));
+
+        emergencyCategoryE.setText("E");
+        emergencyCategoryE.setToolTipText("Volunteer");
+        add(emergencyCategoryE, new org.netbeans.lib.awtextra.AbsoluteConstraints(381, 449, -1, 20));
+
+        jLabel5.setText("Emergency Category:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 439, -1, 37));
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Caller Location");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 174, 270, 22));
+
+        jButton1.setText("Next>");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 483, 134, -1));
+
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(419, 284, 34, 40));
+
+        resetMap.setText("Reset");
+        resetMap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetMapActionPerformed(evt);
+            }
+        });
+        add(resetMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 483, 270, -1));
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(0, 1));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 790, Short.MAX_VALUE)
         );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 2, Short.MAX_VALUE)
+        );
+
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 2));
+
+        callerLocation.setLayout(new java.awt.BorderLayout());
+        add(callerLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 270, 270));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String address = Address.getText();
+        double[] location = MapsUtil.getGeoPointFromAddress(address);
+        if (location[0] == 0 || location[1] == 0) {
+            JPanel map = MapsUtil.defaultMap();
+            map.setBounds(callerLocation.getBounds());
+            callerLocation.add(map);
+        this.updateUI();
+            if (fromReset) {
+                fromReset = false;
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Wrong Address");
+            return;
+        }
+        JPanel map = MapsUtil.mapWayPointWithLocationName(nameText.getText(), location[0], location[1]);
+        map.setBounds(callerLocation.getBounds());
+        callerLocation.add(map);
+        this.updateUI();
+        //displayPanel(callerLocation, map);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void resetMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetMapActionPerformed
+        fromReset = true;
+        jButton2.doClick();
+    }//GEN-LAST:event_resetMapActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JPanel panel=null;
+        if(emergencyCategory.getSelection()==null){
+            return;
+        }
+        if(emergencyCategory.getSelection().getActionCommand().equals("A")){
+         panel = new AEmergencyJPanel(mainPane, workPane, callCount);
+        }else if(emergencyCategory.getSelection().getActionCommand().equals("C")){
+         panel = new CEmergencyJPanel(mainPane, workPane, callCount);
+        }else if(emergencyCategory.getSelection().getActionCommand().equals("E")){
+         panel = new EEmergencyJPanel(mainPane, workPane, callCount);
+        }else{
+            return;
+        }
+        displayPanel(workPane, panel);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Address;
+    private javax.swing.JTextField callerId;
+    private javax.swing.JPanel callerLocation;
+    private javax.swing.ButtonGroup emergencyCategory;
+    private javax.swing.JRadioButton emergencyCategoryA;
+    private javax.swing.JRadioButton emergencyCategoryC;
+    private javax.swing.JRadioButton emergencyCategoryE;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextArea messageText;
+    private javax.swing.JTextField nameText;
+    private javax.swing.JButton resetMap;
     // End of variables declaration//GEN-END:variables
+
 }
