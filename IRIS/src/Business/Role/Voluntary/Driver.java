@@ -6,6 +6,6 @@ import Business.Role.Role;
  *
  * @author Yaswanth
  */
-public class Driver extends Role{
-    
+public class Driver extends Role {
+
 }

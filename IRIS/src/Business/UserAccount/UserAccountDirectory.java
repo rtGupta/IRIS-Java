@@ -1,6 +1,7 @@
 package Business.UserAccount;
 
 import Business.Role.Role;
+import Business.Utilities.Profile;
 import java.util.ArrayList;
 
 /**
@@ -27,8 +28,9 @@ public class UserAccountDirectory {
         return null;
     }
     
-    public UserAccount createUserAccount(String username, String password, Role role){
+    public UserAccount createUserAccount(String username, String password, Role role, Profile profile){
         UserAccount userAccount = new UserAccount();
+        userAccount.setProfileDetails(profile);
         userAccount.setUsername(username);
         userAccount.setPassword(password);
         userAccount.setRole(role);
