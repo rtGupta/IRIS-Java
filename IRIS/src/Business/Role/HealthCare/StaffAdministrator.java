@@ -6,6 +6,6 @@ import Business.Role.Role;
  *
  * @author Yaswanth
  */
-public class StaffAdministrator extends Role{
+public class StaffAdministrator extends Role {
     
 }

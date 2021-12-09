@@ -6,6 +6,6 @@ import Business.Role.Role;
  *
  * @author Yaswanth
  */
-public class Dispatcher extends Role{
+public class Dispatcher extends Role {
     
 }

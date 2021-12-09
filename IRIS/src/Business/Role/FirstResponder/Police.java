@@ -6,6 +6,6 @@ import Business.Role.Role;
  *
  * @author Yaswanth
  */
-public class Police extends Role{
-    
+public class Police extends Role {
+
 }

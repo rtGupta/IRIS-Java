@@ -6,6 +6,6 @@ import Business.Role.Role;
  *
  * @author Yaswanth
  */
-public class Paramedic extends Role{
-    
+public class Paramedic extends Role {
+
 }
