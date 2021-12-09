@@ -2,22 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Hospital;
+package UI.Physician;
 
+import UI.Hospital.*;
 import javax.swing.JLayeredPane;
 
 /**
  *
  * @author akshatajadhav
  */
-public class HosptialHomeJPanel extends javax.swing.JPanel {
+public class PhysicianHomeJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public HosptialHomeJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public PhysicianHomeJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
@@ -43,9 +44,6 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(990, 590));
         setPreferredSize(new java.awt.Dimension(990, 590));
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(990, 2));
-        jPanel1.setPreferredSize(new java.awt.Dimension(990, 2));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -59,7 +57,6 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Patients", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
-        jPanel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -91,7 +88,7 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Admit");
+        jButton1.setText("Select");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,9 +110,9 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
+                .addGap(57, 57, 57)
                 .addComponent(jButton1)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

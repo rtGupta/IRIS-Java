@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Hospital;
+package UI.Physician;
 
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
  *
  * @author akshatajadhav
  */
-public class HospitalJPanel extends javax.swing.JPanel {
+public class PhysicianJPanel extends javax.swing.JPanel {
 
     boolean menuCollapse = false;
     JLayeredPane mainPane;
@@ -31,10 +31,10 @@ public class HospitalJPanel extends javax.swing.JPanel {
     /**
      * Creates new form DispatcherJPanel
      */
-    public HospitalJPanel(JLayeredPane mainPane) {
+    public PhysicianJPanel(JLayeredPane mainPane) {
         initComponents();
         this.mainPane = mainPane;
-        HosptialHomeJPanel icjp = new HosptialHomeJPanel(mainPane, workpane);
+        PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane);
         displayPanel(workpane, icjp);
     }
 
@@ -106,21 +106,18 @@ public class HospitalJPanel extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(6, 6, 6)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 90));
 
-        menuTab.setMaximumSize(new java.awt.Dimension(1200, 591));
-        menuTab.setMinimumSize(new java.awt.Dimension(1200, 591));
-        menuTab.setPreferredSize(new java.awt.Dimension(1200, 591));
         menuTab.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         menuPanel.setkEndColor(new java.awt.Color(114, 114, 114));
@@ -253,7 +250,7 @@ public class HospitalJPanel extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/hospital_64px.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/medical_doctor_40px.png"))); // NOI18N
 
         jLabel8.setText("Welcome Name");
 
@@ -266,16 +263,16 @@ public class HospitalJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel7)
                 .addGap(64, 64, 64)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(330, Short.MAX_VALUE))
+                .addContainerGap(354, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 790, 90));
@@ -292,7 +289,7 @@ public class HospitalJPanel extends javax.swing.JPanel {
                 closeButtonMouseExited(evt);
             }
         });
-        add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 20, -1, -1));
+        add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 20, -1, -1));
 
         minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png"))); // NOI18N
         minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -348,7 +345,7 @@ public class HospitalJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HosptialHomeJPanel icjp = new HosptialHomeJPanel(mainPane, workpane);
+        PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 

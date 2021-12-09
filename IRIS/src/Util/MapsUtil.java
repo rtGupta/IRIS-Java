@@ -4,6 +4,7 @@
  */
 package Util;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -36,6 +37,8 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
  */
 public class MapsUtil {
 
+    public static Color tabColor = Color.MAGENTA;
+    
     public static JPanel mapWayPoint(double latitude, double longitude) {
         final JXMapKit jXMapKit = new JXMapKit();
         TileFactoryInfo info = new OSMTileFactoryInfo();
@@ -169,7 +172,7 @@ public class MapsUtil {
     public static double[] getGeoPointFromAddress(String locationAddress) {
         double[] location = new double[2];
         String locationAddres = locationAddress.replaceAll(" ", "%20");
-        final String API_KEY = "3f87070b6a3df7c4678075536101cbfd";
+        final String API_KEY = "40187b1ef383146c3f34ebc1bba4deda";
         URL url = null;
         try {
             url = new URL("http://api.positionstack.com/v1/forward?access_key=" + API_KEY
