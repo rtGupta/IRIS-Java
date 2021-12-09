@@ -204,7 +204,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         });
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 540, 134, 30));
 
-        jButton2.setText("Map");
+        jButton2.setText("Locate");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
