@@ -156,7 +156,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         add(callerId, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 290, 242, 40));
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel2.setText("Caller ID:");
+        jLabel2.setText("Phone Number:");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 113, 40));
         add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, 242, 40));
 
