@@ -4,14 +4,21 @@
  */
 package UI.MainScreens;
 
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
 import UI.Dispatcher.DispatcherJPanel;
 import UI.Hospital.HospitalJPanel;
 import UI.Paramedics.ParamedicsJPanel;
 import UI.Physician.PhysicianJPanel;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -22,12 +29,15 @@ import javax.swing.SwingUtilities;
 public class LoginJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
+    EcoSystem system;
     /**
      * Creates new form LoginJPanel
      */
-    public LoginJPanel(JLayeredPane mainPane) {
+    public LoginJPanel(JLayeredPane mainPane, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
+        this.system = system;
+        
         Dispatcher.setActionCommand("Dispatcher");
         roles.add(Dispatcher);
         Hospital.setActionCommand("Hospital");
@@ -72,11 +82,11 @@ public class LoginJPanel extends javax.swing.JPanel {
         minimizeButton = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtLoginUserName = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel11 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtLoginPassword = new javax.swing.JPasswordField();
         kGradientPanel2 = new keeptoo.KGradientPanel();
         loginButton = new javax.swing.JLabel();
         Physician = new javax.swing.JRadioButton();
@@ -204,15 +214,13 @@ public class LoginJPanel extends javax.swing.JPanel {
 
         jLabel10.setText("<html><h2>Username:</h2></html>");
 
-        jTextField1.setText("Enter Username");
-        jTextField1.setBorder(null);
-        jTextField1.setOpaque(false);
+        txtLoginUserName.setBorder(null);
+        txtLoginUserName.setOpaque(false);
 
         jLabel11.setText("<html><h2>Password:</h2></html>");
 
-        jPasswordField1.setText("jPasswordField");
-        jPasswordField1.setBorder(null);
-        jPasswordField1.setOpaque(false);
+        txtLoginPassword.setBorder(null);
+        txtLoginPassword.setOpaque(false);
 
         kGradientPanel2.setkEndColor(new java.awt.Color(22, 116, 188));
         kGradientPanel2.setkStartColor(new java.awt.Color(38, 38, 38));
@@ -275,11 +283,11 @@ public class LoginJPanel extends javax.swing.JPanel {
                         .addGap(95, 95, 95)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(txtLoginUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(txtLoginPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
                             .addComponent(kGradientPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(56, 56, 56)
@@ -310,13 +318,13 @@ public class LoginJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtLoginUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtLoginPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -362,21 +370,59 @@ public class LoginJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_loginButtonMouseExited
 
     private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
-        //DispatcherJPanel djp = new DispatcherJPanel(mainPane);
-        JPanel djp = null;
-        if(roles.getSelection()==null)
+
+                // Get user name
+        String userName = txtLoginUserName.getText();
+        // Get Password
+        char[] passwordCharArray = txtLoginPassword.getPassword();
+        String password = String.valueOf(passwordCharArray);
+        
+        //Step1: Check in the system admin user account directory if you have the user
+        UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
+        
+        Enterprise inEnterprise=null;
+        Organization inOrganization=null;
+        
+        if(userAccount==null){
+            //Step 2: Go inside each network and check each enterprise
+            for(Network network:system.getNetworkList()){
+                //Step 2.a: check against each enterprise
+                for(Enterprise enterprise:network.getEnterpriseDirectory().getEnterpriseList()){
+                    userAccount=enterprise.getUserAccountDirectory().authenticateUser(userName, password);
+                    if(userAccount==null){
+                       //Step 3:check against each organization for each enterprise
+                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
+                           userAccount=organization.getUserAccountDirectory().authenticateUser(userName, password);
+                           if(userAccount!=null){
+                               inEnterprise=enterprise;
+                               inOrganization=organization;
+                               break;
+                           }
+                       }
+                        
+                    }
+                    else{
+                       inEnterprise=enterprise;
+                       break;
+                    }
+                    if(inOrganization!=null){
+                        break;
+                    }  
+                }
+                if(inEnterprise!=null){
+                    break;
+                }
+            }
+        }
+        
+        if(userAccount==null){
+            JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
-        else if(roles.getSelection().getActionCommand().equals("Physician"))
-            djp = new PhysicianJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Dispatcher"))
-            djp = new DispatcherJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Hospital"))
-            djp = new HospitalJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Paramedics"))
-            djp = new ParamedicsJPanel(mainPane);
-        else
-            return;
-        displayPanel(djp);
+        }
+        else{
+              JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
+              displayPanel(djp);            
+        }
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
@@ -415,15 +461,15 @@ public class LoginJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
     private keeptoo.KGradientPanel kGradientPanel1;
     private keeptoo.KGradientPanel kGradientPanel2;
     private javax.swing.JLabel loginButton;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.ButtonGroup roles;
+    private javax.swing.JPasswordField txtLoginPassword;
+    private javax.swing.JTextField txtLoginUserName;
     // End of variables declaration//GEN-END:variables
 }

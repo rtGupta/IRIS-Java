@@ -4,6 +4,8 @@
  */
 package UI;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
 import UI.MainScreens.LoginJPanel;
 import UI.MainScreens.LandingScreenJPanel;
 import javax.swing.JPanel;
@@ -14,12 +16,18 @@ import javax.swing.JPanel;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
+    
+    private EcoSystem system;
+    private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
-        LandingScreenJPanel lsjp = new LandingScreenJPanel(mainPane);
+        
+        system = dB4OUtil.retrieveSystem();
+        
+        LandingScreenJPanel lsjp = new LandingScreenJPanel(mainPane, system);
         displayPanel(lsjp);
     }
 

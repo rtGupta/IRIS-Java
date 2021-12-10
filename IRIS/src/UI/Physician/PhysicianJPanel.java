@@ -358,8 +358,9 @@ public class PhysicianJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane);
-        displayPanel(mainPane, icjp);
+//        undo this change later while working on this panel      
+//        LoginJPanel icjp = new LoginJPanel(mainPane);
+//        displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 
     private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered
