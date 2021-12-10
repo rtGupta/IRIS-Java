@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.SysAdmin;
+package UI.Volunteer;
 
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
@@ -22,19 +22,21 @@ import javax.swing.SwingUtilities;
  *
  * @author akshatajadhav
  */
-public class SysAdminJPanel extends javax.swing.JPanel {
+public class VolunteerJPanel extends javax.swing.JPanel {
 
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
-    
+    boolean volunteerAvailable = false;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public SysAdminJPanel(JLayeredPane mainPane) {
+    public VolunteerJPanel(JLayeredPane mainPane) {
         initComponents();
         this.mainPane = mainPane;
+        ThankYouMessageJPanel t = new ThankYouMessageJPanel();
+            displayPanel(workpane, t);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -70,6 +72,9 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         home1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        availablityBtn = new javax.swing.JPanel();
+        avaliablity = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -161,7 +166,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
+        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 190, -1));
 
         home.setOpaque(false);
         home.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -199,7 +204,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
             .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, -1));
+        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 190, -1));
 
         home1.setOpaque(false);
         home1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -238,6 +243,44 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         );
 
         menuPanel.add(home1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
+
+        availablityBtn.setOpaque(false);
+        availablityBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseExited(evt);
+            }
+        });
+
+        avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png"))); // NOI18N
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Available?");
+
+        javax.swing.GroupLayout availablityBtnLayout = new javax.swing.GroupLayout(availablityBtn);
+        availablityBtn.setLayout(availablityBtnLayout);
+        availablityBtnLayout.setHorizontalGroup(
+            availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, availablityBtnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(avaliablity)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        availablityBtnLayout.setVerticalGroup(
+            availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(avaliablity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+
+        menuPanel.add(availablityBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
 
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
@@ -344,7 +387,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        
+
     }//GEN-LAST:event_homeMouseClicked
 
     private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
@@ -368,8 +411,32 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         home1.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
     }//GEN-LAST:event_home1MouseExited
 
+    private void availablityBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseClicked
+        if (!volunteerAvailable) {
+            avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
+            ForceCompleteSignUpJPanel t = new ForceCompleteSignUpJPanel();
+            displayPanel(workpane, t);
+        } else {
+            avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png")));
+            ThankYouMessageJPanel t = new ThankYouMessageJPanel();
+            displayPanel(workpane, t);
+        }
+
+        volunteerAvailable = !volunteerAvailable;
+    }//GEN-LAST:event_availablityBtnMouseClicked
+
+    private void availablityBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseEntered
+        availablityBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_availablityBtnMouseEntered
+
+    private void availablityBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseExited
+        availablityBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_availablityBtnMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel availablityBtn;
+    private javax.swing.JLabel avaliablity;
     private javax.swing.JLabel closeButton;
     private javax.swing.JPanel history;
     private javax.swing.JPanel home;
@@ -377,6 +444,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -406,7 +474,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     System.out.println("...");
                 }
-               
+
             }
         };
 
