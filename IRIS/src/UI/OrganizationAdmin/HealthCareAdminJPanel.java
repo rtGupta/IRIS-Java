@@ -609,7 +609,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/paramedics_40px.png"))); // NOI18N
 
-        jLabel8.setText("Welcome Name");
+        jLabel8.setText("Welcome HealthCareAdmin");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

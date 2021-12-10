@@ -878,7 +878,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Welcome Name"/>
+            <Property name="text" type="java.lang.String" value="Welcome HealthCareAdmin"/>
           </Properties>
         </Component>
       </SubComponents>
