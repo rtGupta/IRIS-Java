@@ -18,6 +18,6 @@ public class Police extends Role {
     @Override
     public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         //need to specify role specific Jpanel
-        return new LoginJPanel(new JLayeredPane(), system);
+        return new LoginJPanel(new JLayeredPane());
     }
 }
