@@ -1,6 +1,8 @@
 package Business.WorkQueue;
 
+import Business.Caller.Caller;
 import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -9,14 +11,18 @@ import java.util.Date;
  */
 public abstract class WorkRequest {
 
+    private int workRequestID;
+    private Caller caller;
+    private char emergencyLevel;
+    private String status;
     private String message;
     private UserAccount sender;
-    private UserAccount receiver;
-    private String status;
+    private ArrayList<UserAccount> receivers;
     private Date requestDate;
     private Date resolveDate;
-    
-    public WorkRequest(){
+
+    public WorkRequest(int workRequestID) {
+        this.workRequestID = workRequestID;
         requestDate = new Date();
     }
 
@@ -36,12 +42,12 @@ public abstract class WorkRequest {
         this.sender = sender;
     }
 
-    public UserAccount getReceiver() {
-        return receiver;
+    public ArrayList<UserAccount> getReceivers() {
+        return receivers;
     }
 
-    public void setReceiver(UserAccount receiver) {
-        this.receiver = receiver;
+    public void setReceivers(ArrayList<UserAccount> receivers) {
+        this.receivers = receivers;
     }
 
     public String getStatus() {
@@ -66,5 +72,17 @@ public abstract class WorkRequest {
 
     public void setResolveDate(Date resolveDate) {
         this.resolveDate = resolveDate;
+    }
+
+    public int getWorkRequestID() {
+        return workRequestID;
+    }
+
+    public char getEmergencyLevel() {
+        return emergencyLevel;
+    }
+
+    public void setEmergencyLevel(char emergencyLevel) {
+        this.emergencyLevel = emergencyLevel;
     }
 }
