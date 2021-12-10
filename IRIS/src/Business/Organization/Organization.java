@@ -88,7 +88,7 @@ public abstract class Organization {
     }
 
     public enum VoluntaryOrgType{
-        VoluntaryPhysicianOrg("VoluntaryPhysicianOrg"),
+        VoluntaryClinicianOrg("VoluntaryClinicianOrg"),
         VoluntaryTransportOrg("VoluntaryTransportOrg");
         
         private String value;
