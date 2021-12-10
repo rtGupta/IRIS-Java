@@ -8,7 +8,6 @@ import UI.Dispatcher.DispatcherJPanel;
 import UI.Hospital.HospitalJPanel;
 import UI.Paramedics.ParamedicsJPanel;
 import UI.Physician.PhysicianJPanel;
-import UI.Volunteer.VolunteerJPanel;
 import java.awt.Color;
 import java.awt.Frame;
 import javax.swing.JFrame;
@@ -20,25 +19,19 @@ import javax.swing.SwingUtilities;
  *
  * @author akshatajadhav
  */
-public class LoginJPanel extends javax.swing.JPanel {
+public class VolunteerSignUpJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     /**
      * Creates new form LoginJPanel
      */
-    public LoginJPanel(JLayeredPane mainPane) {
+    public VolunteerSignUpJPanel(JLayeredPane mainPane) {
         initComponents();
         this.mainPane = mainPane;
-        Dispatcher.setActionCommand("Dispatcher");
-        roles.add(Dispatcher);
-        Hospital.setActionCommand("Hospital");
-        roles.add(Hospital);
-        Paramedics.setActionCommand("Paramedics");
-        roles.add(Paramedics);
+        Transport.setActionCommand("Transport");
+        roles.add(Transport);
         Physician.setActionCommand("Physician");
         roles.add(Physician);
-        Volunteer.setActionCommand("Volunteer");
-        roles.add(Volunteer);
     }
     
     public void displayPanel(JPanel panel) {
@@ -82,12 +75,13 @@ public class LoginJPanel extends javax.swing.JPanel {
         jPasswordField1 = new javax.swing.JPasswordField();
         kGradientPanel2 = new keeptoo.KGradientPanel();
         loginButton = new javax.swing.JLabel();
-        Physician = new javax.swing.JRadioButton();
-        Hospital = new javax.swing.JRadioButton();
-        Dispatcher = new javax.swing.JRadioButton();
-        Volunteer = new javax.swing.JRadioButton();
-        Paramedics = new javax.swing.JRadioButton();
+        jSeparator3 = new javax.swing.JSeparator();
         jLabel12 = new javax.swing.JLabel();
+        Transport = new javax.swing.JRadioButton();
+        Physician = new javax.swing.JRadioButton();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel13 = new javax.swing.JLabel();
+        jPasswordField2 = new javax.swing.JPasswordField();
 
         setMaximumSize(new java.awt.Dimension(1200, 675));
         setMinimumSize(new java.awt.Dimension(1200, 675));
@@ -203,7 +197,7 @@ public class LoginJPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel9.setText("<html><h1>Login</h1></html>\n");
+        jLabel9.setText("<html><h1>Volunteer Sign Up</h1></html> ");
 
         jLabel10.setText("<html><h2>Username:</h2></html>");
 
@@ -223,7 +217,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         loginButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        loginButton.setText("LOGIN");
+        loginButton.setText("Sign Up");
         loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 loginButtonMouseClicked(evt);
@@ -240,68 +234,64 @@ public class LoginJPanel extends javax.swing.JPanel {
         kGradientPanel2.setLayout(kGradientPanel2Layout);
         kGradientPanel2Layout.setHorizontalGroup(
             kGradientPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(loginButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         kGradientPanel2Layout.setVerticalGroup(
             kGradientPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
         );
 
+        jLabel12.setText("<html><h2>Volunteer:</h2></html>");
+
+        Transport.setText("Transport");
+
         Physician.setText("Physician");
 
-        Hospital.setText("Hospital");
+        jLabel13.setText("<html><h2>Name:</h2></html>");
 
-        Dispatcher.setText("Dispatcher");
-
-        Volunteer.setText("Volunteer");
-
-        Paramedics.setText("Paramedics");
-
-        jLabel12.setText("Just For Testing");
+        jPasswordField2.setText("jPasswordField");
+        jPasswordField2.setBorder(null);
+        jPasswordField2.setOpaque(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(277, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(minimizeButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(closeButton)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(259, 259, 259))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(minimizeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeButton)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(95, 95, 95)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(kGradientPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Physician)
-                                .addGap(18, 18, 18)
-                                .addComponent(Volunteer))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Dispatcher)
-                                .addGap(18, 18, 18)
-                                .addComponent(Hospital)
-                                .addGap(18, 18, 18)
-                                .addComponent(Paramedics)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(111, 111, 111))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel13)
+                                .addComponent(jSeparator4)
+                                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                                .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                        .addComponent(jSeparator3)
+                        .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(Physician)
+                            .addGap(124, 124, 124)
+                            .addComponent(Transport))))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,9 +300,9 @@ public class LoginJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(minimizeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(closeButton))
-                .addGap(111, 111, 111)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,19 +314,23 @@ public class LoginJPanel extends javax.swing.JPanel {
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Hospital)
-                    .addComponent(Paramedics)
-                    .addComponent(Dispatcher)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Physician)
-                    .addComponent(Volunteer))
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addComponent(Transport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Physician, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, 600, 670));
@@ -372,15 +366,9 @@ public class LoginJPanel extends javax.swing.JPanel {
         if(roles.getSelection()==null)
             return;
         else if(roles.getSelection().getActionCommand().equals("Physician"))
-            djp = new PhysicianJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Dispatcher"))
-            djp = new DispatcherJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Hospital"))
-            djp = new HospitalJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Paramedics"))
-            djp = new ParamedicsJPanel(mainPane);
-        else if(roles.getSelection().getActionCommand().equals("Volunteer"))
-            djp = new VolunteerJPanel(mainPane);
+            djp = new JPanel(); //new PhysicianJPanel(mainPane);
+        else if(roles.getSelection().getActionCommand().equals("Transport"))
+            djp = new JPanel();//new DispatcherJPanel(mainPane);
         else
             return;
         displayPanel(djp);
@@ -404,16 +392,14 @@ public class LoginJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton Dispatcher;
-    private javax.swing.JRadioButton Hospital;
-    private javax.swing.JRadioButton Paramedics;
     private javax.swing.JRadioButton Physician;
-    private javax.swing.JRadioButton Volunteer;
+    private javax.swing.JRadioButton Transport;
     private javax.swing.JLabel closeButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -424,8 +410,11 @@ public class LoginJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextField jTextField1;
     private keeptoo.KGradientPanel kGradientPanel1;
     private keeptoo.KGradientPanel kGradientPanel2;
