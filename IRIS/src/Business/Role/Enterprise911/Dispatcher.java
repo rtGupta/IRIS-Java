@@ -5,7 +5,7 @@ import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.Role.Role;
 import Business.UserAccount.UserAccount;
-import UI.MainScreens.LoginJPanel;
+import UI.MainScreens.LandingScreenJPanel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 public class Dispatcher extends Role {
     
     @Override
-    public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
+    public JPanel createWorkArea(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         //need to specify role specific Jpanel
-        return new LoginJPanel(new JLayeredPane());
+        return new LandingScreenJPanel(mainPane, system);
     }
     
 }

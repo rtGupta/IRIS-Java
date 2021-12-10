@@ -4,6 +4,7 @@ import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 /**
@@ -84,7 +85,7 @@ public abstract class Role {
         }
     }    
 	
-    public abstract JPanel createWorkArea(JPanel userProcessContainer,
+    public abstract JPanel createWorkArea(JLayeredPane mainPane,
             UserAccount account, Organization organization, Enterprise enterprise, EcoSystem business);    
 
     @Override
