@@ -31,4 +31,13 @@ public class EnterpriseDirectory {
         }
         return enterprise;
     }
+        
+    public Enterprise findEnterprise(String enterpriseType) {
+        for (Enterprise enterprise: getEnterpriseList()) {
+            if (enterprise.getEnterpriseType().getValue().equals(enterpriseType)) {
+                return enterprise;
+            }
+        }
+        return null;
+    }
 }

@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author Yaswanth
  */
-public abstract class WorkRequest {
+public class WorkRequest {
 
     private int workRequestID;
     private Caller caller;
@@ -23,7 +23,16 @@ public abstract class WorkRequest {
 
     public WorkRequest(int workRequestID) {
         this.workRequestID = workRequestID;
+        receivers = new ArrayList<>();
         requestDate = new Date();
+    }
+    
+    public Caller getCaller() {
+        return caller;
+    }
+
+    public void setCaller(Caller caller) {
+        this.caller = caller;
     }
 
     public String getMessage() {
@@ -46,8 +55,8 @@ public abstract class WorkRequest {
         return receivers;
     }
 
-    public void setReceivers(ArrayList<UserAccount> receivers) {
-        this.receivers = receivers;
+    public void setReceiver(UserAccount receiver) {
+        this.receivers.add(receiver);
     }
 
     public String getStatus() {
@@ -84,5 +93,10 @@ public abstract class WorkRequest {
 
     public void setEmergencyLevel(char emergencyLevel) {
         this.emergencyLevel = emergencyLevel;
+    }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(workRequestID);
     }
 }

@@ -27,6 +27,12 @@ public class Profile {
       this.homeAddress = homeAddress;
     }
     
+    public Profile(String firstName, String lastName, long phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+    
     // Getters and Setters
     public String getFirstName() {
         return firstName;

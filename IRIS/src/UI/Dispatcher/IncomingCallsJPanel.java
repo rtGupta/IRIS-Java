@@ -4,6 +4,12 @@
  */
 package UI.Dispatcher;
 
+import Business.Caller.Caller;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
 import Util.MapsUtil;
 import java.awt.Component;
 import javax.swing.JFrame;
@@ -12,12 +18,16 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author akshatajadhav
  */
 public class IncomingCallsJPanel extends javax.swing.JPanel {
+
+    private EcoSystem system;
+    private UserAccount userAccount;
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -26,10 +36,15 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     /**
      * Creates new form IncomingCallsJPanel
      */
-    public IncomingCallsJPanel(JLayeredPane mainPane, JLayeredPane workPane) {
+    public IncomingCallsJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.system = system;
+        this.userAccount = account;
+
+        populateIncidentTable();
+
         JPanel map = MapsUtil.defaultMap();
         map.setBounds(callerLocation.getBounds());
         callerLocation.removeAll();
@@ -51,6 +66,20 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
+    }
+
+    public void populateIncidentTable() {
+        DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+        dtm.setRowCount(0);
+
+        for (WorkRequest wr : userAccount.getWorkQueue().getWorkRequestList()) {
+            Object[] row = new Object[4];
+            row[0] = wr;
+            row[1] = wr.getCaller().getLocation();
+            row[2] = wr.getEmergencyLevel();
+            row[3] = wr.getStatus();
+            dtm.addRow(row);
+        }
     }
 
     /**
@@ -113,15 +142,23 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Request No.", "Location", "Emergency Level", "Request Status"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable2.setShowGrid(true);
@@ -248,7 +285,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
             JPanel map = MapsUtil.defaultMap();
             map.setBounds(callerLocation.getBounds());
             callerLocation.add(map);
-        this.updateUI();
+            this.updateUI();
             if (fromReset) {
                 fromReset = false;
                 return;
@@ -269,17 +306,29 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetMapActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JPanel panel=null;
-        if(emergencyCategory.getSelection()==null){
+        // data validations for text fields
+
+        // register caller's name, contact and location in caller object.
+        String firstName = nameText.getText();
+        String lastName = " ";
+        long contact = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
+        String location = Address.getText();
+        String message = messageText.getText();
+        String emergencyLevel = emergencyCategory.getSelection().getActionCommand();
+
+        Caller caller = new Caller(firstName, lastName, contact, location);
+        // pass caller object, message, emergencyLevel to EmergencyPanels - A, C, E.
+        JPanel panel = null;
+        if (emergencyCategory.getSelection() == null) {
             return;
         }
-        if(emergencyCategory.getSelection().getActionCommand().equals("A")){
-         panel = new AEmergencyJPanel(mainPane, workPane);
-        }else if(emergencyCategory.getSelection().getActionCommand().equals("C")){
-         panel = new CEmergencyJPanel(mainPane, workPane);
-        }else if(emergencyCategory.getSelection().getActionCommand().equals("E")){
-         panel = new EEmergencyJPanel(mainPane, workPane);
-        }else{
+        if (emergencyCategory.getSelection().getActionCommand().equals("A")) {
+            panel = new AEmergencyJPanel(mainPane, workPane, system, userAccount, caller, message, emergencyLevel);
+        } else if (emergencyCategory.getSelection().getActionCommand().equals("C")) {
+            panel = new CEmergencyJPanel(mainPane, workPane);
+        } else if (emergencyCategory.getSelection().getActionCommand().equals("E")) {
+            panel = new EEmergencyJPanel(mainPane, workPane);
+        } else {
             return;
         }
         displayPanel(workPane, panel);

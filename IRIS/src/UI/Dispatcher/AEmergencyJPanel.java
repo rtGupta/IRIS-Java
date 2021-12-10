@@ -4,7 +4,20 @@
  */
 package UI.Dispatcher;
 
+import Business.Caller.Caller;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.Enterprise.EnterpriseType;
+import Business.Network.Network;
+import Business.Organization.FirstResponder.EMTOrganization;
+import Business.Organization.FirstResponder.FireOrganization;
+import Business.Organization.FirstResponder.LawEnforcementOrganization;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
+import Util.DropdownItem;
 import Util.MapsUtil;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -17,17 +30,55 @@ import javax.swing.SwingUtilities;
  */
 public class AEmergencyJPanel extends javax.swing.JPanel {
 
+    private EcoSystem system;
+    private UserAccount userAccount;
+
     JLayeredPane mainPane;
     JLayeredPane workPane;
+
+    WorkRequest workRequest;
+
     /**
      * Creates new form AEmergencyJPanel
      */
-    public AEmergencyJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public AEmergencyJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount userAccount, Caller caller, String message, String emergencyLevel) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.system = system;
+        this.userAccount = userAccount;
+
+        workRequest = new WorkRequest(this.userAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
+        workRequest.setCaller(caller);
+        workRequest.setMessage(message);
+        workRequest.setEmergencyLevel(emergencyLevel.charAt(0));
+
+        loadDropdowns();
         JPanel map = MapsUtil.defaultMap();
         displayPanel(maps, map);
+    }
+
+    private void loadDropdowns() {
+        for (Network network : system.getNetworkList()) {
+            Enterprise frEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(EnterpriseType.FirstResponderEnterprise.getValue());
+            for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                if (org instanceof EMTOrganization) {
+                    this.loadValues(org, jComboBox2);
+                } else if (org instanceof LawEnforcementOrganization) {
+                    this.loadValues(org, jComboBox1);
+                } else if (org instanceof FireOrganization) {
+                    this.loadValues(org, jComboBox3);
+                }
+            }
+        }
+    }
+
+    private void loadValues(Organization org, JComboBox<String> drpdown) {
+        for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
+//            System.out.println(paramedicAccount.getUsername());
+            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+        }
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -82,11 +133,34 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Police:");
 
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Paramedics:");
+
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Fire Fighters:");
 
         jButton1.setText("Dispatch");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         maps.setLayout(new java.awt.CardLayout());
 
@@ -148,6 +222,32 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
                 .addGap(24, 24, 24))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        workRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        workRequest.setReceiver((UserAccount) jComboBox2.getSelectedItem());
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        workRequest.setReceiver((UserAccount) jComboBox3.getSelectedItem());
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // set sender of the WR as the current dispatcher.
+        workRequest.setSender(userAccount);
+        // set status of the WR.
+        workRequest.setStatus("LTEOpen");
+        // push the WR in the work queue of all the receivers and senders?
+        userAccount.getWorkQueue().getWorkRequestList().add(workRequest);
+        workRequest.getReceivers().forEach(receiver -> {
+            receiver.getWorkQueue().getWorkRequestList().add(workRequest);
+        }); 
+        // redirect to the dispatcher home screen.
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

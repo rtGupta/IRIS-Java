@@ -5,6 +5,7 @@
  */
 package Business.Caller;
 
+import Business.Utilities.Address;
 import Business.Utilities.Profile;
 
 /**
@@ -14,18 +15,24 @@ import Business.Utilities.Profile;
 public class Caller {
     
     private Profile callerDetails;
+    private String location;
     private Vitals vitals;
     private String[] medicalHistory;
     private double height;
     private double weight;
     private String bloodGrp;
 
-    public Profile getCallerDetails() {
-        return callerDetails;
+    public Caller(String firstName, String lastName, long contact, String location) {
+        this.callerDetails = new Profile(firstName, lastName, contact);
+        this.location = location;
+    }
+    
+    public String getLocation() {
+        return location;
     }
 
-    public void setCallerDetails(Profile callerDetails) {
-        this.callerDetails = callerDetails;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Vitals getVitals() {
