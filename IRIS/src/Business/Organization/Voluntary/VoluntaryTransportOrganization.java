@@ -2,7 +2,7 @@ package Business.Organization.Voluntary;
 
 import Business.Organization.Organization;
 import Business.Role.Role;
-import Business.Role.Voluntary.VoluntaryPhysician;
+import Business.Role.Voluntary.Driver;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +18,7 @@ public class VoluntaryTransportOrganization extends Organization{
     @Override
     public ArrayList<Role> getSupportedRole() {
         ArrayList<Role> roles = new ArrayList();
-        roles.add(new VoluntaryPhysician());
+        roles.add(new Driver());
         return roles;
     }    
 }

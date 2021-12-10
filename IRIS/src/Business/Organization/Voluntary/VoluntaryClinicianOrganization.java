@@ -1,25 +1,24 @@
 package Business.Organization.Voluntary;
 
 import Business.Organization.Organization;
-import Business.Role.HealthCare.StaffAdministrator;
 import Business.Role.Role;
-import Business.Role.Voluntary.VoluntaryPhysician;
+import Business.Role.Voluntary.VoluntaryClinician;
 import java.util.ArrayList;
 
 /**
  *
  * @author Yaswanth
  */
-public class VoluntaryPhysicianOrganization extends Organization{
+public class VoluntaryClinicianOrganization extends Organization{
     
-    public VoluntaryPhysicianOrganization() {
-        super(VoluntaryOrgType.VoluntaryPhysicianOrg.getValue());
+    public VoluntaryClinicianOrganization() {
+        super(VoluntaryOrgType.VoluntaryClinicianOrg.getValue());
     }
     
     @Override
     public ArrayList<Role> getSupportedRole() {
         ArrayList<Role> roles = new ArrayList();
-        roles.add(new VoluntaryPhysician());
+        roles.add(new VoluntaryClinician());
         return roles;
     }    
 }
