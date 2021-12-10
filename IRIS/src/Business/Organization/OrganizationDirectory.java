@@ -8,7 +8,7 @@ import Business.Organization.Organization.Enterprise911OrgType;
 import Business.Organization.Organization.FirstResponderOrgType;
 import Business.Organization.Organization.HealthCareOrgType;
 import Business.Organization.Organization.VoluntaryOrgType;
-import Business.Organization.Voluntary.VoluntaryPhysicianOrganization;
+import Business.Organization.Voluntary.VoluntaryClinicianOrganization;
 import Business.Organization.Voluntary.VoluntaryTransportOrganization;
 import Business.Organization._911.Dispatcher911Organization;
 import Business.Organization._911.Physician911Organization;
@@ -72,8 +72,8 @@ public class OrganizationDirectory {
 
     public Organization createVoluntaryOrganization(VoluntaryOrgType type) {
         Organization organization = null;
-        if (type.getValue().equals(VoluntaryOrgType.VoluntaryPhysicianOrg.getValue())) {
-            organization = new VoluntaryPhysicianOrganization();
+        if (type.getValue().equals(VoluntaryOrgType.VoluntaryClinicianOrg.getValue())) {
+            organization = new VoluntaryClinicianOrganization();
             organizationList.add(organization);
         } else if (type.getValue().equals(VoluntaryOrgType.VoluntaryTransportOrg.getValue())) {
             organization = new VoluntaryTransportOrganization();
