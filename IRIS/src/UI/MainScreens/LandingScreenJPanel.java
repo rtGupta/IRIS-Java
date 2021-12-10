@@ -4,6 +4,7 @@
  */
 package UI.MainScreens;
 
+import Business.EcoSystem;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -16,12 +17,14 @@ import javax.swing.SwingUtilities;
 public class LandingScreenJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
+    EcoSystem system;
     /**
      * Creates new form LandingScreenJPanel
      */
-    public LandingScreenJPanel(JLayeredPane mainPane) {
+    public LandingScreenJPanel(JLayeredPane mainPane, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
+        this.system=system;
     }
     
     public void displayPanel(JPanel panel) {
@@ -115,13 +118,13 @@ public class LandingScreenJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_formKeyTyped
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        LoginJPanel ljp = new LoginJPanel(mainPane);
-        displayPanel(ljp);
+        LoginJPanel loginJPanel = new LoginJPanel(mainPane, system);
+        displayPanel(loginJPanel);
     }//GEN-LAST:event_formMouseClicked
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-        LoginJPanel ljp = new LoginJPanel(mainPane);
-        displayPanel(ljp);
+        LoginJPanel loginJPanel = new LoginJPanel(mainPane, system);
+        displayPanel(loginJPanel);
     }//GEN-LAST:event_formMouseEntered
 
 

@@ -229,11 +229,11 @@
                           <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jLabel10" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="jTextField1" alignment="1" pref="413" max="32767" attributes="0"/>
+                              <Component id="txtLoginUserName" alignment="1" pref="413" max="32767" attributes="0"/>
                               <Component id="jSeparator1" alignment="1" pref="413" max="32767" attributes="0"/>
                               <Component id="jLabel11" alignment="1" pref="413" max="32767" attributes="0"/>
                               <Component id="jSeparator2" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="jPasswordField1" alignment="1" pref="413" max="32767" attributes="0"/>
+                              <Component id="txtLoginPassword" alignment="1" pref="413" max="32767" attributes="0"/>
                               <Component id="kGradientPanel2" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -274,13 +274,13 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel10" min="-2" pref="44" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTextField1" min="-2" pref="45" max="-2" attributes="0"/>
+                  <Component id="txtLoginUserName" min="-2" pref="45" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel11" min="-2" pref="44" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jPasswordField1" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="txtLoginPassword" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -337,9 +337,8 @@
             <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;h2&gt;Username:&lt;/h2&gt;&lt;/html&gt;"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtLoginUserName">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Enter Username"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
@@ -355,9 +354,8 @@
             <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;h2&gt;Password:&lt;/h2&gt;&lt;/html&gt;"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+        <Component class="javax.swing.JPasswordField" name="txtLoginPassword">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jPasswordField"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
