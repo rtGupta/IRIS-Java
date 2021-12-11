@@ -20,6 +20,7 @@ public class WorkRequest {
     private ArrayList<UserAccount> receivers;
     private Date requestDate;
     private Date resolveDate;
+    private boolean isIRISeligible;
 
     public WorkRequest(int workRequestID) {
         this.workRequestID = workRequestID;
@@ -93,6 +94,14 @@ public class WorkRequest {
 
     public void setEmergencyLevel(char emergencyLevel) {
         this.emergencyLevel = emergencyLevel;
+    }
+
+    public boolean isIsIRISeligible() {
+        return isIRISeligible;
+    }
+
+    public void setIsIRISeligible(boolean isIRISeligible) {
+        this.isIRISeligible = isIRISeligible;
     }
     
     @Override

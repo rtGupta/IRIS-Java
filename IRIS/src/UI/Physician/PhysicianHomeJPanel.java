@@ -4,8 +4,15 @@
  */
 package UI.Physician;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import UI.Hospital.*;
+import java.util.List;
 import javax.swing.JLayeredPane;
+import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -15,15 +22,42 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount physicianUserAccount;
+    WorkRequest physicianWorkRequest;
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public PhysicianHomeJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public PhysicianHomeJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.system = system;
+        this.physicianUserAccount = account;
+        
+        populateWorkQueueTable();
     }
 
+    public void populateWorkQueueTable() {
+        DefaultTableModel physicianTableModel = (DefaultTableModel) tblPhysicianWQ.getModel();
+        physicianTableModel.setRowCount(0);
+
+        WorkQueue workQueue = physicianUserAccount.getWorkQueue();
+        if (workQueue != null) {
+            List<WorkRequest> physicianWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(physicianWorkRequestList)) {
+                for (WorkRequest wr : physicianWorkRequestList) {
+                    Object[] row = new Object[4];
+                    row[0] = wr;
+                    row[1] = wr.getCaller().getLocation();
+                    row[2] = wr.getEmergencyLevel();
+                    row[3] = wr.getStatus();
+                    physicianTableModel.addRow(row);
+                }
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,7 +70,7 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblPhysicianWQ = new javax.swing.JTable();
         jLabel14 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -90,7 +124,7 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Patients", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblPhysicianWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -101,7 +135,7 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblPhysicianWQ);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -364,7 +398,7 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblPhysicianWQ;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;

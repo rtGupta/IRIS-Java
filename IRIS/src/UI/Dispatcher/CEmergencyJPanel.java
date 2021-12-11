@@ -4,7 +4,19 @@
  */
 package UI.Dispatcher;
 
+import Business.Caller.Caller;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.FirstResponder.EMTOrganization;
+import Business.Organization.FirstResponder.FireOrganization;
+import Business.Organization.FirstResponder.LawEnforcementOrganization;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
+import Util.DropdownItem;
 import Util.MapsUtil;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -17,15 +29,30 @@ import javax.swing.SwingUtilities;
  */
 public class CEmergencyJPanel extends javax.swing.JPanel {
 
+    private EcoSystem system;
+    private UserAccount dispatcherUserAccount;
+    
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    
+    WorkRequest dispatcherWorkRequest;
     /**
      * Creates new form AEmergencyJPanel
      */
-    public CEmergencyJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public CEmergencyJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount userAccount, Caller caller, String message, String emergencyLevel) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.workPane = workPane;
+        this.system = system;
+        this.dispatcherUserAccount = userAccount;
+        
+        dispatcherWorkRequest = new WorkRequest(this.dispatcherUserAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
+        dispatcherWorkRequest.setCaller(caller);
+        dispatcherWorkRequest.setMessage(message);
+        dispatcherWorkRequest.setEmergencyLevel(emergencyLevel.charAt(0));
+        
+        loadDropdown();
         JPanel map = MapsUtil.defaultMap();
         displayPanel(maps, map);
     }
@@ -38,6 +65,25 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
+    }
+    
+    private void loadDropdown() {
+        for (Network network : system.getNetworkList()) {
+            Enterprise frEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.FirstResponderEnterprise.getValue());
+            for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                if (org instanceof EMTOrganization) {
+                    this.loadValues(org, jComboBox1);
+                }
+            }
+        }
+    }
+
+    private void loadValues(Organization org, JComboBox<String> drpdown) {
+        for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
+//            System.out.println(paramedicAccount.getUsername());
+            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+        }
     }
 
     /**
@@ -78,7 +124,18 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Paramedics:");
 
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Dispatch");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         maps.setMaximumSize(new java.awt.Dimension(0, 325));
         maps.setMinimumSize(new java.awt.Dimension(0, 325));
@@ -129,6 +186,23 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
                     .addGap(0, 588, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        dispatcherWorkRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // set sender of the WR as the current dispatcher.
+        dispatcherWorkRequest.setSender(dispatcherUserAccount);
+        // set status of the WR.
+        dispatcherWorkRequest.setStatus("Open");
+        // push the WR in the work queue of all the receivers and senders?
+        dispatcherUserAccount.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
+        dispatcherWorkRequest.getReceivers().forEach(receiver -> {
+            receiver.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
+        }); 
+        // redirect to the dispatcher home screen.
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

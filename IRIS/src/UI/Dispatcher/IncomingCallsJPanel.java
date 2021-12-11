@@ -30,7 +30,7 @@ import org.apache.commons.collections4.CollectionUtils;
 public class IncomingCallsJPanel extends javax.swing.JPanel {
 
     private EcoSystem system;
-    private UserAccount userAccount;
+    private UserAccount dispatcherUserAccount;
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -44,7 +44,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
-        this.userAccount = account;
+        this.dispatcherUserAccount = account;
 
         populateIncidentTable();
 
@@ -75,7 +75,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         DefaultTableModel dispatcherIncidentTableModel = (DefaultTableModel) tbldispatcherWQ.getModel();
         dispatcherIncidentTableModel.setRowCount(0);
 
-        WorkQueue workQueue = userAccount.getWorkQueue();
+        WorkQueue workQueue = dispatcherUserAccount.getWorkQueue();
         if (workQueue != null) {
             List<WorkRequest> dispatcherWorkRequestList = workQueue.getWorkRequestList();
             if (CollectionUtils.isNotEmpty(dispatcherWorkRequestList)) {
@@ -332,9 +332,9 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
             return;
         }
         if (emergencyCategory.getSelection().getActionCommand().equals("A")) {
-            panel = new AEmergencyJPanel(mainPane, workPane, system, userAccount, caller, message, emergencyLevel);
+            panel = new AEmergencyJPanel(mainPane, workPane, system, dispatcherUserAccount, caller, message, emergencyLevel);
         } else if (emergencyCategory.getSelection().getActionCommand().equals("C")) {
-            panel = new CEmergencyJPanel(mainPane, workPane);
+            panel = new CEmergencyJPanel(mainPane, workPane, system, dispatcherUserAccount, caller, message, emergencyLevel);
         } else if (emergencyCategory.getSelection().getActionCommand().equals("E")) {
             panel = new EEmergencyJPanel(mainPane, workPane);
         } else {

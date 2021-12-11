@@ -33,7 +33,7 @@ public class HomeJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     JLayeredPane workPane;
     private EcoSystem system;
-    private UserAccount userAccount;
+    private UserAccount paramedicUserAccount;
     WorkRequest paramedicWorkRequest;
 
     /**
@@ -44,7 +44,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
-        this.userAccount = account;
+        this.paramedicUserAccount = account;
 
         populateWorkQueueTable();
         tblParamedicsWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -53,7 +53,7 @@ public class HomeJPanel extends javax.swing.JPanel {
                 if (selectedRowIndex < 0) {
                     JOptionPane.showMessageDialog(null, "Please select a work request from the table to view incident details.");
                 }
-                
+
                 paramedicWorkRequest = (WorkRequest) tblParamedicsWQ.getValueAt(selectedRowIndex, 0);
                 if (paramedicWorkRequest != null) {
                     Profile callerInfo = paramedicWorkRequest.getCaller().getCallerDetails();
@@ -61,6 +61,11 @@ public class HomeJPanel extends javax.swing.JPanel {
                     txtContact.setText(String.valueOf(callerInfo.getPhone()));
                     txtLocation.setText(paramedicWorkRequest.getCaller().getLocation());
                     txtMessage.setText(paramedicWorkRequest.getMessage());
+                    
+                    if (paramedicWorkRequest.getStatus().equals("Transport Care Required")) {
+                        btnHospitalTransfer.setEnabled(true);
+                        // go to HospitalTransferJPanel screen
+                    }
                 }
             }
         });
@@ -80,7 +85,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         DefaultTableModel paramedicsTableModel = (DefaultTableModel) tblParamedicsWQ.getModel();
         paramedicsTableModel.setRowCount(0);
 
-        WorkQueue workQueue = userAccount.getWorkQueue();
+        WorkQueue workQueue = paramedicUserAccount.getWorkQueue();
         if (workQueue != null) {
             List<WorkRequest> paramedicsWorkRequestList = workQueue.getWorkRequestList();
             if (CollectionUtils.isNotEmpty(paramedicsWorkRequestList)) {
@@ -297,15 +302,24 @@ public class HomeJPanel extends javax.swing.JPanel {
 
     private void btnAcknowledgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcknowledgeActionPerformed
         if (paramedicWorkRequest != null) {
-            paramedicWorkRequest.setStatus("Scene Assessment in progress");
-            // update status of this WR in receiver's work queue as well.
-            for (UserAccount receiverAccount: paramedicWorkRequest.getReceivers()) {
-                receiverAccount.getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-            }
+            if (paramedicWorkRequest.getStatus().equals("Open")) {
+                paramedicWorkRequest.setStatus("Scene Assessment in progress");
+                // update status of this WR in receiver's work queue as well.
+                for (UserAccount receiverAccount : paramedicWorkRequest.getReceivers()) {
+                    receiverAccount.getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
+                }
+
+                if (paramedicWorkRequest.getEmergencyLevel() == 'C') {
+                    // go to the medicalRecords screen.
+                } else {
+                    // enable 'Transfer to Hospital' button.
+                    btnHospitalTransfer.setEnabled(true);
+                    // go to HospitalTransferJPanel screen.
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "The work request is already in progress!");
+            }   
         }
-        
-        // enable 'Transfer to Hospital' button.
-        btnHospitalTransfer.setEnabled(true);
     }//GEN-LAST:event_btnAcknowledgeActionPerformed
 
     private void btnHospitalTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospitalTransferActionPerformed
