@@ -389,7 +389,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 cmbboxEnterpriseActionPerformed(evt);
             }
         });
-        Volunteers.add(jRadioButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(719, 311, -1, -1));
 
         lblRole.setText("Enterprise: ");
 
@@ -423,15 +422,11 @@ public class AdminListJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-<<<<<<< Updated upstream
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-=======
     private void radbtnFemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnFemaleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_radbtnFemaleActionPerformed
 
     private void radbtnNotToSayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnNotToSayActionPerformed
->>>>>>> Stashed changes
         // TODO add your handling code here:
     }//GEN-LAST:event_radbtnNotToSayActionPerformed
 
