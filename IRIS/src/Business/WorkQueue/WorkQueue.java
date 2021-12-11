@@ -17,6 +17,15 @@ public class WorkQueue {
     public ArrayList<WorkRequest> getWorkRequestList() {
         return workRequestList;
     }
+    
+    public WorkRequest findWorkRequestByID(int requestID) {
+        for (WorkRequest wr: workRequestList) {
+            if (wr.getWorkRequestID() == requestID) {
+                return wr;
+            }
+        }
+        return null;
+    }
 
     public int retrieveLastWRID() {
         int wqLength = getWorkRequestList().size();

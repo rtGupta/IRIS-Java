@@ -4,6 +4,19 @@
  */
 package UI.Paramedics;
 
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.FirstResponder.EMTOrganization;
+import Business.Organization.FirstResponder.FireOrganization;
+import Business.Organization.FirstResponder.LawEnforcementOrganization;
+import Business.Organization.HealthCare.NonClinicalOrganization;
+import Business.Organization.Organization;
+import Business.Role.HealthCare.StaffAdministrator;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
+import Util.DropdownItem;
+import javax.swing.JComboBox;
 import javax.swing.JLayeredPane;
 
 /**
@@ -14,13 +27,40 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount userAccount;
+    private WorkRequest paramedicWorkRequest;
+
     /**
      * Creates new form HospitalTransferJPanel
      */
-    public HospitalTransferJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public HospitalTransferJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.system = system;
+        this.userAccount = account;
+        this.paramedicWorkRequest = request;
+        loadHospitalDropdown();
+    }
+
+    private void loadHospitalDropdown() {
+        for (Network network : system.getNetworkList()) {
+            Enterprise hcEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.HealthcareEnterprise.getValue());
+            for (Organization org : hcEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                if (org instanceof NonClinicalOrganization) {
+                    this.loadValues(org, hospitalDropdown);
+                }
+            }
+        }
+    }
+
+    private void loadValues(Organization org, JComboBox<String> drpdown) {
+        for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
+//            System.out.println(paramedicAccount.getUsername());
+            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+        }
     }
 
     /**
@@ -36,7 +76,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        hospitalDropdown = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -73,7 +113,18 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel1.setText("Hospital:");
 
+        hospitalDropdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hospitalDropdownActionPerformed(evt);
+            }
+        });
+
         jButton2.setText("Transfer");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -91,7 +142,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(hospitalDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(106, 106, 106)
                                 .addComponent(jButton2)))
@@ -108,7 +159,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1)
+                    .addComponent(hospitalDropdown)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
@@ -120,11 +171,28 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void hospitalDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalDropdownActionPerformed
+        paramedicWorkRequest.setReceiver((UserAccount) hospitalDropdown.getSelectedItem());
+    }//GEN-LAST:event_hospitalDropdownActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        paramedicWorkRequest.setStatus("Transferred to Hospital");
+        paramedicWorkRequest.getReceivers().forEach(receiver -> {
+            if (receiver.getRole() instanceof StaffAdministrator) {
+                receiver.getWorkQueue().getWorkRequestList().add(paramedicWorkRequest);
+            } else {
+                receiver.getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Transferred to Hospital");
+            }
+        });
+        
+        // display Paramedic's HomeJPanel.
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> hospitalDropdown;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel2;

@@ -36,8 +36,8 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     public SysAdminJPanel(JLayeredPane mainPane) {
         initComponents();
         this.mainPane = mainPane;
-        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane);
-        displayPanel(workpane, icjp);
+//        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane);
+//        displayPanel(workpane, icjp);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -347,8 +347,8 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane);
-        displayPanel(workpane, icjp);
+//        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane);
+//        displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
     private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
@@ -360,8 +360,8 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane);
-        displayPanel(mainPane, icjp);
+//        LoginJPanel icjp = new LoginJPanel(mainPane);
+//        displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 
     private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered

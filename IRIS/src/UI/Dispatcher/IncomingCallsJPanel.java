@@ -9,9 +9,11 @@ import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
 import Util.MapsUtil;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -19,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -69,16 +72,22 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     }
 
     public void populateIncidentTable() {
-        DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
-        dtm.setRowCount(0);
+        DefaultTableModel dispatcherIncidentTableModel = (DefaultTableModel) tbldispatcherWQ.getModel();
+        dispatcherIncidentTableModel.setRowCount(0);
 
-        for (WorkRequest wr : userAccount.getWorkQueue().getWorkRequestList()) {
-            Object[] row = new Object[4];
-            row[0] = wr;
-            row[1] = wr.getCaller().getLocation();
-            row[2] = wr.getEmergencyLevel();
-            row[3] = wr.getStatus();
-            dtm.addRow(row);
+        WorkQueue workQueue = userAccount.getWorkQueue();
+        if (workQueue != null) {
+            List<WorkRequest> dispatcherWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(dispatcherWorkRequestList)) {
+                for (WorkRequest wr : dispatcherWorkRequestList) {
+                    Object[] row = new Object[4];
+                    row[0] = wr;
+                    row[1] = wr.getCaller().getLocation();
+                    row[2] = wr.getEmergencyLevel();
+                    row[3] = wr.getStatus();
+                    dispatcherIncidentTableModel.addRow(row);
+                }
+            }
         }
     }
 
@@ -96,7 +105,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         emergencyCategory = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbldispatcherWQ = new javax.swing.JTable();
         nameText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         callerId = new javax.swing.JTextField();
@@ -140,7 +149,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Incoming Calls", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbldispatcherWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -159,13 +168,13 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
-        jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTable2.setShowGrid(true);
-        jTable2.setShowHorizontalLines(false);
-        jTable2.getTableHeader().setResizingAllowed(false);
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
+        tbldispatcherWQ.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tbldispatcherWQ.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tbldispatcherWQ.setShowGrid(true);
+        tbldispatcherWQ.setShowHorizontalLines(false);
+        tbldispatcherWQ.getTableHeader().setResizingAllowed(false);
+        tbldispatcherWQ.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tbldispatcherWQ);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -357,10 +366,10 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea messageText;
     private javax.swing.JTextField nameText;
     private javax.swing.JButton resetMap;
+    private javax.swing.JTable tbldispatcherWQ;
     // End of variables declaration//GEN-END:variables
 
 }

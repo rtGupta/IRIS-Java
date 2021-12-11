@@ -26,6 +26,10 @@ public class Caller {
         this.callerDetails = new Profile(firstName, lastName, contact);
         this.location = location;
     }
+
+    public Profile getCallerDetails() {
+        return callerDetails;
+    }
     
     public String getLocation() {
         return location;

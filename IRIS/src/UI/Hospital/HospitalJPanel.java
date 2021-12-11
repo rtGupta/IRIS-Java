@@ -4,6 +4,10 @@
  */
 package UI.Hospital;
 
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -24,6 +28,11 @@ import javax.swing.SwingUtilities;
  */
 public class HospitalJPanel extends javax.swing.JPanel {
 
+    private EcoSystem system;
+    private Organization organization;
+    private Enterprise enterprise;
+    private UserAccount userAccount;
+    
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
@@ -31,10 +40,15 @@ public class HospitalJPanel extends javax.swing.JPanel {
     /**
      * Creates new form DispatcherJPanel
      */
-    public HospitalJPanel(JLayeredPane mainPane) {
+    public HospitalJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
-        HosptialHomeJPanel icjp = new HosptialHomeJPanel(mainPane, workpane);
+        this.system = system;
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.userAccount = account;
+        
+        HospitalHomeJPanel icjp = new HospitalHomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
 
@@ -348,7 +362,7 @@ public class HospitalJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HosptialHomeJPanel icjp = new HosptialHomeJPanel(mainPane, workpane);
+        HospitalHomeJPanel icjp = new HospitalHomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
