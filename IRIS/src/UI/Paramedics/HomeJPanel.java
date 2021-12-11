@@ -304,13 +304,17 @@ public class HomeJPanel extends javax.swing.JPanel {
         if (paramedicWorkRequest != null) {
             if (paramedicWorkRequest.getStatus().equals("Open")) {
                 paramedicWorkRequest.setStatus("Scene Assessment in progress");
+                // update status of this WR in sender's workqueue as well.
+                paramedicWorkRequest.getSender().getWorkQueue()
+                        .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
                 // update status of this WR in receiver's work queue as well.
                 for (UserAccount receiverAccount : paramedicWorkRequest.getReceivers()) {
-                    receiverAccount.getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
+                    receiverAccount.getWorkQueue()
+                            .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
                 }
 
                 if (paramedicWorkRequest.getEmergencyLevel() == 'C') {
-                    // go to the medicalRecords screen.
+                    // go to the medicalRecords screen and pass workRequest object.
                 } else {
                     // enable 'Transfer to Hospital' button.
                     btnHospitalTransfer.setEnabled(true);

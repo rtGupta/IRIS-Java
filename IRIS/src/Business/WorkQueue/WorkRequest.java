@@ -96,7 +96,7 @@ public class WorkRequest {
         this.emergencyLevel = emergencyLevel;
     }
 
-    public boolean isIsIRISeligible() {
+    public boolean isIRISeligible() {
         return isIRISeligible;
     }
 

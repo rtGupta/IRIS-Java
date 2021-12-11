@@ -7,17 +7,18 @@ package Business.Caller;
 
 import Business.Utilities.Address;
 import Business.Utilities.Profile;
+import java.util.List;
 
 /**
  *
  * @author aarti
  */
 public class Caller {
-    
+
     private Profile callerDetails;
     private String location;
     private Vitals vitals;
-    private String[] medicalHistory;
+    private List<String> medicalHistory;
     private double height;
     private double weight;
     private String bloodGrp;
@@ -27,10 +28,18 @@ public class Caller {
         this.location = location;
     }
 
+    public Boolean isVitalSignsWithinNormalRange(Vitals vs) {
+        return !((vs.getBodyTemp() < 98.6)
+                || (vs.getOxyLevel() < 88)
+                || (vs.getPulse() < 60 || vs.getPulse() > 100)
+                || ((vs.getHighBP() < 90 || vs.getHighBP() > 120)
+                || (vs.getLowBP() < 60 || vs.getLowBP() > 80)));
+    }
+
     public Profile getCallerDetails() {
         return callerDetails;
     }
-    
+
     public String getLocation() {
         return location;
     }
@@ -71,11 +80,11 @@ public class Caller {
         this.bloodGrp = bloodGrp;
     }
 
-    public String[] getMedicalHistory() {
+    public List<String> getMedicalHistory() {
         return medicalHistory;
     }
 
-    public void setMedicalHistory(String[] medicalHistory) {
+    public void setMedicalHistory(List<String> medicalHistory) {
         this.medicalHistory = medicalHistory;
     }
 }
