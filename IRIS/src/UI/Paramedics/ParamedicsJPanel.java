@@ -37,7 +37,8 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        //HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        MessageToPhysicianJPanel icjp = new MessageToPhysicianJPanel();
         displayPanel(workpane, icjp);
     }
 

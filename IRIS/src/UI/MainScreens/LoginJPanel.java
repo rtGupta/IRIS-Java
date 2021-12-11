@@ -370,59 +370,75 @@ public class LoginJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_loginButtonMouseExited
 
     private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
-
-                // Get user name
-        String userName = txtLoginUserName.getText();
-        // Get Password
-        char[] passwordCharArray = txtLoginPassword.getPassword();
-        String password = String.valueOf(passwordCharArray);
-        
-        //Step1: Check in the system admin user account directory if you have the user
-        UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
-        
-        Enterprise inEnterprise=null;
-        Organization inOrganization=null;
-        
-        if(userAccount==null){
-            //Step 2: Go inside each network and check each enterprise
-            for(Network network:system.getNetworkList()){
-                //Step 2.a: check against each enterprise
-                for(Enterprise enterprise:network.getEnterpriseDirectory().getEnterpriseList()){
-                    userAccount=enterprise.getUserAccountDirectory().authenticateUser(userName, password);
-                    if(userAccount==null){
-                       //Step 3:check against each organization for each enterprise
-                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
-                           userAccount=organization.getUserAccountDirectory().authenticateUser(userName, password);
-                           if(userAccount!=null){
-                               inEnterprise=enterprise;
-                               inOrganization=organization;
-                               break;
-                           }
-                       }
-                        
-                    }
-                    else{
-                       inEnterprise=enterprise;
-                       break;
-                    }
-                    if(inOrganization!=null){
-                        break;
-                    }  
-                }
-                if(inEnterprise!=null){
-                    break;
-                }
-            }
-        }
-        
-        if(userAccount==null){
-            JOptionPane.showMessageDialog(null, "Invalid credentials");
+///////////////////// Testing /////////////////////////
+        JPanel djp1 = null;
+        if(roles.getSelection()==null)
             return;
-        }
-        else{
-              JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
-              displayPanel(djp);            
-        }
+        else if(roles.getSelection().getActionCommand().equals("Physician"))
+            djp1 = new PhysicianJPanel(mainPane);
+        else if(roles.getSelection().getActionCommand().equals("Dispatcher"))
+            djp1 = new DispatcherJPanel(mainPane);
+        else if(roles.getSelection().getActionCommand().equals("Hospital"))
+            djp1 = new HospitalJPanel(mainPane);
+        else if(roles.getSelection().getActionCommand().equals("Paramedics"))
+            djp1 = new ParamedicsJPanel(mainPane);
+        else
+            return;
+        displayPanel(djp1);
+        //return;
+        ///////////////////////////////////////////////////////
+                // Get user name
+//        String userName = txtLoginUserName.getText();
+//        // Get Password
+//        char[] passwordCharArray = txtLoginPassword.getPassword();
+//        String password = String.valueOf(passwordCharArray);
+//        
+//        //Step1: Check in the system admin user account directory if you have the user
+//        UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
+//        
+//        Enterprise inEnterprise=null;
+//        Organization inOrganization=null;
+//        
+//        if(userAccount==null){
+//            //Step 2: Go inside each network and check each enterprise
+//            for(Network network:system.getNetworkList()){
+//                //Step 2.a: check against each enterprise
+//                for(Enterprise enterprise:network.getEnterpriseDirectory().getEnterpriseList()){
+//                    userAccount=enterprise.getUserAccountDirectory().authenticateUser(userName, password);
+//                    if(userAccount==null){
+//                       //Step 3:check against each organization for each enterprise
+//                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
+//                           userAccount=organization.getUserAccountDirectory().authenticateUser(userName, password);
+//                           if(userAccount!=null){
+//                               inEnterprise=enterprise;
+//                               inOrganization=organization;
+//                               break;
+//                           }
+//                       }
+//                        
+//                    }
+//                    else{
+//                       inEnterprise=enterprise;
+//                       break;
+//                    }
+//                    if(inOrganization!=null){
+//                        break;
+//                    }  
+//                }
+//                if(inEnterprise!=null){
+//                    break;
+//                }
+//            }
+//        }
+//        
+//        if(userAccount==null){
+//            JOptionPane.showMessageDialog(null, "Invalid credentials");
+//            return;
+//        }
+//        else{
+//              JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
+//              displayPanel(djp);            
+//        }
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
