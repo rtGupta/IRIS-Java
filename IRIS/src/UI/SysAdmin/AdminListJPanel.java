@@ -313,7 +313,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField5)))
-                        .addContainerGap(58, Short.MAX_VALUE))
+                        .addContainerGap(124, Short.MAX_VALUE))
                     .addGroup(Admin911Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton10)
@@ -736,6 +736,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         );
 
         Volunteers.setBackground(new java.awt.Color(255, 255, 255));
+        Volunteers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "VOLUNTEERS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
@@ -770,29 +771,47 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        Volunteers.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 13, 888, -1));
+
         jLabel25.setText("First Name : ");
+        Volunteers.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 234, -1, -1));
 
         jLabel26.setText("Last Name : ");
+        Volunteers.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 234, -1, -1));
 
         jLabel27.setText("Email : ");
+        Volunteers.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 274, -1, -1));
 
         jLabel28.setText("Phone Number : ");
+        Volunteers.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 274, -1, -1));
 
         jLabel29.setText("Date of Birth : ");
+        Volunteers.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 315, -1, -1));
 
         jLabel30.setText("Address : ");
+        Volunteers.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 357, -1, -1));
 
         jLabel31.setText("Work Address : ");
+        Volunteers.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 357, -1, -1));
 
         jLabel32.setText("Gender : ");
+        Volunteers.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 315, -1, -1));
+        Volunteers.add(jTextField22, new org.netbeans.lib.awtextra.AbsoluteConstraints(174, 231, 255, -1));
+        Volunteers.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(174, 271, 255, -1));
+        Volunteers.add(jTextField24, new org.netbeans.lib.awtextra.AbsoluteConstraints(174, 312, 255, -1));
 
         jTextField25.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField25ActionPerformed(evt);
             }
         });
+        Volunteers.add(jTextField25, new org.netbeans.lib.awtextra.AbsoluteConstraints(174, 354, 255, -1));
+        Volunteers.add(jTextField26, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 360, 233, -1));
+        Volunteers.add(jTextField27, new org.netbeans.lib.awtextra.AbsoluteConstraints(605, 231, 225, -1));
+        Volunteers.add(jTextField28, new org.netbeans.lib.awtextra.AbsoluteConstraints(605, 271, 225, -1));
 
         jRadioButton10.setText("Male");
+        Volunteers.add(jRadioButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(605, 311, -1, -1));
 
         jRadioButton11.setText("Female");
         jRadioButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -800,6 +819,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 jRadioButton11ActionPerformed(evt);
             }
         });
+        Volunteers.add(jRadioButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(656, 311, -1, -1));
 
         jRadioButton12.setText("Prefer not to say");
         jRadioButton12.addActionListener(new java.awt.event.ActionListener() {
@@ -807,101 +827,15 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 jRadioButton12ActionPerformed(evt);
             }
         });
+        Volunteers.add(jRadioButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(719, 311, -1, -1));
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setText("Update");
+        Volunteers.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(371, 484, -1, -1));
 
         jButton15.setBackground(new java.awt.Color(255, 255, 255));
         jButton15.setText("Delete");
-
-        javax.swing.GroupLayout VolunteersLayout = new javax.swing.GroupLayout(Volunteers);
-        Volunteers.setLayout(VolunteersLayout);
-        VolunteersLayout.setHorizontalGroup(
-            VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(VolunteersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(VolunteersLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel25)
-                    .addComponent(jLabel27)
-                    .addComponent(jLabel29)
-                    .addComponent(jLabel30))
-                .addGap(14, 14, 14)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField25, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextField24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                        .addComponent(jTextField23, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField22, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(VolunteersLayout.createSequentialGroup()
-                        .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel28)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel32))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField28)
-                            .addGroup(VolunteersLayout.createSequentialGroup()
-                                .addComponent(jRadioButton10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton12))
-                            .addComponent(jTextField27)))
-                    .addGroup(VolunteersLayout.createSequentialGroup()
-                        .addComponent(jLabel31)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField26)))
-                .addContainerGap(52, Short.MAX_VALUE))
-            .addGroup(VolunteersLayout.createSequentialGroup()
-                .addGap(371, 371, 371)
-                .addComponent(jButton8)
-                .addGap(53, 53, 53)
-                .addComponent(jButton15)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        VolunteersLayout.setVerticalGroup(
-            VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(VolunteersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25)
-                    .addComponent(jLabel26)
-                    .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(jLabel28)
-                    .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel29)
-                    .addComponent(jLabel32)
-                    .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton10)
-                    .addComponent(jRadioButton11)
-                    .addComponent(jRadioButton12))
-                .addGap(18, 18, 18)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel30)
-                    .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                .addGroup(VolunteersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8)
-                    .addComponent(jButton15))
-                .addGap(85, 85, 85))
-        );
+        Volunteers.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 484, -1, -1));
 
         jLayeredPane1.setLayer(Admin911, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(FirstResponder, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -993,10 +927,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
@@ -1060,6 +990,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
