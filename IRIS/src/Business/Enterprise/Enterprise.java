@@ -2,12 +2,14 @@ package Business.Enterprise;
 
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
  * @author Yaswanth
  */
 public abstract class Enterprise extends Organization{
+    
     
     private EnterpriseType enterpriseType;
     private OrganizationDirectory organizationDirectory;
@@ -30,10 +32,20 @@ public abstract class Enterprise extends Organization{
         public String getValue() {
             return value;
         }
+        public EnterpriseType findByValue(String value) {
+            EnterpriseType resultType = null;
+            for(EnterpriseType type: EnterpriseType.values()){
+                if(StringUtils.equalsIgnoreCase(value, type.value)) {
+                    resultType = type;
+                }
+            }
+            return resultType;
+        }
+        
         @Override
         public String toString(){
-        return value;
-    }
+            return value;
+        }
     }
 
     public void setOrganizationDirectory(OrganizationDirectory organizationDirectory) {
@@ -53,4 +65,11 @@ public abstract class Enterprise extends Organization{
         this.enterpriseType=type;
         organizationDirectory = new OrganizationDirectory();
     }
+
+    @Override
+    public String toString() {
+        return super.getName();
+    }
+    
+    
 }
