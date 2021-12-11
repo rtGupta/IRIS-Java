@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Paramedics;
+package UI.Volunteer;
 
 import Business.EcoSystem;
 import UI.MainScreens.LoginJPanel;
@@ -23,22 +23,23 @@ import javax.swing.SwingUtilities;
  *
  * @author akshatajadhav
  */
-public class ParamedicsJPanel extends javax.swing.JPanel {
+public class VolunteerJPanel extends javax.swing.JPanel {
 
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
+    boolean volunteerAvailable = false;
     EcoSystem system;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public ParamedicsJPanel(JLayeredPane mainPane) {
+    public VolunteerJPanel(JLayeredPane mainPane, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
-        displayPanel(workpane, icjp);
+        ThankYouMessageJPanel t = new ThankYouMessageJPanel();
+            displayPanel(workpane, t);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -74,6 +75,9 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         home1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        availablityBtn = new javax.swing.JPanel();
+        avaliablity = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -109,14 +113,14 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(6, 6, 6)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 90));
@@ -142,11 +146,11 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/history_24px.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/incoming_call_24px.png"))); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("History");
+        jLabel14.setText("Call History");
 
         javax.swing.GroupLayout historyLayout = new javax.swing.GroupLayout(history);
         history.setLayout(historyLayout);
@@ -165,7 +169,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
+        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 190, -1));
 
         home.setOpaque(false);
         home.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -203,7 +207,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
             .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, -1));
+        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 190, -1));
 
         home1.setOpaque(false);
         home1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -243,17 +247,56 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
 
         menuPanel.add(home1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
 
+        availablityBtn.setOpaque(false);
+        availablityBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseExited(evt);
+            }
+        });
+
+        avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png"))); // NOI18N
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Available?");
+
+        javax.swing.GroupLayout availablityBtnLayout = new javax.swing.GroupLayout(availablityBtn);
+        availablityBtn.setLayout(availablityBtnLayout);
+        availablityBtnLayout.setHorizontalGroup(
+            availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, availablityBtnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(avaliablity)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        availablityBtnLayout.setVerticalGroup(
+            availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(avaliablity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+
+        menuPanel.add(availablityBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
+
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
-        workpane.setMaximumSize(new java.awt.Dimension(790, 550));
+        workpane.setMaximumSize(new java.awt.Dimension(990, 590));
+        workpane.setMinimumSize(new java.awt.Dimension(990, 590));
         workpane.setLayout(new java.awt.CardLayout());
         menuTab.add(workpane, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 990, 590));
 
-        add(menuTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1200, 590));
+        add(menuTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, 590));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/paramedics_40px.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/icon-admin.png"))); // NOI18N
 
         jLabel8.setText("Welcome Name");
 
@@ -262,20 +305,19 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel7)
-                .addGap(64, 64, 64)
+                .addGap(152, 152, 152)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(354, Short.MAX_VALUE))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 790, 90));
@@ -348,8 +390,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
-        displayPanel(workpane, icjp);
+
     }//GEN-LAST:event_homeMouseClicked
 
     private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
@@ -373,8 +414,32 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         home1.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
     }//GEN-LAST:event_home1MouseExited
 
+    private void availablityBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseClicked
+        if (!volunteerAvailable) {
+            avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
+            ForceCompleteSignUpJPanel t = new ForceCompleteSignUpJPanel();
+            displayPanel(workpane, t);
+        } else {
+            avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png")));
+            ThankYouMessageJPanel t = new ThankYouMessageJPanel();
+            displayPanel(workpane, t);
+        }
+
+        volunteerAvailable = !volunteerAvailable;
+    }//GEN-LAST:event_availablityBtnMouseClicked
+
+    private void availablityBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseEntered
+        availablityBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_availablityBtnMouseEntered
+
+    private void availablityBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseExited
+        availablityBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_availablityBtnMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel availablityBtn;
+    private javax.swing.JLabel avaliablity;
     private javax.swing.JLabel closeButton;
     private javax.swing.JPanel history;
     private javax.swing.JPanel home;
@@ -382,6 +447,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -411,7 +477,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     System.out.println("...");
                 }
-               
+
             }
         };
 
