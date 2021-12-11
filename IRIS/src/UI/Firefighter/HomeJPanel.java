@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Fireman;
+package UI.Firefighter;
 
 import UI.Paramedics.*;
 import UI.Dispatcher.*;
@@ -122,7 +122,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         jLabel1.setText("Name:");
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel2.setText("Caller ID:");
+        jLabel2.setText("Phone Number:");
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel3.setText("Address:");
