@@ -75,14 +75,14 @@ public class CameraUtil {
         grabber.setImageWidth(captureWidth);
         grabber.setImageHeight(captureHeight);
         grabber.start();
-        recorder = new FFmpegFrameRecorder(filename + ".flv", captureWidth, captureHeight, 2);
+        recorder = new FFmpegFrameRecorder(filename + ".avi", captureWidth, captureHeight, 2);
         recorder.setInterleaved(true);
         recorder.setVideoOption("tune", "zerolatency");
         recorder.setVideoOption("preset", "ultrafast");
         recorder.setVideoOption("crf", "28");
         recorder.setVideoBitrate(2000000);
         recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-        recorder.setFormat("flv");
+        recorder.setFormat("avi");
         recorder.setFrameRate(FRAME_RATE);
         recorder.setGopSize(GOP_LENGTH_IN_FRAMES);
         recorder.setAudioOption("crf", "0");

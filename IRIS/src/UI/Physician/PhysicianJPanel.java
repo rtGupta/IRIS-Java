@@ -34,7 +34,8 @@ public class PhysicianJPanel extends javax.swing.JPanel {
     public PhysicianJPanel(JLayeredPane mainPane) {
         initComponents();
         this.mainPane = mainPane;
-        PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane);
+        //PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane);
+        VideoFromParamedicJPanel icjp = new VideoFromParamedicJPanel();
         displayPanel(workpane, icjp);
     }
 
