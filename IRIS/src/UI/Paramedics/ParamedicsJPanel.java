@@ -4,6 +4,7 @@
  */
 package UI.Paramedics;
 
+import Business.EcoSystem;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -27,6 +28,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
+    EcoSystem system;
 
     /**
      * Creates new form DispatcherJPanel
@@ -34,6 +36,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     public ParamedicsJPanel(JLayeredPane mainPane) {
         initComponents();
         this.mainPane = mainPane;
+        this.system = system;
         HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
         displayPanel(workpane, icjp);
     }
@@ -358,7 +361,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane);
+        LoginJPanel icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 

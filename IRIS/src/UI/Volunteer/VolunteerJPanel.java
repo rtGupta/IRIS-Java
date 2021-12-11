@@ -4,6 +4,7 @@
  */
 package UI.Volunteer;
 
+import Business.EcoSystem;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -28,13 +29,15 @@ public class VolunteerJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     boolean menuButton = false;
     boolean volunteerAvailable = false;
+    EcoSystem system;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public VolunteerJPanel(JLayeredPane mainPane) {
+    public VolunteerJPanel(JLayeredPane mainPane, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
+        this.system = system;
         ThankYouMessageJPanel t = new ThankYouMessageJPanel();
             displayPanel(workpane, t);
     }
@@ -399,7 +402,7 @@ public class VolunteerJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane);
+        LoginJPanel icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 

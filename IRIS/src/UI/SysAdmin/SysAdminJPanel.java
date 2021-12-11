@@ -4,6 +4,7 @@
  */
 package UI.SysAdmin;
 
+import Business.EcoSystem;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -27,14 +28,15 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
-    
+    EcoSystem system;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public SysAdminJPanel(JLayeredPane mainPane) {
+    public SysAdminJPanel(JLayeredPane mainPane, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
+        this.system = system;
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -356,7 +358,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane);
+        LoginJPanel icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 
