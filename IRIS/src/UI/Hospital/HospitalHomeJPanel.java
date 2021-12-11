@@ -4,23 +4,58 @@
  */
 package UI.Hospital;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
+import java.util.List;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
  * @author akshatajadhav
  */
-public class HosptialHomeJPanel extends javax.swing.JPanel {
+public class HospitalHomeJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount userAccount;
+
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public HosptialHomeJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public HospitalHomeJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+
+        populateHospitalWQTable();
+        this.system = system;
+        this.userAccount = account;
+    }
+
+    public void populateHospitalWQTable() {
+        DefaultTableModel staffAdminTableModel = (DefaultTableModel) tblStaffAdminWQ.getModel();
+        staffAdminTableModel.setRowCount(0);
+
+        WorkQueue workQueue = userAccount.getWorkQueue();
+        if (workQueue != null) {
+            List<WorkRequest> staffAdminWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(staffAdminWorkRequestList)) {
+                for (WorkRequest wr : staffAdminWorkRequestList) {
+                    Object[] row = new Object[4];
+                    row[0] = wr;
+                    row[1] = wr.getCaller().getLocation();
+                    row[2] = wr.getEmergencyLevel();
+                    row[3] = wr.getStatus();
+                    staffAdminTableModel.addRow(row);
+                }
+            }
+        }
     }
 
     /**
@@ -35,7 +70,7 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblStaffAdminWQ = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -61,7 +96,7 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Patients", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
         jPanel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblStaffAdminWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -72,7 +107,7 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblStaffAdminWQ);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -92,6 +127,11 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
         );
 
         jButton1.setText("Admit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -100,12 +140,13 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,12 +160,33 @@ public class HosptialHomeJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        WorkRequest request = getSelectedWR();
+        
+        if (request != null) {
+            request.setStatus("Resolved");
+            request.getSender().getWorkQueue().findWorkRequestByID(request.getWorkRequestID()).setStatus("Resolved");
+            for (UserAccount receiver: request.getReceivers()) {
+                receiver.getWorkQueue().findWorkRequestByID(request.getWorkRequestID()).setStatus("Resolved");
+            }
+        }
+        JOptionPane.showMessageDialog(this, "The emergency has been resolved!");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public WorkRequest getSelectedWR() {
+        int selectedRowIndex = tblStaffAdminWQ.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a work request from the table to view incident details.");
+        }
+        WorkRequest workRequest = (WorkRequest) tblStaffAdminWQ.getValueAt(selectedRowIndex, 0);
+        return workRequest;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblStaffAdminWQ;
     // End of variables declaration//GEN-END:variables
 }

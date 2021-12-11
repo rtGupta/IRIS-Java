@@ -5,6 +5,7 @@
 package UI.OrganizationAdmin;
 
 import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
 import UI.Paramedics.*;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
@@ -30,15 +31,16 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     boolean menuButton = false;
     private EcoSystem system;
-
+    private UserAccount userAccount;
     /**
      * Creates new form DispatcherJPanel
      */
-    public FirstResponderAdminJPanel(JLayeredPane mainPane, EcoSystem system) {
+    public FirstResponderAdminJPanel(JLayeredPane mainPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        this.userAccount = account;
+        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
 
@@ -586,7 +588,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 

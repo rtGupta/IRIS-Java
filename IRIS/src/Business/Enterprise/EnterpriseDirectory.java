@@ -40,15 +40,13 @@ public class EnterpriseDirectory {
         }
         return enterprise;
     }
-    
-    public Enterprise findEnterprise(EnterpriseType type){
-        Enterprise resultEnterprise = null;
-        for(Enterprise enterprise: enterpriseList){
-            if(enterprise.getEnterpriseType().equals(type)){
-                resultEnterprise = enterprise; 
+        
+    public Enterprise findEnterprise(String enterpriseType) {
+        for (Enterprise enterprise: getEnterpriseList()) {
+            if (enterprise.getEnterpriseType().getValue().equals(enterpriseType)) {
+                return enterprise;
             }
         }
-        return resultEnterprise;
+        return null;
     }
-    
 }
