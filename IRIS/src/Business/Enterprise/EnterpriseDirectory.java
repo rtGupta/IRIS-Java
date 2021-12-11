@@ -28,7 +28,27 @@ public class EnterpriseDirectory {
         if(type==Enterprise.EnterpriseType.Enterprise911){
             enterprise=new Enterprise911(name);
             enterpriseList.add(enterprise);
+        }else if(type==Enterprise.EnterpriseType.FirstResponderEnterprise){
+            enterprise=new FirstResponderEnterprise(name);
+            enterpriseList.add(enterprise);
+        }else if(type==Enterprise.EnterpriseType.HealthcareEnterprise){
+            enterprise=new HealthcareEnterprise(name);
+            enterpriseList.add(enterprise);
+        }else if(type==Enterprise.EnterpriseType.VoluntaryEnterprise){
+            enterprise=new VoluntaryEnterprise(name);
+            enterpriseList.add(enterprise);
         }
         return enterprise;
     }
+    
+    public Enterprise findEnterprise(EnterpriseType type){
+        Enterprise resultEnterprise = null;
+        for(Enterprise enterprise: enterpriseList){
+            if(enterprise.getEnterpriseType().equals(type)){
+                resultEnterprise = enterprise; 
+            }
+        }
+        return resultEnterprise;
+    }
+    
 }

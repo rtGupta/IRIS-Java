@@ -33,6 +33,7 @@ public abstract class Role {
     }
     
     public enum FirstResponderRoleType{
+        FirstRespAdmin("FirstRespAdmin"),
         FireMan("FireMan"),
         Paramedic("Paramedic"),
         Police("Police");
@@ -52,11 +53,28 @@ public abstract class Role {
         }
     }    
     
-    public enum HealthCareRoleType{
-        StaffAdministrator("StaffAdministrator");
+//    public enum HealthCareRoleType{
+//        StaffAdministrator("StaffAdministrator");
+//        
+//        private String value;
+//        private HealthCareRoleType(String value){
+//            this.value = value;
+//        }
+//        public String getValue() {
+//            return value;
+//        }
+//        @Override
+//        public String toString() {
+//            return value;
+//        }
+//    }
+
+    public enum VoluntaryRoleType{
+        VoluntaryClinician("VoluntaryClinician"),
+        VoluntaryTransport("VoluntaryTransport");
         
         private String value;
-        private HealthCareRoleType(String value){
+        private VoluntaryRoleType(String value){
             this.value = value;
         }
         public String getValue() {
@@ -68,12 +86,13 @@ public abstract class Role {
         }
     }
 
-    public enum VoluntaryRoleType{
-        VoluntaryClinician("VoluntaryClinician"),
-        VoluntaryTransport("VoluntaryTransport");
+    public enum EntepriseLevelRoleType{
+        Enterprise911Admin("Enterprise911Admin"),
+        FirstRespAdmin("FirstRespAdmin"),
+        StaffAdministrator("StaffAdministrator");
         
         private String value;
-        private VoluntaryRoleType(String value){
+        private EntepriseLevelRoleType(String value){
             this.value = value;
         }
         public String getValue() {
