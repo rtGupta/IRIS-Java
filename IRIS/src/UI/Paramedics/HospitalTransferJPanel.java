@@ -50,7 +50,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         this.paramedicWorkRequest = request;
         hospitalLocations = new ArrayList<>();
         loadHospitalDropdown();
-        JPanel map = MapsUtil.publishMap(request.getCaller().getCoordinates(), hospitalLocations);
+        JPanel map = MapsUtil.publishMap(this.paramedicWorkRequest.getCaller().getCoordinates(), hospitalLocations);
         displayPanel(maps, map);
     }
 
@@ -118,16 +118,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);
-        maps.setLayout(mapsLayout);
-        mapsLayout.setHorizontalGroup(
-            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        mapsLayout.setVerticalGroup(
-            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
-        );
+        maps.setLayout(new java.awt.CardLayout());
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Reset");
@@ -155,7 +146,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(maps)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(358, Short.MAX_VALUE)
+                .addContainerGap(360, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -177,7 +168,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
@@ -186,7 +177,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -200,6 +191,8 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         paramedicWorkRequest.setStatus("Transferred to Hospital");
+        // set status of WR in sender's workqueue as well.
+        paramedicWorkRequest.getSender().getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Transferred to Hospital");
         paramedicWorkRequest.getReceivers().forEach(receiver -> {
             if (receiver.getRole() instanceof StaffAdministrator) {
                 receiver.getWorkQueue().getWorkRequestList().add(paramedicWorkRequest);
@@ -207,8 +200,11 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
                 receiver.getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Transferred to Hospital");
             }
         });
-        
+        userAccount.getWorkQueue()
+                        .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Transferred to Hospital");
         // display Paramedic's HomeJPanel.
+        HomeJPanel phjp = new HomeJPanel(mainPane, workPane, system, userAccount);
+        displayPanel(workPane, phjp);
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

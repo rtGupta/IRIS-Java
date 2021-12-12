@@ -45,13 +45,19 @@ public class HomeJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.paramedicUserAccount = account;
-
+        btnHospitalTransfer.setEnabled(false);
+        
         populateWorkQueueTable();
         tblParamedicsWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 int selectedRowIndex = tblParamedicsWQ.getSelectedRow();
                 if (selectedRowIndex < 0) {
-                    JOptionPane.showMessageDialog(null, "Please select a work request from the table to view incident details.");
+                    txtCallerName.setText("");
+                    txtContact.setText("");
+                    txtLocation.setText("");
+                    txtMessage.setText("");
+                    
+                    return;
                 }
 
                 paramedicWorkRequest = (WorkRequest) tblParamedicsWQ.getValueAt(selectedRowIndex, 0);
@@ -61,11 +67,15 @@ public class HomeJPanel extends javax.swing.JPanel {
                     txtContact.setText(String.valueOf(callerInfo.getPhone()));
                     txtLocation.setText(paramedicWorkRequest.getCaller().getLocation());
                     txtMessage.setText(paramedicWorkRequest.getMessage());
-                    JPanel map = MapsUtil.mapWayPoint(callerInfo.getLocation());
+                    JPanel map = MapsUtil.mapWayPoint(paramedicWorkRequest.getCaller().getCoordinates());
                     displayPanel(maps, map);
-                    if (paramedicWorkRequest.getStatus().equals("Transport Care Required")) {
+                    if (paramedicWorkRequest.getStatus().equals("Transport Care Required") ||
+                            paramedicWorkRequest.getStatus().equals("Scene Assessment in progress")) {
                         btnHospitalTransfer.setEnabled(true);
+                        btnAcknowledge.setEnabled(false);
                         // go to HospitalTransferJPanel screen
+                    } else if (!paramedicWorkRequest.getStatus().equals("Open")) {
+                        btnAcknowledge.setEnabled(false);
                     }
                 }
             }
@@ -199,7 +209,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         jLabel1.setText("Name:");
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel2.setText("Caller ID:");
+        jLabel2.setText("Contact:");
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel3.setText("Address:");
@@ -212,7 +222,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(txtMessage);
 
         btnAcknowledge.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        btnAcknowledge.setText("Assign");
+        btnAcknowledge.setText("Acknowledge");
         btnAcknowledge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAcknowledgeActionPerformed(evt);
@@ -323,12 +333,12 @@ public class HomeJPanel extends javax.swing.JPanel {
                             .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
                 }
 
+                paramedicUserAccount.getWorkQueue()
+                        .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
+                    populateWorkQueueTable();
+                
                 if (paramedicWorkRequest.getEmergencyLevel() == 'C') {
                     // go to the medicalRecords screen and pass workRequest object.
-                } else {
-                    // enable 'Transfer to Hospital' button.
-                    btnHospitalTransfer.setEnabled(true);
-                    // go to HospitalTransferJPanel screen.
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "The work request is already in progress!");
@@ -336,8 +346,11 @@ public class HomeJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnAcknowledgeActionPerformed
 
+    
     private void btnHospitalTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospitalTransferActionPerformed
         // pass the paramedicWorkRequest object when redirecting to HospitalTransferJPanel.
+        HospitalTransferJPanel htjp = new HospitalTransferJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
+        displayPanel(workPane, htjp);
     }//GEN-LAST:event_btnHospitalTransferActionPerformed
 
 
