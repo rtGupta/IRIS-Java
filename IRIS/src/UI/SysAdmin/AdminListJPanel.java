@@ -51,7 +51,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
     Pattern emailPattern;
     Pattern phonePattern;
     Pattern passwordPattern;
-    
+
     /**
      * Creates new form HosptialHomeJPanel
      */
@@ -62,18 +62,16 @@ public class AdminListJPanel extends javax.swing.JPanel {
         this.system = system;
         this.networkList = system.getNetworkList();
         this.enterpriseDirectory = system.getNetworkList().get(0).getEnterpriseDirectory();
-        
+
         String emailRegex = "^(.+)@(\\S+)$";
         emailPattern = Pattern.compile(emailRegex);
-            
+
         String phoneRegex = "^\\d{10}$";
         phonePattern = Pattern.compile(phoneRegex);
-            
-            
+
         String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
         passwordPattern = Pattern.compile(passwordRegex);
-            
-        
+
         radbtnMale.setActionCommand("Male");
         radbtnFemale.setActionCommand("Female");
         radbtnNotToSay.setActionCommand("PreferNotToSay");
@@ -82,7 +80,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         buttonGroup1.add(radbtnNotToSay);
 
         populateEnterpriseCmbbox();
-        
+
     }
 
     /**
@@ -441,19 +439,21 @@ public class AdminListJPanel extends javax.swing.JPanel {
         if (selectedRowIndex < 0) {
             JOptionPane.showMessageDialog(null, "Please select a record to view admin details");
         }
-        
+
         UserAccount selectedUser = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem()!=null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
             String userName = txtUserName.getText();
             String phoneNumber = txtPhoneNumber.getText();
             String email = txtEmail.getText();
+            String home = txtAddress.getText();
+            String work = txtWorkAddress.getText();
 
             Matcher emailMatcher = emailPattern.matcher(email);
             Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
-            
+
             //add address and work address
             if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
                 //add regex validations
@@ -462,25 +462,32 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
+            } else if (StringUtils.isBlank(address)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
+            } else if (StringUtils.isBlank(workAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
             }
-            //add validation for address
-            boolean isUpdated=false;
             
-            for(Network network : system.getNetworkList()){
+            //add validation for address
+            boolean isUpdated = false;
+
+            for (Network network : system.getNetworkList()) {
                 this.enterpriseDirectory = network.getEnterpriseDirectory();
-                if(enterpriseDirectory!=null){
+                if (enterpriseDirectory != null) {
                     for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
                         if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
                             UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
-                            if(accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())){
-                                for(UserAccount account: accountDirectory.getUserAccountList()){
-                                    if(account != null && account.equals(selectedUser)){
+                            if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
+                                for (UserAccount account : accountDirectory.getUserAccountList()) {
+                                    if (account != null && account.equals(selectedUser)) {
                                         Profile profile = account.getProfileDetails();
-                                        if(profile!=null){
+                                        if (profile != null) {
                                             profile.setEmail(email);
                                             profile.setPhone(Long.valueOf(phoneNumber));
-        //                                    profile.setHomeAddress(homeAddress);
-        //                                    profile.setWorkAddress(workAddress);
+                                            profile.setHomeAddress(home);
+                                            profile.setWorkAddress(work);
                                             account.setProfileDetails(profile);
                                             isUpdated = true;
                                             JOptionPane.showMessageDialog(this, "User details updated Successfull!!");
@@ -497,19 +504,13 @@ public class AdminListJPanel extends javax.swing.JPanel {
                             break;
                         }
                     }
-                }                
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
         populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
-        txtUserName.setEnabled(true);
-        txtPassword.setEnabled(true);
-        txtDateOfBirth.setEnabled(true);
-        txtPassword.setEnabled(true);
-        radbtnMale.setEnabled(true);
-        radbtnFemale.setEnabled(true);
-        radbtnNotToSay.setEnabled(true);
+        enableAllFields(true);
     }//GEN-LAST:event_btnUpdateAdminActionPerformed
 
     private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
@@ -519,42 +520,40 @@ public class AdminListJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Please select a record to view admin details");
             return;
         }
-        
+
         UserAccount selectedUser = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem()!=null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
-            //add validation for address
-            boolean isUpdated=false;
             for(Network network : system.getNetworkList()){
                 this.enterpriseDirectory = network.getEnterpriseDirectory();
-                if(enterpriseDirectory!=null){
+                if (enterpriseDirectory != null) {
                     for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
                         if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
                             UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
-                            if(accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())){
-                                if(accountDirectory.removeUserAccount(selectedUser)){
+                            if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
+                                if (accountDirectory.removeUserAccount(selectedUser)) {
                                     JOptionPane.showMessageDialog(this, "User details deleted Successfully!!");
-                                }else {
+                                } else {
                                     JOptionPane.showMessageDialog(this, "User details delete operation failed!!");
                                 }
                             }
                             break;
                         }
-                    }                    
+                    }
                 }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));        
+        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
     }//GEN-LAST:event_btnDeleteUserActionPerformed
 
     private void cmbboxEnterpriseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbboxEnterpriseActionPerformed
         // TODO add your handling code here:
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem()!=null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
-        if(StringUtils.isNotBlank(selectedEnterpriseAdmin)){
+        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+        if (StringUtils.isNotBlank(selectedEnterpriseAdmin)) {
             populateEnterpriseAdminTable(selectedEnterpriseAdmin);
         }
     }//GEN-LAST:event_cmbboxEnterpriseActionPerformed
@@ -562,7 +561,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
     private void btnCreateAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAdminActionPerformed
         // TODO add your handling code here:
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem()!=null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
             String userName = txtUserName.getText();
@@ -575,11 +574,11 @@ public class AdminListJPanel extends javax.swing.JPanel {
             String gender = buttonGroup1.getSelection().getActionCommand();
             String home = txtAddress.getText();
             String work = txtWorkAddress.getText();
-            
+
             Matcher emailMatcher = emailPattern.matcher(email);
             Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
-            Matcher passworMatcher = passwordPattern.matcher(password);        
-            
+            Matcher passworMatcher = passwordPattern.matcher(password);
+
             //add address and work address
             if (StringUtils.isBlank(userName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid user Name");
@@ -603,35 +602,40 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(gender)) {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
+            } else if (StringUtils.isBlank(homeAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
+            } else if (StringUtils.isBlank(workAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
             }
-            //add validation for address
 
             UserAccount userAccount = null;
             for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
                 if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
                     UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
-                    if(accountDirectory!=null && accountDirectory.checkIfUsernameIsUnique(userName)){
+                    if (accountDirectory != null && accountDirectory.checkIfUsernameIsUnique(userName)) {
                         Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
                         Role role = null;
-                        switch(enterprise.getEnterpriseType().getValue()){
+                        switch (enterprise.getEnterpriseType().getValue()) {
                             case "Enterprise911":
                                 role = new Enterprise911Admin();
                                 break;
                             case "FirstResponderEnterprise":
                                 role = new FirstRespAdmin();
-                                break;                                
+                                break;
                             case "HealthcareEnterprise":
                                 role = new HealthCareAdmin();
-                                break;                                
+                                break;
                         }
-                        if(role != null){
+                        if (role != null) {
                             userAccount = accountDirectory.createUserAccount(userName, password, role, userProfile);
                         }
                         if (userAccount == null) {
                             JOptionPane.showMessageDialog(this, "User creation failed");
                         }
                         enterprise.setUserAccountDirectory(accountDirectory);
-                    }else {
+                    } else {
                         JOptionPane.showMessageDialog(this, "Enter a unique user name");
                         return;
                     }
@@ -672,12 +676,9 @@ public class AdminListJPanel extends javax.swing.JPanel {
             txtPhoneNumber.setText(String.valueOf(adminProfile.getPhone()));
             txtEmail.setText(adminProfile.getEmail());
             txtDateOfBirth.setText(simpleDateFormat.format(adminProfile.getDob()));
-            if (adminProfile.getHomeAddress() != null) {
-                txtAddress.setText(adminProfile.getHomeAddress().toString());
-            }
-            if (adminProfile.getWorkAddress() != null) {
-                txtAddress.setText(adminProfile.getWorkAddress().toString());
-            }
+            txtAddress.setText(adminProfile.getHomeAddress());
+            txtWorkAddress.setText(adminProfile.getWorkAddress());
+
             switch (adminProfile.getGender()) {
                 case "Male":
                     buttonGroup1.setSelected(radbtnMale.getModel(), true);
@@ -692,20 +693,15 @@ public class AdminListJPanel extends javax.swing.JPanel {
         }
         btnUpdateAdmin.setEnabled(true);
         btnCreateAdmin.setEnabled(false);
-        txtUserName.setEnabled(false);
-        txtPassword.setEnabled(false);
-        txtDateOfBirth.setEnabled(false);
-        txtPassword.setEnabled(false);
-        radbtnMale.setEnabled(false);
-        radbtnFemale.setEnabled(false);
-        radbtnNotToSay.setEnabled(false);        
+        enableAllFields(false);
     }//GEN-LAST:event_btnViewUserActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
         clearAllFields();
+        enableAllFields(true);
         btnUpdateAdmin.setEnabled(false);
-        btnCreateAdmin.setEnabled(true);        
+        btnCreateAdmin.setEnabled(true);
     }//GEN-LAST:event_btnClearActionPerformed
 
 
@@ -759,9 +755,9 @@ public class AdminListJPanel extends javax.swing.JPanel {
         DefaultTableModel enterpriseAdminTableModel = (DefaultTableModel) tblEnterpriseAdmin.getModel();
         enterpriseAdminTableModel.setRowCount(0);
 
-        if(enterpriseDirectory != null){
-            for(Enterprise enterprise: enterpriseDirectory.getEnterpriseList()){
-                if(StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)){
+        if (enterpriseDirectory != null) {
+            for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
+                if (StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
                     UserAccountDirectory userAccountDirectory = enterprise.getUserAccountDirectory();
                     if (userAccountDirectory != null) {
                         List<UserAccount> enterpriseAdminUsers = userAccountDirectory.getUserAccountList();
@@ -776,7 +772,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                                 enterpriseAdminTableModel.addRow(row);
                             }
                         }
-                    }                
+                    }
                 }
             }
         }
@@ -784,6 +780,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         btnUpdateAdmin.setEnabled(false);
         btnCreateAdmin.setEnabled(true);
         clearAllFields();
+        enableAllFields(true);
     }
 
     private void clearAllFields() {
@@ -797,5 +794,16 @@ public class AdminListJPanel extends javax.swing.JPanel {
         txtAddress.setText("");
         txtWorkAddress.setText("");
         buttonGroup1.clearSelection();
+    }
+
+    private void enableAllFields(boolean enable) {
+        txtUserName.setEditable(enable);
+        txtPassword.setEditable(enable);
+        txtFirstName.setEditable(enable);
+        txtLastName.setEditable(enable);
+        txtDateOfBirth.setEditable(enable);
+        radbtnMale.setEnabled(enable);
+        radbtnFemale.setEnabled(enable);
+        radbtnNotToSay.setEnabled(enable);
     }
 }

@@ -14,12 +14,13 @@ public class Profile {
     private String email;
     private long phone;
     private Date dob;
+    private String hospitalName;
     private String homeAddress;
     private String workAddress;
     private double latitude;
     private double longitude;
     
-    public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String Address) {
+    public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String workAddress) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.gender = gender;
@@ -35,6 +36,13 @@ public class Profile {
         this.lastName = lastName;
         this.phone = phone;
     }
+    
+    public Profile(String hospitalName, String email, long phone, String workAddress) {
+        this.hospitalName = hospitalName;
+        this.email = email;
+        this.workAddress = workAddress;
+        this.phone = phone;
+    }    
     
     // Getters and Setters
     public String getFirstName() {
@@ -115,6 +123,14 @@ public class Profile {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
     
 }
