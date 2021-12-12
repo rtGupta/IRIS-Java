@@ -45,6 +45,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.fireUserAccount = account;
+        btnHospitalTransfer.setEnabled(false);
         
         populateWorkQueueTable();
         
@@ -52,8 +53,13 @@ public class HomeJPanel extends javax.swing.JPanel {
         public void valueChanged(ListSelectionEvent event){
             int selectedRowIndex = tblFirefighterWQ.getSelectedRow();
             if (selectedRowIndex < 0) {
-                JOptionPane.showMessageDialog(null, "Please select a work request from the table to view incident details.");
-            }
+                txtCallerName.setText("");
+                    txtContact.setText("");
+                    txtLocation.setText("");
+                    txtMessage.setText("");
+                    
+                    return;
+                }
             
             fireWorkRequest = (WorkRequest) tblFirefighterWQ.getValueAt(selectedRowIndex, 0);
             if (fireWorkRequest != null){
@@ -62,8 +68,16 @@ public class HomeJPanel extends javax.swing.JPanel {
                 txtContact.setText(String.valueOf(callerInfo.getPhone()));
                 txtLocation.setText(fireWorkRequest.getCaller().getLocation());
                 txtMessage.setText(fireWorkRequest.getMessage());
-                JPanel map = MapsUtil.mapWayPoint(callerInfo.getLocation());
+                JPanel map = MapsUtil.mapWayPoint(fireWorkRequest.getCaller().getCoordinates());
                 displayPanel(maps, map);
+                if (fireWorkRequest.getStatus().equals("Transport Care Reqduired") ||
+                        fireWorkRequest.getStatus().equals("Scene Assessment in progress")){
+                btnHospitalTransfer.setEnabled(true);
+                btnAcknowledge.setEnabled(false);
+                
+            }else if (!fireWorkRequest.getStatus().equals("Open")){
+                    btnAcknowledge.setEnabled(false);
+                    }
                     
                 }
             }
@@ -214,6 +228,11 @@ public class HomeJPanel extends javax.swing.JPanel {
 
         btnHospitalTransfer.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnHospitalTransfer.setText("Transfer To Hospital");
+        btnHospitalTransfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHospitalTransferActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);
         maps.setLayout(mapsLayout);
@@ -303,14 +322,30 @@ public class HomeJPanel extends javax.swing.JPanel {
             if (fireWorkRequest.getStatus().equals("Open")){
                 fireWorkRequest.setStatus("Scene Assessment in progress");
                 fireWorkRequest.getSender().getWorkQueue()
-                        .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("cene Assessment in progress");
+                        .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
                 for (UserAccount receieverAccount : fireWorkRequest.getReceivers()){
                     receieverAccount.getWorkQueue()
                             .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
                 }
+                
+                fireUserAccount.getWorkQueue()
+                        .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
+                populateWorkQueueTable();
+                
+                if (fireWorkRequest.getEmergencyLevel() == 'C'){
+                    
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "The work request is already in progress!");
             }
         }
     }//GEN-LAST:event_btnAcknowledgeActionPerformed
+
+    private void btnHospitalTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospitalTransferActionPerformed
+        // TODO add your handling code here:
+        HospitalTransferJPanel htjp = new HospitalTransferJPanel(mainPane, workPane, system, fireUserAccount, fireWorkRequest);
+        displayPanel(workPane, htjp);
+    }//GEN-LAST:event_btnHospitalTransferActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
