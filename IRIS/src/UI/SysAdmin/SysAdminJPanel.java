@@ -4,9 +4,14 @@
  */
 package UI.SysAdmin;
 
+import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import UI.Dispatcher.*;
+import UI.MainJFrame;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,14 +34,21 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     boolean menuButton = false;
     EcoSystem system;
+    UserAccount userAccount;
+//    private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public SysAdminJPanel(JLayeredPane mainPane, EcoSystem system) {
+    public SysAdminJPanel(JLayeredPane mainPane, UserAccount userAccount, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
+        this.userAccount = userAccount;
+        //system = dB4OUtil.retrieveSystem();
+        //ManageNetworkJPanel manageNetworkJPanel = new ManageNetworkJPanel(mainPane, workpane, system);
+        AdminListJPanel adminListJPanel = new AdminListJPanel(mainPane, workpane, system);
+        displayPanel(workpane, adminListJPanel);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -67,11 +79,11 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         home = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        home1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        lblHomeIcon = new javax.swing.JLabel();
+        lblHome = new javax.swing.JLabel();
+        logoutJPanel = new javax.swing.JPanel();
+        lblLogoutIcon = new javax.swing.JLabel();
+        lblLogout = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -178,11 +190,11 @@ public class SysAdminJPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/home_24px.png"))); // NOI18N
+        lblHomeIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/home_24px.png"))); // NOI18N
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Home");
+        lblHome.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblHome.setForeground(new java.awt.Color(255, 255, 255));
+        lblHome.setText("Home");
 
         javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
         home.setLayout(homeLayout);
@@ -190,56 +202,56 @@ public class SysAdminJPanel extends javax.swing.JPanel {
             homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addComponent(lblHomeIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblHome, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         homeLayout.setVerticalGroup(
             homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblHomeIcon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(lblHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, -1));
 
-        home1.setOpaque(false);
-        home1.addMouseListener(new java.awt.event.MouseAdapter() {
+        logoutJPanel.setOpaque(false);
+        logoutJPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                home1MouseClicked(evt);
+                logoutJPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                home1MouseEntered(evt);
+                logoutJPanelMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                home1MouseExited(evt);
+                logoutJPanelMouseExited(evt);
             }
         });
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Logout_24px.png"))); // NOI18N
+        lblLogoutIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Logout_24px.png"))); // NOI18N
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Logout");
+        lblLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblLogout.setForeground(new java.awt.Color(255, 255, 255));
+        lblLogout.setText("Logout");
 
-        javax.swing.GroupLayout home1Layout = new javax.swing.GroupLayout(home1);
-        home1.setLayout(home1Layout);
-        home1Layout.setHorizontalGroup(
-            home1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, home1Layout.createSequentialGroup()
+        javax.swing.GroupLayout logoutJPanelLayout = new javax.swing.GroupLayout(logoutJPanel);
+        logoutJPanel.setLayout(logoutJPanelLayout);
+        logoutJPanelLayout.setHorizontalGroup(
+            logoutJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutJPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6)
+                .addComponent(lblLogoutIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
-        home1Layout.setVerticalGroup(
-            home1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        logoutJPanelLayout.setVerticalGroup(
+            logoutJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblLogoutIcon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(lblLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(home1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
+        menuPanel.add(logoutJPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
 
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
@@ -358,37 +370,40 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         home.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
     }//GEN-LAST:event_homeMouseExited
 
-    private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane, system);
-        displayPanel(mainPane, icjp);
-    }//GEN-LAST:event_home1MouseClicked
+    private void logoutJPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutJPanelMouseClicked
+        MainJFrame.dB4OUtil.storeSystem(system);        
 
-    private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered
-        home1.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_home1MouseEntered
+        LoginJPanel loginJPanel = new LoginJPanel(mainPane, system);
+        displayPanel(mainPane, loginJPanel);
 
-    private void home1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseExited
-        home1.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_home1MouseExited
+    }//GEN-LAST:event_logoutJPanelMouseClicked
+
+    private void logoutJPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutJPanelMouseEntered
+        logoutJPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_logoutJPanelMouseEntered
+
+    private void logoutJPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutJPanelMouseExited
+        logoutJPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_logoutJPanelMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel closeButton;
     private javax.swing.JPanel history;
     private javax.swing.JPanel home;
-    private javax.swing.JPanel home1;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblHome;
+    private javax.swing.JLabel lblHomeIcon;
+    private javax.swing.JLabel lblLogout;
+    private javax.swing.JLabel lblLogoutIcon;
+    private javax.swing.JPanel logoutJPanel;
     private keeptoo.KGradientPanel menuPanel;
     private javax.swing.JPanel menuTab;
     private javax.swing.JLabel minimizeButton;

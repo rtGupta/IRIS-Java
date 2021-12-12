@@ -5,6 +5,9 @@
 package UI.Paramedics;
 
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -25,19 +28,27 @@ import javax.swing.SwingUtilities;
  */
 public class ParamedicsJPanel extends javax.swing.JPanel {
 
-    boolean menuCollapse = false;
     JLayeredPane mainPane;
+    private EcoSystem system;
+    private Organization organization;
+    private Enterprise enterprise;
+    private UserAccount userAccount;
+
     boolean menuButton = false;
-    EcoSystem system;
+    boolean menuCollapse = false;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public ParamedicsJPanel(JLayeredPane mainPane) {
+    public ParamedicsJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.userAccount = account;
+
+        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
 
@@ -349,7 +360,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
@@ -412,7 +423,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     System.out.println("...");
                 }
-               
+
             }
         };
 

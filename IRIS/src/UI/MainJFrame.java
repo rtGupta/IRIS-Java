@@ -6,9 +6,13 @@ package UI;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.EnterpriseDirectory;
+import Business.Network.Network;
 import UI.MainScreens.LoginJPanel;
 import UI.MainScreens.LandingScreenJPanel;
 import javax.swing.JPanel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -18,7 +22,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     
     private EcoSystem system;
-    private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
+    public static DB4OUtil dB4OUtil = DB4OUtil.getInstance();
     /**
      * Creates new form MainJFrame
      */
@@ -26,6 +30,23 @@ public class MainJFrame extends javax.swing.JFrame {
         initComponents();
         
         system = dB4OUtil.retrieveSystem();
+        
+        Network network = null;
+        if(CollectionUtils.isEmpty(system.getNetworkList())){
+            network = system.createAndAddNetwork();
+            network.setName("Boston");
+        }else {
+            network = system.getNetworkList().get(0);
+        }
+        if(network != null && network.getEnterpriseDirectory()!=null && CollectionUtils.isEmpty(network.getEnterpriseDirectory().getEnterpriseList())){
+            EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
+            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.Enterprise911.getValue(), Enterprise.EnterpriseType.Enterprise911);
+            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.FirstResponderEnterprise.getValue(), Enterprise.EnterpriseType.FirstResponderEnterprise);
+            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.HealthcareEnterprise.getValue(), Enterprise.EnterpriseType.HealthcareEnterprise);
+            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue(), Enterprise.EnterpriseType.VoluntaryEnterprise);
+            network.setEnterpriseDirectory(enterpriseDirectory);            
+        }
+                
         
         LandingScreenJPanel lsjp = new LandingScreenJPanel(mainPane, system);
         displayPanel(lsjp);

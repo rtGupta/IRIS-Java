@@ -4,20 +4,33 @@
  */
 package UI.Dispatcher;
 
+import Business.Caller.Caller;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import Util.MapsUtil;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
  * @author akshatajadhav
  */
 public class IncomingCallsJPanel extends javax.swing.JPanel {
+
+    private EcoSystem system;
+    private UserAccount dispatcherUserAccount;
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -26,10 +39,15 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     /**
      * Creates new form IncomingCallsJPanel
      */
-    public IncomingCallsJPanel(JLayeredPane mainPane, JLayeredPane workPane) {
+    public IncomingCallsJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.system = system;
+        this.dispatcherUserAccount = account;
+
+        populateIncidentTable();
+
         JPanel map = MapsUtil.defaultMap();
         map.setBounds(callerLocation.getBounds());
         callerLocation.removeAll();
@@ -53,6 +71,26 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         parentFrame.setLocationRelativeTo(null);
     }
 
+    public void populateIncidentTable() {
+        DefaultTableModel dispatcherIncidentTableModel = (DefaultTableModel) tbldispatcherWQ.getModel();
+        dispatcherIncidentTableModel.setRowCount(0);
+
+        WorkQueue workQueue = dispatcherUserAccount.getWorkQueue();
+        if (workQueue != null) {
+            List<WorkRequest> dispatcherWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(dispatcherWorkRequestList)) {
+                for (WorkRequest wr : dispatcherWorkRequestList) {
+                    Object[] row = new Object[4];
+                    row[0] = wr;
+                    row[1] = wr.getCaller().getLocation();
+                    row[2] = wr.getEmergencyLevel();
+                    row[3] = wr.getStatus();
+                    dispatcherIncidentTableModel.addRow(row);
+                }
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +105,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         emergencyCategory = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbldispatcherWQ = new javax.swing.JTable();
         nameText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         callerId = new javax.swing.JTextField();
@@ -111,24 +149,32 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Incoming Calls", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbldispatcherWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Request No.", "Location", "Emergency Level", "Request Status"
             }
-        ));
-        jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
-        jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTable2.setShowGrid(true);
-        jTable2.setShowHorizontalLines(false);
-        jTable2.getTableHeader().setResizingAllowed(false);
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tbldispatcherWQ.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tbldispatcherWQ.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tbldispatcherWQ.setShowGrid(true);
+        tbldispatcherWQ.setShowHorizontalLines(false);
+        tbldispatcherWQ.getTableHeader().setResizingAllowed(false);
+        tbldispatcherWQ.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tbldispatcherWQ);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -249,7 +295,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
             JPanel map = MapsUtil.defaultMap();
             map.setBounds(callerLocation.getBounds());
             callerLocation.add(map);
-        this.updateUI();
+            this.updateUI();
             if (fromReset) {
                 fromReset = false;
                 return;
@@ -270,17 +316,29 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetMapActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JPanel panel=null;
-        if(emergencyCategory.getSelection()==null){
+        // data validations for text fields
+
+        // register caller's name, contact and location in caller object.
+        String firstName = nameText.getText();
+        String lastName = " ";
+        long contact = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
+        String location = Address.getText();
+        String message = messageText.getText();
+        String emergencyLevel = emergencyCategory.getSelection().getActionCommand();
+
+        Caller caller = new Caller(firstName, lastName, contact, location);
+        // pass caller object, message, emergencyLevel to EmergencyPanels - A, C, E.
+        JPanel panel = null;
+        if (emergencyCategory.getSelection() == null) {
             return;
         }
-        if(emergencyCategory.getSelection().getActionCommand().equals("A")){
-         panel = new AEmergencyJPanel(mainPane, workPane);
-        }else if(emergencyCategory.getSelection().getActionCommand().equals("C")){
-         panel = new CEmergencyJPanel(mainPane, workPane);
-        }else if(emergencyCategory.getSelection().getActionCommand().equals("E")){
-         panel = new EEmergencyJPanel(mainPane, workPane);
-        }else{
+        if (emergencyCategory.getSelection().getActionCommand().equals("A")) {
+            panel = new AEmergencyJPanel(mainPane, workPane, system, dispatcherUserAccount, caller, message, emergencyLevel);
+        } else if (emergencyCategory.getSelection().getActionCommand().equals("C")) {
+            panel = new CEmergencyJPanel(mainPane, workPane, system, dispatcherUserAccount, caller, message, emergencyLevel);
+        } else if (emergencyCategory.getSelection().getActionCommand().equals("E")) {
+            panel = new EEmergencyJPanel(mainPane, workPane);
+        } else {
             return;
         }
         displayPanel(workPane, panel);
@@ -309,10 +367,10 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea messageText;
     private javax.swing.JTextField nameText;
     private javax.swing.JButton resetMap;
+    private javax.swing.JTable tbldispatcherWQ;
     // End of variables declaration//GEN-END:variables
 
 }

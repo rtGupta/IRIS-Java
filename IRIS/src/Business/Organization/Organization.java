@@ -124,6 +124,10 @@ public abstract class Organization {
         return userAccountDirectory;
     }
 
+    public void setUserAccountDirectory(UserAccountDirectory userAccountDirectory) {
+        this.userAccountDirectory = userAccountDirectory;
+    }
+    
     public int getOrganizationID() {
         return organizationID;
     }

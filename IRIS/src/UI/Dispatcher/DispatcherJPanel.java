@@ -4,6 +4,10 @@
  */
 package UI.Dispatcher;
 
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -24,18 +28,27 @@ import javax.swing.SwingUtilities;
  */
 public class DispatcherJPanel extends javax.swing.JPanel {
 
+    private EcoSystem system;
+    private Organization organization;
+    private Enterprise enterprise;
+    private UserAccount userAccount;
+    
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
-    
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public DispatcherJPanel(JLayeredPane mainPane) {
+    public DispatcherJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
-        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane);
+        this.system = system;
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.userAccount = account;
+        
+        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
 
@@ -348,7 +361,7 @@ public class DispatcherJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane);
+        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
