@@ -462,10 +462,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(address)) {
+            } else if (StringUtils.isBlank(home)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(workAddress)) {
+            } else if (StringUtils.isBlank(work)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
             }
@@ -602,10 +602,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(gender)) {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
-            } else if (StringUtils.isBlank(homeAddress)) {
+            } else if (StringUtils.isBlank(home)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(workAddress)) {
+            } else if (StringUtils.isBlank(work)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
             }
