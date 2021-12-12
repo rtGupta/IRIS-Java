@@ -120,7 +120,15 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
             new String [] {
                 "Request No.", "Location", "Emergency Level", "Request Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbldispatcherWQ.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         tbldispatcherWQ.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbldispatcherWQ.setShowGrid(true);

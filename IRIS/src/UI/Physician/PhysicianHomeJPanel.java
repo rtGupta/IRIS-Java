@@ -169,7 +169,15 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblPhysicianWQ);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -254,8 +262,10 @@ public class PhysicianHomeJPanel extends javax.swing.JPanel {
 
         jTextField2.setText("TBD");
 
+        chkbxIrisEligible.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         chkbxIrisEligible.setLabel("IRIS Eligible");
 
+        btnSubmit.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

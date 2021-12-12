@@ -61,7 +61,8 @@ public class HomeJPanel extends javax.swing.JPanel {
                     txtContact.setText(String.valueOf(callerInfo.getPhone()));
                     txtLocation.setText(paramedicWorkRequest.getCaller().getLocation());
                     txtMessage.setText(paramedicWorkRequest.getMessage());
-                    
+                    JPanel map = MapsUtil.mapWayPoint(callerInfo.getLocation());
+                    displayPanel(maps, map);
                     if (paramedicWorkRequest.getStatus().equals("Transport Care Required")) {
                         btnHospitalTransfer.setEnabled(true);
                         // go to HospitalTransferJPanel screen
@@ -163,9 +164,16 @@ public class HomeJPanel extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tblParamedicsWQ);
@@ -203,7 +211,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         txtMessage.setRows(5);
         jScrollPane2.setViewportView(txtMessage);
 
-        btnAcknowledge.setFont(new java.awt.Font("Times New Roman", 1, 18));
+        btnAcknowledge.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnAcknowledge.setText("Assign");
         btnAcknowledge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

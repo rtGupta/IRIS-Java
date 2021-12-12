@@ -123,7 +123,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
-        workpane1 = new javax.swing.JLayeredPane();
         homeWorkPanel = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         orgCrud = new javax.swing.JPanel();
@@ -409,10 +408,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         workpane.setMaximumSize(new java.awt.Dimension(790, 550));
         workpane.setLayout(new java.awt.CardLayout());
 
-        workpane1.setBackground(new java.awt.Color(255, 255, 255));
-        workpane1.setMaximumSize(new java.awt.Dimension(790, 550));
-        workpane1.setLayout(new java.awt.CardLayout());
-
         homeWorkPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel8.setPreferredSize(new java.awt.Dimension(990, 2));
@@ -421,7 +416,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 992, Short.MAX_VALUE)
+            .addGap(0, 990, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -432,7 +427,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         homeWorkPanel.setLayout(homeWorkPanelLayout);
         homeWorkPanelLayout.setHorizontalGroup(
             homeWorkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         homeWorkPanelLayout.setVerticalGroup(
             homeWorkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,7 +436,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                 .addContainerGap(588, Short.MAX_VALUE))
         );
 
-        workpane1.add(homeWorkPanel, "card2");
+        workpane.add(homeWorkPanel, "card2");
 
         orgCrud.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -745,9 +740,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                 .addGap(27, 27, 27))
         );
 
-        workpane1.add(orgCrud, "card2");
-
-        workpane.add(workpane1, "card2");
+        workpane.add(orgCrud, "card2");
 
         menuTab.add(workpane, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 990, 590));
 
@@ -1266,7 +1259,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtUserName;
     private javax.swing.JTextField txtWorkAddress;
     private javax.swing.JLayeredPane workpane;
-    private javax.swing.JLayeredPane workpane1;
     // End of variables declaration//GEN-END:variables
 
 }

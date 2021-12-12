@@ -52,6 +52,10 @@ public class MapsUtil {
 
     public static Color tabColor = Color.MAGENTA;
     
+    public static JPanel mapWayPoint(double loc[]) {
+        return mapWayPoint(loc[0], loc[1]);
+    }
+    
     public static JPanel mapWayPoint(double latitude, double longitude) {
         final JXMapKit jXMapKit = new JXMapKit();
         TileFactoryInfo info = new OSMTileFactoryInfo();

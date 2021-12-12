@@ -106,7 +106,15 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
             new String [] {
                 "Request No.", "Location", "Emergency Level", "Request Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblStaffAdminWQ);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
