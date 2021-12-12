@@ -204,13 +204,14 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         });
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 540, 134, 30));
 
+        jButton2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jButton2.setText("Locate");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 340, 60, 40));
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 340, 70, 40));
 
         resetMap.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         resetMap.setText("Reset");

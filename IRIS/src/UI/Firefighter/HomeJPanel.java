@@ -134,8 +134,10 @@ public class HomeJPanel extends javax.swing.JPanel {
         messageText.setRows(5);
         jScrollPane2.setViewportView(messageText);
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Assign");
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Transfer To Hospital");
 
         javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);

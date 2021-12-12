@@ -67,9 +67,6 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         checkbox8 = new java.awt.Checkbox();
         checkbox4 = new java.awt.Checkbox();
         checkbox9 = new java.awt.Checkbox();
-        jLabel1 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jButton4 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -96,14 +93,19 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(990, 395));
 
+        jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel2.setText("Personal Information : ");
 
+        jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel3.setText("Name : ");
 
+        jLabel4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel4.setText("Blood Group : ");
 
+        jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel5.setText("Height : ");
 
+        jLabel6.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel6.setText("Weight : ");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "O+ve", "AB+ve", "AB-ve", "B+ve", "B-ve" }));
@@ -112,20 +114,25 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
 
         jLabel8.setText("kgs");
 
+        jLabel9.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel9.setText("Vitals Check : ");
 
+        jLabel10.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel10.setText("Oxygen Level : ");
 
         jLabel11.setText("%");
 
+        jLabel12.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel12.setText("Temperature : ");
 
         jLabel13.setText("° F");
 
+        jLabel14.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel14.setText("Heart Rate : ");
 
         jLabel15.setText("bpm");
 
+        jLabel18.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel18.setText("Diastolic : ");
 
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
@@ -138,28 +145,40 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
 
         jLabel20.setText("mmHg");
 
+        jLabel21.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel21.setText("Systolic : ");
 
+        jLabel22.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel22.setText("Medical History : ");
 
+        jLabel23.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel23.setText("Please check all the ailments that are applicable");
 
+        checkbox1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox1.setLabel("Diabetes");
 
+        checkbox2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox2.setLabel("Cancer");
 
+        checkbox3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox3.setLabel("Dementia");
 
+        checkbox5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox5.setLabel("Heart Conditions");
 
+        checkbox6.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox6.setLabel("Chronic Kidney Disease");
 
+        checkbox7.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox7.setLabel("Pregnancy");
 
+        checkbox8.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox8.setLabel("Tuberculosis");
 
+        checkbox4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox4.setLabel("HIV Infection");
 
+        checkbox9.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox9.setLabel("Smoking, current or former");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -257,7 +276,7 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
                             .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel15))))
-                .addContainerGap(347, Short.MAX_VALUE))
+                .addContainerGap(280, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +323,7 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
                         .addComponent(jLabel21)
                         .addComponent(jLabel20)
                         .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel22)
@@ -337,17 +356,9 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
 
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1095, 443));
 
-        jLabel1.setText("IRIS Eligible:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(397, 461, 97, 38));
-
-        jRadioButton1.setText("Yes");
-        add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 468, -1, -1));
-
-        jRadioButton2.setText("No");
-        add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(566, 461, -1, 38));
-
+        jButton4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton4.setText("Submit");
-        add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(679, 464, 98, 34));
+        add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 470, 98, 34));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
@@ -367,7 +378,6 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
     private java.awt.Checkbox checkbox9;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -392,8 +402,6 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField3;

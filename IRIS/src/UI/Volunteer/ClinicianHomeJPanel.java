@@ -135,6 +135,7 @@ public class ClinicianHomeJPanel extends javax.swing.JPanel {
         messageText.setRows(5);
         jScrollPane2.setViewportView(messageText);
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Acknowledge");
 
         javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);
@@ -151,6 +152,7 @@ public class ClinicianHomeJPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel5.setText("Is Transport required? ");
 
+        checkbox1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         checkbox1.setLabel("Yes");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

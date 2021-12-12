@@ -109,6 +109,7 @@ public class DriverJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Transfer To Hospital");
 
         javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);

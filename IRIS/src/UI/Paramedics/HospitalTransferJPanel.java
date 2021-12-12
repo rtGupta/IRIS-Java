@@ -68,11 +68,13 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             .addGap(0, 430, Short.MAX_VALUE)
         );
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Reset");
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel1.setText("Hospital:");
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Transfer");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
