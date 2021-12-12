@@ -6,6 +6,7 @@ package UI.Firefighter;
 
 import UI.Paramedics.*;
 import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -30,6 +31,8 @@ public class FirefighterJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     boolean menuButton = false;
     EcoSystem system;
+    UserAccount userAccount;
+    HomeJPanel icjp;
 
     /**
      * Creates new form DispatcherJPanel
@@ -38,7 +41,7 @@ public class FirefighterJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
 
@@ -350,7 +353,7 @@ public class FirefighterJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
