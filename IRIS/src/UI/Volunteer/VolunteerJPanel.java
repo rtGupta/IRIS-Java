@@ -418,8 +418,8 @@ public class VolunteerJPanel extends javax.swing.JPanel {
     private void availablityBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseClicked
         if (!volunteerAvailable) {
             avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
-            ForceCompleteSignUpJPanel t = new ForceCompleteSignUpJPanel();
-            displayPanel(workpane, t);
+//            ForceCompleteSignUpJPanel t = new ForceCompleteSignUpJPanel();
+//            displayPanel(workpane, t);
         } else {
             avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png")));
             ThankYouMessageJPanel t = new ThankYouMessageJPanel();
