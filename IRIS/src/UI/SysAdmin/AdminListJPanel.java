@@ -6,11 +6,13 @@ package UI.SysAdmin;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Enterprise.Enterprise911;
 import Business.Enterprise.EnterpriseDirectory;
 import Business.Network.Network;
 import Business.Organization.OrganizationDirectory;
 import Business.Role.Enterprise911.Enterprise911Admin;
 import Business.Role.FirstResponder.FirstRespAdmin;
+import Business.Role.HealthCare.HealthCareAdmin;
 import Business.Role.Role;
 import Business.Role.SystemAdminRole;
 import Business.UserAccount.UserAccount;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListDataEvent;
@@ -44,7 +48,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
     ArrayList<Network> networkList;
     EnterpriseDirectory enterpriseDirectory;
     OrganizationDirectory organizationDirectory;
-
+    Pattern emailPattern;
+    Pattern phonePattern;
+    Pattern passwordPattern;
+    
     /**
      * Creates new form HosptialHomeJPanel
      */
@@ -56,6 +63,17 @@ public class AdminListJPanel extends javax.swing.JPanel {
         this.networkList = system.getNetworkList();
         this.enterpriseDirectory = system.getNetworkList().get(0).getEnterpriseDirectory();
         
+        String emailRegex = "^(.+)@(\\S+)$";
+        emailPattern = Pattern.compile(emailRegex);
+            
+        String phoneRegex = "^\\d{10}$";
+        phonePattern = Pattern.compile(phoneRegex);
+            
+            
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+        passwordPattern = Pattern.compile(passwordRegex);
+            
+        
         radbtnMale.setActionCommand("Male");
         radbtnFemale.setActionCommand("Female");
         radbtnNotToSay.setActionCommand("PreferNotToSay");
@@ -65,45 +83,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
         populateEnterpriseCmbbox();
         
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        tblEnterpriseAdmin.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//            public void valueChanged(ListSelectionEvent event) {
-//                int selectedRowIndex = tblEnterpriseAdmin.getSelectedRow();
-//                if (selectedRowIndex < 0) {
-//                    JOptionPane.showMessageDialog(null, "Please select a record to view admin details");
-//                }
-//
-//                UserAccount userAccount = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
-//                if (userAccount != null) {
-//                    Profile adminProfile = userAccount.getProfileDetails();
-//                    txtUserName.setText(userAccount.getUsername());
-//                    txtPassword.setText(userAccount.getPassword());
-//                    txtFirstName.setText(adminProfile.getFirstName());
-//                    txtLastName.setText(adminProfile.getLastName());
-//                    txtPhoneNumber.setText(String.valueOf(adminProfile.getPhone()));
-//                    txtEmail.setText(adminProfile.getEmail());
-//                    txtDateOfBirth.setText(simpleDateFormat.format(adminProfile.getDob()));
-//                    txtPhoneNumber.setText(String.valueOf(adminProfile.getPhone()));
-//                    if (adminProfile.getHomeAddress() != null) {
-//                        txtAddress.setText(adminProfile.getHomeAddress().toString());
-//                    }
-//                    if (adminProfile.getWorkAddress() != null) {
-//                        txtAddress.setText(adminProfile.getWorkAddress().toString());
-//                    }
-//                    switch (adminProfile.getGender()) {
-//                        case "Male":
-//                            buttonGroup1.setSelected(radbtnMale.getModel(), true);
-//                            break;
-//                        case "Female":
-//                            buttonGroup1.setSelected(radbtnFemale.getModel(), true);
-//                            break;
-//                        case "Prefer not to say":
-//                            buttonGroup1.setSelected(radbtnNotToSay.getModel(), true);
-//                            break;
-//                    }
-//                }
-//            }
-//        });
     }
 
     /**
@@ -146,8 +125,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
         txtPassword = new javax.swing.JTextField();
         lblUserName = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
+        btnClear = new javax.swing.JButton();
         cmbboxEnterprise = new javax.swing.JComboBox();
         lblRole = new javax.swing.JLabel();
+        btnViewUser = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
@@ -200,9 +181,8 @@ public class AdminListJPanel extends javax.swing.JPanel {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 26, Short.MAX_VALUE))
         );
 
         lblFirstName.setText("First Name : ");
@@ -280,6 +260,14 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
         lblPassword.setText("Password: ");
 
+        btnClear.setBackground(new java.awt.Color(255, 255, 255));
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout EnterpriseADminJPanelLayout = new javax.swing.GroupLayout(EnterpriseADminJPanel);
         EnterpriseADminJPanel.setLayout(EnterpriseADminJPanelLayout);
         EnterpriseADminJPanelLayout.setHorizontalGroup(
@@ -288,9 +276,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnterpriseADminJPanelLayout.createSequentialGroup()
                         .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblFirstName)
                             .addComponent(lblEmail)
@@ -299,12 +284,12 @@ public class AdminListJPanel extends javax.swing.JPanel {
                             .addComponent(lblUserName))
                         .addGap(14, 14, 14)
                         .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                            .addComponent(txtAddress)
                             .addComponent(txtDateOfBirth)
                             .addComponent(txtEmail)
                             .addComponent(txtFirstName)
-                            .addComponent(txtUserName))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                         .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
                                 .addComponent(lblWorkAddress)
@@ -327,23 +312,25 @@ public class AdminListJPanel extends javax.swing.JPanel {
                                             .addComponent(radbtnFemale)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(radbtnNotToSay))
-                                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(48, 48, 48))))
+                                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
-                .addGap(229, 229, 229)
+                .addGap(143, 143, 143)
                 .addComponent(btnCreateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(btnUpdateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 248, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         EnterpriseADminJPanelLayout.setVerticalGroup(
             EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUserName)
                     .addComponent(lblPassword)
@@ -375,15 +362,15 @@ public class AdminListJPanel extends javax.swing.JPanel {
                     .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtWorkAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblWorkAddress))
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreateAdmin)
                     .addComponent(btnUpdateAdmin)
-                    .addComponent(btnDeleteUser))
-                .addContainerGap(48, Short.MAX_VALUE))
+                    .addComponent(btnDeleteUser)
+                    .addComponent(btnClear))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
-        cmbboxEnterprise.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbboxEnterprise.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbboxEnterpriseActionPerformed(evt);
@@ -391,6 +378,14 @@ public class AdminListJPanel extends javax.swing.JPanel {
         });
 
         lblRole.setText("Enterprise: ");
+
+        btnViewUser.setBackground(new java.awt.Color(255, 255, 255));
+        btnViewUser.setText("View User");
+        btnViewUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewUserActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -404,7 +399,9 @@ public class AdminListJPanel extends javax.swing.JPanel {
                         .addComponent(lblRole)
                         .addGap(18, 18, 18)
                         .addComponent(cmbboxEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(591, 591, 591))
+                        .addGap(457, 457, 457)
+                        .addComponent(btnViewUser, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31))
                     .addComponent(EnterpriseADminJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -412,13 +409,17 @@ public class AdminListJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbboxEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblRole, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbboxEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblRole, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnViewUser)))
                 .addGap(18, 18, 18)
-                .addComponent(EnterpriseADminJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(EnterpriseADminJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -436,10 +437,115 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
     private void btnUpdateAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateAdminActionPerformed
         // TODO add your handling code here:
+        int selectedRowIndex = tblEnterpriseAdmin.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a record to view admin details");
+        }
+        
+        UserAccount selectedUser = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem()!=null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+
+        try {
+            String userName = txtUserName.getText();
+            String phoneNumber = txtPhoneNumber.getText();
+            String email = txtEmail.getText();
+
+            Matcher emailMatcher = emailPattern.matcher(email);
+            Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+            
+            //add address and work address
+            if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
+                //add regex validations
+                JOptionPane.showMessageDialog(this, "Please enter a valid email");
+                return;
+            } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
+            }
+            //add validation for address
+            boolean isUpdated=false;
+            
+            for(Network network : system.getNetworkList()){
+                this.enterpriseDirectory = network.getEnterpriseDirectory();
+                if(enterpriseDirectory!=null){
+                    for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
+                        if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
+                            UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
+                            if(accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())){
+                                for(UserAccount account: accountDirectory.getUserAccountList()){
+                                    if(account != null && account.equals(selectedUser)){
+                                        Profile profile = account.getProfileDetails();
+                                        if(profile!=null){
+                                            profile.setEmail(email);
+                                            profile.setPhone(Long.valueOf(phoneNumber));
+        //                                    profile.setHomeAddress(homeAddress);
+        //                                    profile.setWorkAddress(workAddress);
+                                            account.setProfileDetails(profile);
+                                            isUpdated = true;
+                                            JOptionPane.showMessageDialog(this, "User details updated Successfull!!");
+                                        }
+                                        break;
+                                    }
+                                }
+                                enterprise.setUserAccountDirectory(accountDirectory);
+                            }
+                            if (!isUpdated) {
+                                JOptionPane.showMessageDialog(this, "User updation failed");
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                }                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
+        }
+        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
+        txtUserName.setEnabled(true);
+        txtPassword.setEnabled(true);
+        txtDateOfBirth.setEnabled(true);
+        txtPassword.setEnabled(true);
     }//GEN-LAST:event_btnUpdateAdminActionPerformed
 
     private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
         // TODO add your handling code here:
+        int selectedRowIndex = tblEnterpriseAdmin.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a record to view admin details");
+            return;
+        }
+        
+        UserAccount selectedUser = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem()!=null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+
+        try {
+            //add validation for address
+            boolean isUpdated=false;
+            for(Network network : system.getNetworkList()){
+                this.enterpriseDirectory = network.getEnterpriseDirectory();
+                if(enterpriseDirectory!=null){
+                    for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
+                        if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
+                            UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
+                            if(accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())){
+                                if(accountDirectory.removeUserAccount(selectedUser)){
+                                    JOptionPane.showMessageDialog(this, "User details deleted Successfully!!");
+                                }else {
+                                    JOptionPane.showMessageDialog(this, "User details delete operation failed!!");
+                                }
+                            }
+                            break;
+                        }
+                    }                    
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
+        }
+        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));        
     }//GEN-LAST:event_btnDeleteUserActionPerformed
 
     private void cmbboxEnterpriseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbboxEnterpriseActionPerformed
@@ -464,12 +570,16 @@ public class AdminListJPanel extends javax.swing.JPanel {
             String email = txtEmail.getText();
             Date dob = simpleDateFormat.parse(String.valueOf(txtDateOfBirth.getText()));
             String gender = buttonGroup1.getSelection().getActionCommand();
-
+            
+            Matcher emailMatcher = emailPattern.matcher(email);
+            Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+            Matcher passworMatcher = passwordPattern.matcher(password);        
+            
             //add address and work address
             if (StringUtils.isBlank(userName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid user Name");
                 return;
-            } else if (StringUtils.isBlank(password)) {
+            } else if (StringUtils.isBlank(password) || !passworMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid password");
                 return;
             } else if (StringUtils.isBlank(firstName)) {
@@ -478,11 +588,11 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(lastName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid last Name");
                 return;
-            } else if (StringUtils.isBlank(email)) {
+            } else if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
                 return;
-            } else if (StringUtils.isBlank(phoneNumber)) {
+            } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
             } else if (StringUtils.isBlank(gender)) {
@@ -495,11 +605,30 @@ public class AdminListJPanel extends javax.swing.JPanel {
             for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
                 if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
                     UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
-                    Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, null);
-                    userAccount = accountDirectory.createUserAccount(userName, password, new Enterprise911Admin(), userProfile);
-                    enterprise.setUserAccountDirectory(accountDirectory);
-                    if (userAccount == null) {
-                        JOptionPane.showMessageDialog(this, "User creation failed");
+                    if(accountDirectory!=null && accountDirectory.checkIfUsernameIsUnique(userName)){
+                        Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, null);
+                        Role role = null;
+                        switch(enterprise.getEnterpriseType().getValue()){
+                            case "Enterprise911":
+                                role = new Enterprise911Admin();
+                                break;
+                            case "FirstResponderEnterprise":
+                                role = new FirstRespAdmin();
+                                break;                                
+                            case "HealthcareEnterprise":
+                                role = new HealthCareAdmin();
+                                break;                                
+                        }
+                        if(role != null){
+                            userAccount = accountDirectory.createUserAccount(userName, password, role, userProfile);
+                        }
+                        if (userAccount == null) {
+                            JOptionPane.showMessageDialog(this, "User creation failed");
+                        }
+                        enterprise.setUserAccountDirectory(accountDirectory);
+                    }else {
+                        JOptionPane.showMessageDialog(this, "Enter a unique user name");
+                        return;
                     }
                     break;
                 }
@@ -508,7 +637,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-//        MainJFrame.dB4OUtil.storeSystem(system);
         populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
     }//GEN-LAST:event_btnCreateAdminActionPerformed
 
@@ -520,12 +648,66 @@ public class AdminListJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void btnViewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewUserActionPerformed
+        // TODO add your handling code here:
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        int selectedRowIndex = tblEnterpriseAdmin.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a record to view admin details");
+            return;
+        }
+
+        UserAccount userAccount = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
+        if (userAccount != null) {
+            Profile adminProfile = userAccount.getProfileDetails();
+            txtUserName.setText(userAccount.getUsername());
+            txtPassword.setText(userAccount.getPassword());
+            txtFirstName.setText(adminProfile.getFirstName());
+            txtLastName.setText(adminProfile.getLastName());
+            txtPhoneNumber.setText(String.valueOf(adminProfile.getPhone()));
+            txtEmail.setText(adminProfile.getEmail());
+            txtDateOfBirth.setText(simpleDateFormat.format(adminProfile.getDob()));
+            if (adminProfile.getHomeAddress() != null) {
+                txtAddress.setText(adminProfile.getHomeAddress().toString());
+            }
+            if (adminProfile.getWorkAddress() != null) {
+                txtAddress.setText(adminProfile.getWorkAddress().toString());
+            }
+            switch (adminProfile.getGender()) {
+                case "Male":
+                    buttonGroup1.setSelected(radbtnMale.getModel(), true);
+                    break;
+                case "Female":
+                    buttonGroup1.setSelected(radbtnFemale.getModel(), true);
+                    break;
+                case "Prefer not to say":
+                    buttonGroup1.setSelected(radbtnNotToSay.getModel(), true);
+                    break;
+            }
+        }
+        btnUpdateAdmin.setEnabled(true);
+        btnCreateAdmin.setEnabled(false);
+        txtUserName.setEnabled(false);
+        txtPassword.setEnabled(false);
+        txtDateOfBirth.setEnabled(false);
+        txtPassword.setEnabled(false);        
+    }//GEN-LAST:event_btnViewUserActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        clearAllFields();
+        btnUpdateAdmin.setEnabled(false);
+        btnCreateAdmin.setEnabled(true);        
+    }//GEN-LAST:event_btnClearActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel EnterpriseADminJPanel;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnCreateAdmin;
     private javax.swing.JButton btnDeleteUser;
     private javax.swing.JButton btnUpdateAdmin;
+    private javax.swing.JButton btnViewUser;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cmbboxEnterprise;
     private javax.swing.JPanel jPanel1;
@@ -559,7 +741,9 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
     private void populateEnterpriseCmbbox() {
         cmbboxEnterprise.removeAllItems();
-        Arrays.asList(Enterprise.EnterpriseType.values()).forEach(role -> cmbboxEnterprise.addItem(role.getValue()));
+        Arrays.asList(Enterprise.EnterpriseType.values()).stream().
+                filter(enterprise -> !StringUtils.equalsIgnoreCase(enterprise.getValue(), Enterprise.EnterpriseType.VoluntaryEnterprise.getValue()))
+                .forEach(enterprise -> cmbboxEnterprise.addItem(enterprise.getValue()));
         cmbboxEnterprise.setSelectedIndex(0);
     }
 
@@ -589,6 +773,21 @@ public class AdminListJPanel extends javax.swing.JPanel {
             }
         }
         system.setNetworkList(networkList);
-        
+        btnUpdateAdmin.setEnabled(false);
+        btnCreateAdmin.setEnabled(true);
+        clearAllFields();
+    }
+
+    private void clearAllFields() {
+        txtUserName.setText("");
+        txtPassword.setText("");
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtPhoneNumber.setText("");
+        txtEmail.setText("");
+        txtDateOfBirth.setText("");
+        txtAddress.setText("");
+        txtWorkAddress.setText("");
+        buttonGroup1.clearSelection();
     }
 }

@@ -53,21 +53,21 @@ public abstract class Role {
         }
     }    
     
-//    public enum HealthCareRoleType{
-//        StaffAdministrator("StaffAdministrator");
-//        
-//        private String value;
-//        private HealthCareRoleType(String value){
-//            this.value = value;
-//        }
-//        public String getValue() {
-//            return value;
-//        }
-//        @Override
-//        public String toString() {
-//            return value;
-//        }
-//    }
+    public enum HealthCareRoleType{
+        StaffAdministrator("StaffAdministrator");
+        
+        private String value;
+        private HealthCareRoleType(String value){
+            this.value = value;
+        }
+        public String getValue() {
+            return value;
+        }
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
 
     public enum VoluntaryRoleType{
         VoluntaryClinician("VoluntaryClinician"),
@@ -89,7 +89,7 @@ public abstract class Role {
     public enum EntepriseLevelRoleType{
         Enterprise911Admin("Enterprise911Admin"),
         FirstRespAdmin("FirstRespAdmin"),
-        StaffAdministrator("StaffAdministrator");
+        HealthCareAdmin("HealthCareAdmin");
         
         private String value;
         private EntepriseLevelRoleType(String value){

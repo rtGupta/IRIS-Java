@@ -5,6 +5,9 @@
 package UI.OrganizationAdmin;
 
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import UI.Paramedics.*;
 import UI.MainScreens.LoginJPanel;
@@ -31,18 +34,21 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     boolean menuButton = false;
     EcoSystem system;
-    UserAccount userAccount;
-    
+    Network network;
+    UserAccount account;
+
     /**
      * Creates new form DispatcherJPanel
      */
-    public HealthCareAdminJPanel(JLayeredPane mainPane, EcoSystem system, UserAccount account) {
+    public HealthCareAdminJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        this.userAccount = account;
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
-        displayPanel(workpane, icjp);
+        this.network = system.getNetworkList().get(0);
+        this.account = account;
+//        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
+//        displayPanel(workpane, icjp);
+        
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -708,7 +714,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
+        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, account);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 

@@ -42,7 +42,9 @@
                       <Component id="lblRole" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cmbboxEnterprise" min="-2" pref="202" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="591" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="457" max="-2" attributes="0"/>
+                      <Component id="btnViewUser" min="-2" pref="103" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   </Group>
                   <Component id="EnterpriseADminJPanel" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -54,14 +56,21 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cmbboxEnterprise" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                  <Component id="lblRole" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cmbboxEnterprise" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                          <Component id="lblRole" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnViewUser" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="EnterpriseADminJPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="EnterpriseADminJPanel" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -92,14 +101,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jPanel3" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblFirstName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblEmail" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -109,13 +114,13 @@
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtAddress" alignment="0" pref="255" max="32767" attributes="0"/>
+                              <Component id="txtAddress" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtDateOfBirth" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtEmail" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtFirstName" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtUserName" max="32767" attributes="0"/>
+                              <Component id="txtUserName" min="-2" pref="255" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="102" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblWorkAddress" min="-2" max="-2" attributes="0"/>
@@ -132,7 +137,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="txtPassword" min="-2" pref="249" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                           <Component id="txtPhoneNumber" min="-2" pref="249" max="-2" attributes="0"/>
                                           <Group type="102" alignment="1" attributes="0">
                                               <Component id="radbtnMale" min="-2" max="-2" attributes="0"/>
@@ -146,27 +151,29 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="jPanel3" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="229" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
                   <Component id="btnCreateAdmin" min="-2" pref="103" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                   <Component id="btnUpdateAdmin" min="-2" pref="97" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                   <Component id="btnDeleteUser" min="-2" pref="87" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="248" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                  <Component id="btnClear" min="-2" pref="87" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblUserName" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblPassword" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -203,13 +210,14 @@
                       <Component id="txtWorkAddress" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblWorkAddress" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCreateAdmin" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnUpdateAdmin" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDeleteUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnClear" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="48" max="32767" attributes="0"/>
+                  <EmptySpace pref="63" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -242,9 +250,8 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="136" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="26" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -437,17 +444,23 @@
             <Property name="text" type="java.lang.String" value="Password: "/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="btnClear">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Clear"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JComboBox" name="cmbboxEnterprise">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
@@ -461,6 +474,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Enterprise: "/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnViewUser">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="View User"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewUserActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
