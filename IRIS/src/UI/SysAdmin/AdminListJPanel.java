@@ -462,7 +462,14 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
+            } else if (StringUtils.isBlank(address)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
+            } else if (StringUtils.isBlank(workAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
             }
+            
             //add validation for address
             boolean isUpdated = false;
 
@@ -519,9 +526,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
-            //add validation for address
-            boolean isUpdated = false;
-            for (Network network : system.getNetworkList()) {
+            for(Network network : system.getNetworkList()){
                 this.enterpriseDirectory = network.getEnterpriseDirectory();
                 if (enterpriseDirectory != null) {
                     for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
@@ -597,8 +602,13 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(gender)) {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
+            } else if (StringUtils.isBlank(homeAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
+            } else if (StringUtils.isBlank(workAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                return;
             }
-            //add validation for address
 
             UserAccount userAccount = null;
             for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {

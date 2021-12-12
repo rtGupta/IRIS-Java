@@ -32,10 +32,9 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
-
-        populateHospitalWQTable();
         this.system = system;
         this.userAccount = account;
+        populateHospitalWQTable();
     }
 
     public void populateHospitalWQTable() {
