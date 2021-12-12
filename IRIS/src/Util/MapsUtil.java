@@ -182,17 +182,17 @@ public class MapsUtil {
 
         // Create waypoints from the geo-positions
         Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
-                new CustomWayPoint("C", "white", youLocation)
+                new CustomWayPoint("C", "waypoint_white.png", youLocation)
                 ));
         
         for (double[] loc: police){
-            waypoints.add(new CustomWayPoint("P", "blue", new GeoPosition(loc)));
+            waypoints.add(new CustomWayPoint("P", "police_car_40px.png", new GeoPosition(loc)));
         }
         for (double[] loc: firefighter){
-            waypoints.add(new CustomWayPoint("F", "red", new GeoPosition(loc)));
+            waypoints.add(new CustomWayPoint("F", "fire_engine_40px.png", new GeoPosition(loc)));
         }
         for (double[] loc: paramedics){
-            waypoints.add(new CustomWayPoint("+", "yellow", new GeoPosition(loc)));
+            waypoints.add(new CustomWayPoint("+", "ambulance_40px.png", new GeoPosition(loc)));
         }
         // Create a waypoint painter that takes all the waypoints
         WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
@@ -231,10 +231,10 @@ public class MapsUtil {
 
         // Create waypoints from the geo-positions
         Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
-                new CustomWayPoint("C", "white", youLocation)
+                new CustomWayPoint("C", "waypoint_white.png", youLocation)
                 ));
         for (double[] loc: paramedics){
-            waypoints.add(new CustomWayPoint("+", "yellow", new GeoPosition(loc)));
+            waypoints.add(new CustomWayPoint("+", "ambulance_40px.png", new GeoPosition(loc)));
         }
         // Create a waypoint painter that takes all the waypoints
         WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
@@ -272,6 +272,50 @@ public class MapsUtil {
 
         return mapViewer;
     }
+    
+    
+    public static JPanel publishHospitalMap(double location[], List<double []> hospitalLocations){
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+
+        // Setup local file cache
+        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+        // Setup JXMapViewer
+        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer.setTileFactory(tileFactory);
+
+        GeoPosition youLocation = new GeoPosition(location);
+
+        // Set the focus
+        mapViewer.setZoom(6);
+        mapViewer.setAddressLocation(youLocation);
+
+        // Add interactions
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseListener(new CenterMapListener(mapViewer));
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+        mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        // Create waypoints from the geo-positions
+        Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
+                new CustomWayPoint("C", "waypoint_white.png", youLocation)
+                ));
+        for (double[] loc: hospitalLocations){
+            waypoints.add(new CustomWayPoint("+", "hospital_48px.png", new GeoPosition(loc)));
+        }
+        // Create a waypoint painter that takes all the waypoints
+        WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
+        waypointPainter.setWaypoints(waypoints);
+        waypointPainter.setRenderer(new CustomWayPointRenderer());
+
+        mapViewer.setOverlayPainter(waypointPainter);
+        return mapViewer;
+    }
+    
 
     public static double[] getGeoPointFromAddress(String locationAddress) {
         double[] location = new double[2];

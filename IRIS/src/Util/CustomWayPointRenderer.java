@@ -38,7 +38,7 @@ public class CustomWayPointRenderer implements WaypointRenderer<CustomWayPoint> 
     public void paintWaypoint(Graphics2D g, JXMapViewer viewer, CustomWayPoint w) {
         g = (Graphics2D) g.create();
 
-        URL resource = getClass().getResource("/Resource/waypoint_"+w.getImage()+".png");
+        URL resource = getClass().getResource("/Resource/"+w.getImage());
 
         try {
             origImage = ImageIO.read(resource);
@@ -53,13 +53,13 @@ public class CustomWayPointRenderer implements WaypointRenderer<CustomWayPoint> 
 
         g.drawImage(myImg, x - myImg.getWidth() / 2, y - myImg.getHeight(), null);
 
-        String label = w.getLabel();
-
-        FontMetrics metrics = g.getFontMetrics();
-        int tw = metrics.stringWidth(label);
-        int th = 1 + metrics.getAscent();
-
-        g.drawString(label, x - tw / 2, y + th - myImg.getHeight());
+//        String label = w.getLabel();
+//
+//        FontMetrics metrics = g.getFontMetrics();
+//        int tw = metrics.stringWidth(label);
+//        int th = 1 + metrics.getAscent();
+//
+//        g.drawString(label, x - tw / 2, y + th - myImg.getHeight());
 
         g.dispose();
     }

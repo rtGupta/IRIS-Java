@@ -716,6 +716,11 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter work address");
                 return;
             }
+            double[] coords = MapsUtil.getGeoPointFromAddress(workAddress);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
 
             
             boolean isUpdated = false;
@@ -729,7 +734,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                             existingUserProfile.setPhone(Long.parseLong(phoneNumber));
                             existingUserProfile.setEmail(email);
                             existingUserProfile.setWorkAddress(workAddress);
-                            
+                            existingUserProfile.setLocation(coords);
                             accountDirectory.findAccount(selectedUser.getUsername()).setProfileDetails(existingUserProfile);
                             isUpdated = true;
                             JOptionPane.showMessageDialog(this, "User details updated Successfull!!");
@@ -789,12 +794,18 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter work address");
                 return;
             }
-
+            
+            double[] coords = MapsUtil.getGeoPointFromAddress(workAddress);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
             UserAccount userAccount = null;
             for (Organization organization : organizationDirectory.getOrganizationList()) {
                 if (organization instanceof NonClinicalOrganization && organization != null) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     Profile userProfile = new Profile(hospitalName, email, Long.valueOf(phoneNumber), workAddress);
+                    userProfile.setLocation(coords);
                     userAccount = accountDirectory.createUserAccount(userName, password, new StaffAdministrator(), userProfile);
                     organization.setUserAccountDirectory(accountDirectory);                    
                     if (userAccount == null) {
