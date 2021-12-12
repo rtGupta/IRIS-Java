@@ -10,6 +10,7 @@ import Business.Organization.Organization;
 import Business.Role.Role;
 import Business.UserAccount.UserAccount;
 import UI.MainScreens.LandingScreenJPanel;
+import UI.OrganizationAdmin.FirstResponderAdminJPanel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -22,6 +23,6 @@ public class FirstRespAdmin extends Role{
     @Override
     public JPanel createWorkArea(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         //need to specify role specific Jpanel
-        return new LandingScreenJPanel(mainPane, system);
+        return new FirstResponderAdminJPanel(mainPane, system, account);
     }
 }
