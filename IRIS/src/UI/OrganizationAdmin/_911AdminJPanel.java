@@ -137,6 +137,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         lblPassword = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
         btnViewWR = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -450,6 +451,14 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnClear.setBackground(new java.awt.Color(255, 255, 255));
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -512,6 +521,8 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 .addComponent(jButton1)
                 .addGap(70, 70, 70)
                 .addComponent(jButton3)
+                .addGap(60, 60, 60)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(241, 241, 241)
@@ -571,7 +582,8 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(btnClear))
                 .addGap(42, 42, 42))
         );
 
@@ -915,6 +927,14 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         enableAllFields(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        clearAllFields();
+        enableAllFields(true);
+        jButton1.setEnabled(false);
+        jButton2.setEnabled(true);
+    }//GEN-LAST:event_btnClearActionPerformed
+
     public UserAccount getSelectedUser() {
         int selectedRowIndex = jTable2.getSelectedRow();
         if (selectedRowIndex < 0) {
@@ -985,6 +1005,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClear;
     private javax.swing.ButtonGroup btnGrpGender;
     private javax.swing.JButton btnViewWR;
     private javax.swing.JLabel closeButton;

@@ -19,7 +19,7 @@ public class Profile {
     private double latitude;
     private double longitude;
     
-    public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String Address) {
+    public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String workAddress) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.gender = gender;
