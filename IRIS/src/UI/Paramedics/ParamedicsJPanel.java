@@ -36,6 +36,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
 
     boolean menuButton = false;
     boolean menuCollapse = false;
+    JPanel icjp;
 
     /**
      * Creates new form DispatcherJPanel
@@ -48,7 +49,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         this.enterprise = enterprise;
         this.userAccount = account;
 
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
+        icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
     
@@ -348,7 +349,8 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseExited
 
     private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
-        // TODO add your handling code here:
+        icjp = new ParamedicHistoryJPanel(mainPane, workpane, system, userAccount);
+        displayPanel(workpane, icjp);
     }//GEN-LAST:event_historyMouseClicked
 
     private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered
@@ -360,7 +362,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
+        icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
@@ -373,7 +375,8 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane, system);
+        
+        icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 

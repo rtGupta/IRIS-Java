@@ -4,9 +4,13 @@
  */
 package UI.Paramedics;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
 import Util.CameraUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import org.bytedeco.javacv.FrameGrabber;
 
@@ -22,12 +26,23 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
     boolean recorderOn = false;
     boolean messageRecorded = false;
     CameraUtil cu;
+    JLayeredPane mainPane;
+    JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount paramedicUserAccount;
+    WorkRequest request;
+
     /**
      * Creates new form VitalCollectionsJPanel
      */
-    public MessageToPhysicianJPanel() {
+    public MessageToPhysicianJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
-        VIDEO_FILE_NAME = "test_physician";
+        this.mainPane = mainPane;
+        this.workPane = workPane;
+        this.system = system;
+        this.paramedicUserAccount = account;
+        this.request = request;
+        VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_paramedic";
     }
 
     /**
@@ -45,7 +60,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         cameraBtn = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        submitBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
 
@@ -139,14 +154,14 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 500));
 
-        jButton5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton5.setText("Submit");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        submitBtn.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        submitBtn.setText("Submit");
+        submitBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                submitBtnActionPerformed(evt);
             }
         });
-        add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 550, -1, -1));
+        add(submitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 550, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel1.setText("Physician:");
@@ -180,12 +195,10 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         }
         if (cameraOn && !messageRecorded) {
             if (recorderOn == false) {
-                System.out.println("recording.......");
                 recorderOn = true;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
                 cu.startRecording();
             } else if (recorderOn) {
-                System.out.println("stopped.......");
                 recorderOn = false;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
                 cu.stopCamera();
@@ -193,28 +206,46 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
             }
             return;
         }
-        if(messageRecorded){
-            JOptionPane.showConfirmDialog(this, "Video Message Recorded");
+        if (messageRecorded) {
+            JOptionPane.showMessageDialog(this, "Video Message Recorded");
         }
     }//GEN-LAST:event_cameraBtnMouseClicked
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(messageRecorded){
-            JOptionPane.showConfirmDialog(this, "Please record video message!");
+    private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
+        if (!messageRecorded) {
+            JOptionPane.showMessageDialog(this, "Please record video message!");
+            return;
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+        if (cu != null) {
+            cu.stopCamera();
+        }
+        
+    }//GEN-LAST:event_submitBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel camera;
     private javax.swing.JLabel cameraBtn;
-    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton submitBtn;
     // End of variables declaration//GEN-END:variables
 
+    public void stopCamera(){
+        if (cu != null) {
+            cu.stopCamera();
+        }
+    }
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        if (cu != null) {
+            cu.stopCamera();
+        }
+    }
+    
 }

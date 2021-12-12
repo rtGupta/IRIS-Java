@@ -10,12 +10,12 @@ import UI.Hospital.*;
  *
  * @author akshatajadhav
  */
-public class PrescriptionToParamedicJPanel1 extends javax.swing.JPanel {
+public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public PrescriptionToParamedicJPanel1() {
+    public PrescriptionToParamedicJPanel() {
         initComponents();
     }
 

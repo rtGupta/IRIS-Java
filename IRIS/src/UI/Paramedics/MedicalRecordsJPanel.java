@@ -13,6 +13,10 @@ import Business.WorkQueue.WorkRequest;
 import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -20,6 +24,8 @@ import java.util.List;
  */
 public class MedicalRecordsJPanel extends javax.swing.JPanel {
 
+    JLayeredPane mainPane;
+    JLayeredPane workPane;
     private EcoSystem system;
     private UserAccount paramedicUserAccount;
     WorkRequest paramedicWorkRequest;
@@ -28,8 +34,10 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
     List<Checkbox> chkboxMedicalHistory;
     
     /** Creates new form VitalCollectionsJPanel */
-    public MedicalRecordsJPanel(EcoSystem system, UserAccount account, WorkRequest request) {
+    public MedicalRecordsJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
+        this.mainPane = mainPane;
+        this.workPane = workPane;
         this.system = system;
         this.paramedicUserAccount = account;
         this.paramedicWorkRequest = request;
@@ -51,6 +59,16 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         chkboxMedicalHistory.add(chkbxTB);
         chkboxMedicalHistory.add(chkbxSmoking);
         
+    }
+    
+    public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        lpane.repaint();
+        lpane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -162,6 +180,12 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         jLabel12.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel12.setText("Temperature : ");
 
+        txtBodyTemp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBodyTempActionPerformed(evt);
+            }
+        });
+
         jLabel13.setText("° F");
 
         jLabel14.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
@@ -255,19 +279,6 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
                         .addComponent(jLabel16)
                         .addGap(72, 72, 72)
                         .addComponent(jLabel17))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(174, 174, 174)
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtHighBP, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel19)
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtLowBP, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel20))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                             .addGap(53, 53, 53)
@@ -295,25 +306,38 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
                                             .addComponent(chkbxSmoking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(chkbxHeart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                            .addGap(152, 152, 152)
+                            .addGap(126, 126, 126)
                             .addComponent(jLabel10)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGap(18, 18, 18)
                             .addComponent(txtOxyLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel11)
-                            .addGap(18, 18, 18)
+                            .addGap(31, 31, 31)
                             .addComponent(jLabel12)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGap(4, 4, 4)
                             .addComponent(txtBodyTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel13)
-                            .addGap(18, 18, 18)
+                            .addGap(19, 19, 19)
                             .addComponent(jLabel14)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtHeartRate, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel15))))
-                .addContainerGap(280, Short.MAX_VALUE))
+                            .addComponent(jLabel15)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(174, 174, 174)
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtHighBP, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel19)
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtLowBP, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel20)))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,14 +377,15 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel15))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(txtLowBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel20))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtHighBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel19)
-                        .addComponent(jLabel21)
-                        .addComponent(jLabel20)
-                        .addComponent(txtLowBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addComponent(jLabel21)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel22)
@@ -416,9 +441,13 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         if (!callerInfo.isVitalSignsWithinNormalRange(callerInfo.getVitals())) {
             paramedicWorkRequest.setIsIRISeligible(true);
             // go to video recording screen - assign physician and add WR to physician's WQ and change status in senders and receivers.
-            
+            MessageToPhysicianJPanel mtjp = new MessageToPhysicianJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtBodyTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBodyTempActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBodyTempActionPerformed
 
     private void fetchMedicalRecordValues() {
         callerInfo.setWeight(Double.parseDouble(txtWeight.getText()));

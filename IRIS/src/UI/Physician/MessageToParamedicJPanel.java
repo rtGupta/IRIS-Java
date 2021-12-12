@@ -4,10 +4,14 @@
  */
 package UI.Physician;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
 import UI.Paramedics.*;
 import Util.CameraUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import org.bytedeco.javacv.FrameGrabber;
 
@@ -17,6 +21,11 @@ import org.bytedeco.javacv.FrameGrabber;
  */
 public class MessageToParamedicJPanel extends javax.swing.JPanel {
 
+    JLayeredPane mainPane;
+    JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount paramedicUserAccount;
+    WorkRequest request;
     final String VIDEO_FILE_NAME;
     boolean initializeCamera = true;
     boolean cameraOn = false;
@@ -26,9 +35,14 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
     /**
      * Creates new form VitalCollectionsJPanel
      */
-    public MessageToParamedicJPanel() {
+    public MessageToParamedicJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
-        VIDEO_FILE_NAME = "test_physician";
+        this.mainPane = mainPane;
+        this.workPane = workPane;
+        this.system = system;
+        this.paramedicUserAccount = account;
+        this.request = request;
+        VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_physician";
     }
 
     /**
@@ -175,13 +189,13 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
             return;
         }
         if(messageRecorded){
-            JOptionPane.showConfirmDialog(this, "Video Message Recorded");
+            JOptionPane.showMessageDialog(this, "Video Message Recorded");
         }
     }//GEN-LAST:event_cameraBtnMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if(messageRecorded){
-            JOptionPane.showConfirmDialog(this, "Please record video message!");
+            JOptionPane.showMessageDialog(this, "Please record video message!");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 

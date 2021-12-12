@@ -2,12 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Physician;
+package UI.Paramedics;
 
 import Business.EcoSystem;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
-import UI.Hospital.*;
 import Util.FileExistUtil;
 import Util.VideoUtil;
 import javax.swing.JLayeredPane;
@@ -17,26 +16,27 @@ import javax.swing.JOptionPane;
  *
  * @author akshatajadhav
  */
-public class MessageFromParamedicJPanel extends javax.swing.JPanel {
+public class MessageFromPhysicianJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
     private EcoSystem system;
     private UserAccount paramedicUserAccount;
-    WorkRequest request;
     final String VIDEO_FILE_NAME;
+    WorkRequest request;
 
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public MessageFromParamedicJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
+    public MessageFromPhysicianJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
         this.paramedicUserAccount = account;
         this.request = request;
-        VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_paramedic";
+
+        VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_physician";
     }
 
     /**
@@ -63,7 +63,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
         setRequestFocusEnabled(false);
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("Next");
+        jButton1.setText("Resolve");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -163,7 +163,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
