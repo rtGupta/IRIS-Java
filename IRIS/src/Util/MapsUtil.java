@@ -11,25 +11,38 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolTip;
+import javax.swing.event.MouseInputListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jxmapviewer.JXMapKit;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
+import org.jxmapviewer.VirtualEarthTileFactoryInfo;
+import org.jxmapviewer.cache.FileBasedLocalCache;
+import org.jxmapviewer.input.CenterMapListener;
+import org.jxmapviewer.input.PanKeyListener;
+import org.jxmapviewer.input.PanMouseInputListener;
+import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jxmapviewer.viewer.WaypointPainter;
 
 /**
  *
@@ -139,6 +152,97 @@ public class MapsUtil {
         });
 
         return jXMapKit;
+    }
+    
+    public static JPanel publishMap(double location[], List<double []> police, List<double []> firefighter, List<double []> paramedics){
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+
+        // Setup local file cache
+        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+        // Setup JXMapViewer
+        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer.setTileFactory(tileFactory);
+
+        GeoPosition youLocation = new GeoPosition(location);
+
+        // Set the focus
+        mapViewer.setZoom(10);
+        mapViewer.setAddressLocation(youLocation);
+
+        // Add interactions
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseListener(new CenterMapListener(mapViewer));
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+        mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        // Create waypoints from the geo-positions
+        Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
+                new CustomWayPoint("C", "white", youLocation)
+                ));
+        
+        for (double[] loc: police){
+            waypoints.add(new CustomWayPoint("P", "blue", new GeoPosition(loc)));
+        }
+        for (double[] loc: firefighter){
+            waypoints.add(new CustomWayPoint("F", "red", new GeoPosition(loc)));
+        }
+        for (double[] loc: paramedics){
+            waypoints.add(new CustomWayPoint("+", "yellow", new GeoPosition(loc)));
+        }
+        // Create a waypoint painter that takes all the waypoints
+        WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
+        waypointPainter.setWaypoints(waypoints);
+        waypointPainter.setRenderer(new CustomWayPointRenderer());
+
+        mapViewer.setOverlayPainter(waypointPainter);
+        return mapViewer;
+    }
+    
+    public static JPanel publishMap(double location[], List<double []> paramedics){
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+
+        // Setup local file cache
+        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+        // Setup JXMapViewer
+        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer.setTileFactory(tileFactory);
+
+        GeoPosition youLocation = new GeoPosition(location);
+
+        // Set the focus
+        mapViewer.setZoom(10);
+        mapViewer.setAddressLocation(youLocation);
+
+        // Add interactions
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseListener(new CenterMapListener(mapViewer));
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+        mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        // Create waypoints from the geo-positions
+        Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
+                new CustomWayPoint("C", "white", youLocation)
+                ));
+        for (double[] loc: paramedics){
+            waypoints.add(new CustomWayPoint("F", "yellow", new GeoPosition(loc)));
+        }
+        // Create a waypoint painter that takes all the waypoints
+        WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
+        waypointPainter.setWaypoints(waypoints);
+        waypointPainter.setRenderer(new CustomWayPointRenderer());
+
+        mapViewer.setOverlayPainter(waypointPainter);
+        return mapViewer;
     }
     
     public static JPanel defaultMap() {
