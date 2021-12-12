@@ -95,7 +95,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         menuTab = new javax.swing.JPanel();
         menuPanel = new keeptoo.KGradientPanel();
-        history = new javax.swing.JPanel();
+        physicianBtn = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         home = new javax.swing.JPanel();
@@ -104,7 +104,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         home1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        history1 = new javax.swing.JPanel();
+        dispatcherBtn = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
@@ -198,16 +198,16 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         menuPanel.setPreferredSize(new java.awt.Dimension(210, 551));
         menuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        history.setOpaque(false);
-        history.addMouseListener(new java.awt.event.MouseAdapter() {
+        physicianBtn.setOpaque(false);
+        physicianBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                historyMouseClicked(evt);
+                physicianBtnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                historyMouseEntered(evt);
+                physicianBtnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                historyMouseExited(evt);
+                physicianBtnMouseExited(evt);
             }
         });
 
@@ -217,24 +217,24 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Physician");
 
-        javax.swing.GroupLayout historyLayout = new javax.swing.GroupLayout(history);
-        history.setLayout(historyLayout);
-        historyLayout.setHorizontalGroup(
-            historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, historyLayout.createSequentialGroup()
+        javax.swing.GroupLayout physicianBtnLayout = new javax.swing.GroupLayout(physicianBtn);
+        physicianBtn.setLayout(physicianBtnLayout);
+        physicianBtnLayout.setHorizontalGroup(
+            physicianBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, physicianBtnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
-        historyLayout.setVerticalGroup(
-            historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        physicianBtnLayout.setVerticalGroup(
+            physicianBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
+        menuPanel.add(physicianBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
 
         home.setOpaque(false);
         home.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -312,16 +312,16 @@ public class _911AdminJPanel extends javax.swing.JPanel {
 
         menuPanel.add(home1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
 
-        history1.setOpaque(false);
-        history1.addMouseListener(new java.awt.event.MouseAdapter() {
+        dispatcherBtn.setOpaque(false);
+        dispatcherBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                history1MouseClicked(evt);
+                dispatcherBtnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                history1MouseEntered(evt);
+                dispatcherBtnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                history1MouseExited(evt);
+                dispatcherBtnMouseExited(evt);
             }
         });
 
@@ -331,24 +331,24 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Dispatcher");
 
-        javax.swing.GroupLayout history1Layout = new javax.swing.GroupLayout(history1);
-        history1.setLayout(history1Layout);
-        history1Layout.setHorizontalGroup(
-            history1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, history1Layout.createSequentialGroup()
+        javax.swing.GroupLayout dispatcherBtnLayout = new javax.swing.GroupLayout(dispatcherBtn);
+        dispatcherBtn.setLayout(dispatcherBtnLayout);
+        dispatcherBtnLayout.setHorizontalGroup(
+            dispatcherBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dispatcherBtnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
-        history1Layout.setVerticalGroup(
-            history1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        dispatcherBtnLayout.setVerticalGroup(
+            dispatcherBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
             .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(history1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
+        menuPanel.add(dispatcherBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
 
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
@@ -803,21 +803,21 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png")));
     }//GEN-LAST:event_minimizeButtonMouseExited
 
-    private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
+    private void physicianBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicianBtnMouseClicked
         selectedOrganization = "911 Physician";
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Dispatcher_40px.png")));
         organization.setText("911 Physician Organization");
         populateOrganizationAdminTable(selectedOrganization);
         displayPanel(workpane, orgCrud);
-    }//GEN-LAST:event_historyMouseClicked
+    }//GEN-LAST:event_physicianBtnMouseClicked
 
-    private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered
-        history.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_historyMouseEntered
+    private void physicianBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicianBtnMouseEntered
+        physicianBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_physicianBtnMouseEntered
 
-    private void historyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseExited
-        history.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_historyMouseExited
+    private void physicianBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicianBtnMouseExited
+        physicianBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_physicianBtnMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
         
@@ -1066,21 +1066,21 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         jButton2.setEnabled(true);
     }//GEN-LAST:event_btnClearActionPerformed
 
-    private void history1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_history1MouseClicked
+    private void dispatcherBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dispatcherBtnMouseClicked
         selectedOrganization = "Dispatcher";
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/medical_doctor_40px.png")));
         organization.setText("911 Dispatcher Organization");
         populateOrganizationAdminTable(selectedOrganization);
         displayPanel(workpane, orgCrud);
-    }//GEN-LAST:event_history1MouseClicked
+    }//GEN-LAST:event_dispatcherBtnMouseClicked
 
-    private void history1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_history1MouseEntered
-        history1.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_history1MouseEntered
+    private void dispatcherBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dispatcherBtnMouseEntered
+        dispatcherBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_dispatcherBtnMouseEntered
 
-    private void history1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_history1MouseExited
-        history1.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_history1MouseExited
+    private void dispatcherBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dispatcherBtnMouseExited
+        dispatcherBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_dispatcherBtnMouseExited
 
     public UserAccount getSelectedUser() {
         int selectedRowIndex = jTable2.getSelectedRow();
@@ -1156,8 +1156,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup btnGrpGender;
     private javax.swing.JButton btnViewWR;
     private javax.swing.JLabel closeButton;
-    private javax.swing.JPanel history;
-    private javax.swing.JPanel history1;
+    private javax.swing.JPanel dispatcherBtn;
     private javax.swing.JPanel home;
     private javax.swing.JPanel home1;
     private javax.swing.JPanel homeWorkPanel;
@@ -1199,6 +1198,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel orgCrud;
     private javax.swing.JLabel orgIcon;
     private javax.swing.JLabel organization;
+    private javax.swing.JPanel physicianBtn;
     private javax.swing.JRadioButton radbtnFemale;
     private javax.swing.JRadioButton radbtnMale;
     private javax.swing.JRadioButton radbtnNotToSay;
