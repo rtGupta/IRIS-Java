@@ -376,8 +376,8 @@ public class DispatcherJPanel extends javax.swing.JPanel {
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
 //        undo this change later while working on this panel          
-//        LoginJPanel icjp = new LoginJPanel(mainPane);
-//        displayPanel(mainPane, icjp);
+        LoginJPanel icjp = new LoginJPanel(mainPane, system);
+        displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 
     private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered
@@ -411,46 +411,5 @@ public class DispatcherJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JLayeredPane workpane;
     // End of variables declaration//GEN-END:variables
-    private void collapseMenu(int min, int max) {
-
-        menuPanel.setSize(min, 551);
-        Thread th = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = min; i <= max; i += 3) {
-                        Thread.sleep(1);
-                        menuPanel.setSize(i, 551);
-                        workpane.setBounds(i, 0, 790, 550);
-                    }
-                } catch (Exception e) {
-                    System.out.println("...");
-                }
-               
-            }
-        };
-
-        th.start();
-        this.updateUI();
-    }
-
-    private void openMenu(int min, int max) {
-        menuPanel.setSize(max, 551);
-        Thread th = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = max; i >= min; i -= 3) {
-                        Thread.sleep(1);
-                        menuPanel.setSize(i, 551);
-                        workpane.setBounds(i, 0, 790, 550);
-                    }
-                } catch (Exception e) {
-                    System.out.println("...");
-                }
-            }
-        };
-        th.start();
-        this.updateUI();
-    }
+   
 }
