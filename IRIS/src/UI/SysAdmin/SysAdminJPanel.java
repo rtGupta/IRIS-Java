@@ -47,8 +47,10 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         this.userAccount = userAccount;
         //system = dB4OUtil.retrieveSystem();
         //ManageNetworkJPanel manageNetworkJPanel = new ManageNetworkJPanel(mainPane, workpane, system);
-        AdminListJPanel adminListJPanel = new AdminListJPanel(mainPane, workpane, system);
-        displayPanel(workpane, adminListJPanel);
+//        AdminListJPanel adminListJPanel = new AdminListJPanel(mainPane, workpane, system);
+//        displayPanel(workpane, adminListJPanel);
+        AdminHomeJPanel ajp = new AdminHomeJPanel(mainPane, workpane);
+        displayPanel(workpane, ajp);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -75,7 +77,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         menuTab = new javax.swing.JPanel();
         menuPanel = new keeptoo.KGradientPanel();
-        history = new javax.swing.JPanel();
+        _911btn = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         home = new javax.swing.JPanel();
@@ -84,6 +86,12 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         logoutJPanel = new javax.swing.JPanel();
         lblLogoutIcon = new javax.swing.JLabel();
         lblLogout = new javax.swing.JLabel();
+        firstResponderBtn = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        healthCareBtn = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -139,43 +147,43 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         menuPanel.setPreferredSize(new java.awt.Dimension(210, 551));
         menuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        history.setOpaque(false);
-        history.addMouseListener(new java.awt.event.MouseAdapter() {
+        _911btn.setOpaque(false);
+        _911btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                historyMouseClicked(evt);
+                _911btnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                historyMouseEntered(evt);
+                _911btnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                historyMouseExited(evt);
+                _911btnMouseExited(evt);
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/incoming_call_24px.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/police_station_24px.png"))); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("Call History");
+        jLabel14.setText("911");
 
-        javax.swing.GroupLayout historyLayout = new javax.swing.GroupLayout(history);
-        history.setLayout(historyLayout);
-        historyLayout.setHorizontalGroup(
-            historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, historyLayout.createSequentialGroup()
+        javax.swing.GroupLayout _911btnLayout = new javax.swing.GroupLayout(_911btn);
+        _911btn.setLayout(_911btnLayout);
+        _911btnLayout.setHorizontalGroup(
+            _911btnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, _911btnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
-        historyLayout.setVerticalGroup(
-            historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        _911btnLayout.setVerticalGroup(
+            _911btnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
+        menuPanel.add(_911btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
 
         home.setOpaque(false);
         home.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -253,6 +261,82 @@ public class SysAdminJPanel extends javax.swing.JPanel {
 
         menuPanel.add(logoutJPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
 
+        firstResponderBtn.setOpaque(false);
+        firstResponderBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                firstResponderBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                firstResponderBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                firstResponderBtnMouseExited(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/first_24px.png"))); // NOI18N
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("First Responders");
+
+        javax.swing.GroupLayout firstResponderBtnLayout = new javax.swing.GroupLayout(firstResponderBtn);
+        firstResponderBtn.setLayout(firstResponderBtnLayout);
+        firstResponderBtnLayout.setHorizontalGroup(
+            firstResponderBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, firstResponderBtnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jLabel15)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        firstResponderBtnLayout.setVerticalGroup(
+            firstResponderBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        menuPanel.add(firstResponderBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
+
+        healthCareBtn.setOpaque(false);
+        healthCareBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                healthCareBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                healthCareBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                healthCareBtnMouseExited(evt);
+            }
+        });
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/medical_24px.png"))); // NOI18N
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("Health Care");
+
+        javax.swing.GroupLayout healthCareBtnLayout = new javax.swing.GroupLayout(healthCareBtn);
+        healthCareBtn.setLayout(healthCareBtnLayout);
+        healthCareBtnLayout.setHorizontalGroup(
+            healthCareBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, healthCareBtnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        healthCareBtnLayout.setVerticalGroup(
+            healthCareBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        menuPanel.add(healthCareBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 190, -1));
+
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
         workpane.setMaximumSize(new java.awt.Dimension(990, 590));
@@ -266,18 +350,19 @@ public class SysAdminJPanel extends javax.swing.JPanel {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/icon-admin.png"))); // NOI18N
 
-        jLabel8.setText("Welcome Name");
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 3, 18)); // NOI18N
+        jLabel8.setText("Welcome System Admin!");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel7)
-                .addGap(152, 152, 152)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(401, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,8 +409,8 @@ public class SysAdminJPanel extends javax.swing.JPanel {
 
         JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this);
         parentFrame.dispose();
-        
-        
+
+
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
@@ -349,20 +434,22 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png")));
     }//GEN-LAST:event_minimizeButtonMouseExited
 
-    private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_historyMouseClicked
+    private void _911btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__911btnMouseClicked
+        AdminListJPanel adminListJPanel = new AdminListJPanel(mainPane, workpane, system, "Enterprise911");
+        displayPanel(workpane, adminListJPanel);
+    }//GEN-LAST:event__911btnMouseClicked
 
-    private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered
-        history.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_historyMouseEntered
+    private void _911btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__911btnMouseEntered
+        _911btn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event__911btnMouseEntered
 
-    private void historyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseExited
-        history.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_historyMouseExited
+    private void _911btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__911btnMouseExited
+        _911btn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event__911btnMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        
+        AdminHomeJPanel ajp = new AdminHomeJPanel(mainPane, workpane);
+        displayPanel(workpane, ajp);
     }//GEN-LAST:event_homeMouseClicked
 
     private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
@@ -374,7 +461,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void logoutJPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutJPanelMouseClicked
-        MainJFrame.dB4OUtil.storeSystem(system);        
+        MainJFrame.dB4OUtil.storeSystem(system);
 
         LoginJPanel loginJPanel = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, loginJPanel);
@@ -389,15 +476,47 @@ public class SysAdminJPanel extends javax.swing.JPanel {
         logoutJPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
     }//GEN-LAST:event_logoutJPanelMouseExited
 
+    private void firstResponderBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_firstResponderBtnMouseClicked
+        AdminListJPanel adminListJPanel = new AdminListJPanel(mainPane, workpane, system, "FirstResponderEnterprise");
+        displayPanel(workpane, adminListJPanel);
+    }//GEN-LAST:event_firstResponderBtnMouseClicked
+
+    private void firstResponderBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_firstResponderBtnMouseEntered
+        firstResponderBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_firstResponderBtnMouseEntered
+
+    private void firstResponderBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_firstResponderBtnMouseExited
+        firstResponderBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_firstResponderBtnMouseExited
+
+    private void healthCareBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_healthCareBtnMouseClicked
+        AdminListJPanel adminListJPanel = new AdminListJPanel(mainPane, workpane, system, "HealthCareEnterprise");
+        displayPanel(workpane, adminListJPanel);
+    }//GEN-LAST:event_healthCareBtnMouseClicked
+
+    private void healthCareBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_healthCareBtnMouseEntered
+        healthCareBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_healthCareBtnMouseEntered
+
+    private void healthCareBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_healthCareBtnMouseExited
+        healthCareBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_healthCareBtnMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel _911btn;
     private javax.swing.JLabel closeButton;
-    private javax.swing.JPanel history;
+    private javax.swing.JPanel firstResponderBtn;
+    private javax.swing.JPanel healthCareBtn;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
@@ -427,7 +546,7 @@ public class SysAdminJPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     System.out.println("...");
                 }
-               
+
             }
         };
 

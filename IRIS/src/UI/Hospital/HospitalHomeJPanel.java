@@ -46,6 +46,7 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
             List<WorkRequest> staffAdminWorkRequestList = workQueue.getWorkRequestList();
             if (CollectionUtils.isNotEmpty(staffAdminWorkRequestList)) {
                 for (WorkRequest wr : staffAdminWorkRequestList) {
+                    
                     Object[] row = new Object[4];
                     row[0] = wr;
                     row[1] = wr.getCaller().getLocation();
@@ -103,9 +104,17 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Request No.", "Location", "Emergency Level", "Request Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblStaffAdminWQ);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -125,6 +134,7 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Admit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

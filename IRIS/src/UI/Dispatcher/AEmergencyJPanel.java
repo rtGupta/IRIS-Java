@@ -13,10 +13,14 @@ import Business.Organization.FirstResponder.EMTOrganization;
 import Business.Organization.FirstResponder.FireOrganization;
 import Business.Organization.FirstResponder.LawEnforcementOrganization;
 import Business.Organization.Organization;
+import Business.Role.FirstResponder.Fireman;
+import Business.Role.Role;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
 import Util.DropdownItem;
 import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -31,9 +35,13 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
 
     private EcoSystem system;
     private UserAccount userAccount;
+    private Caller caller;
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    List<double[]> policeLocations;
+    List<double[]> fireFighterLocations;
+    List<double[]> paramedicLocations;
 
     WorkRequest workRequest;
 
@@ -46,6 +54,11 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.userAccount = userAccount;
+        this.caller = caller;
+
+        policeLocations = new ArrayList<>();
+        fireFighterLocations = new ArrayList<>();
+        paramedicLocations = new ArrayList<>();
 
         workRequest = new WorkRequest(this.userAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
         workRequest.setCaller(caller);
@@ -53,7 +66,7 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         workRequest.setEmergencyLevel(emergencyLevel.charAt(0));
 
         loadDropdowns();
-        JPanel map = MapsUtil.defaultMap();
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), policeLocations, fireFighterLocations, paramedicLocations);
         displayPanel(maps, map);
     }
 
@@ -63,20 +76,21 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
                     .findEnterprise(EnterpriseType.FirstResponderEnterprise.getValue());
             for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
                 if (org instanceof EMTOrganization) {
-                    this.loadValues(org, jComboBox2);
+                    this.loadValues(org, jComboBox2, paramedicLocations);
                 } else if (org instanceof LawEnforcementOrganization) {
-                    this.loadValues(org, jComboBox1);
+                    this.loadValues(org, jComboBox1, policeLocations);
                 } else if (org instanceof FireOrganization) {
-                    this.loadValues(org, jComboBox3);
+                    this.loadValues(org, jComboBox3, fireFighterLocations);
                 }
             }
         }
     }
 
-    private void loadValues(Organization org, JComboBox<UserAccount> drpdown) {
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double []> p) {
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
 //            System.out.println(paramedicAccount.getUsername());
             drpdown.addItem(acc);
+            p.add(acc.getProfileDetails().getLocation());
         }
     }
 
@@ -130,6 +144,7 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel1.setText("Police:");
 
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -144,6 +159,7 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel2.setText("Paramedics:");
 
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
@@ -152,8 +168,10 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel3.setText("Fire Fighters:");
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Dispatch");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,7 +181,13 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
 
         maps.setLayout(new java.awt.CardLayout());
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -179,13 +203,13 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -196,12 +220,15 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
                 .addComponent(jButton2)
                 .addGap(22, 22, 22))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2, jLabel3});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addGap(6, 6, 6)
@@ -243,10 +270,15 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         userAccount.getWorkQueue().getWorkRequestList().add(workRequest);
         workRequest.getReceivers().forEach(receiver -> {
             receiver.getWorkQueue().getWorkRequestList().add(workRequest);
-        }); 
+        });
         // redirect to the dispatcher home screen.
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       JPanel map = MapsUtil.publishMap(caller.getCoordinates(), policeLocations, fireFighterLocations, paramedicLocations);
+        displayPanel(maps, map);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

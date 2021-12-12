@@ -17,8 +17,9 @@ public class Profile {
     private String hospitalName;
     private String homeAddress;
     private String workAddress;
-    private double latitude;
-    private double longitude;
+    private double[] location;
+//    private double latitude;
+//    private double longitude;
     
     public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String workAddress) {
       this.firstName = firstName;
@@ -109,20 +110,12 @@ public class Profile {
         this.workAddress = workAddress;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double[] getLocation() {
+        return location;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLocation(double[] location) {
+        this.location = location;
     }
 
     public String getHospitalName() {

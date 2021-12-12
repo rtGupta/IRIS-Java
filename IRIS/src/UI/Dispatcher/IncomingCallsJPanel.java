@@ -46,7 +46,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         this.system = system;
         this.dispatcherUserAccount = account;
 
-        populateIncidentTable();
+        
 
         JPanel map = MapsUtil.defaultMap();
         map.setBounds(callerLocation.getBounds());
@@ -71,25 +71,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         parentFrame.setLocationRelativeTo(null);
     }
 
-    public void populateIncidentTable() {
-        DefaultTableModel dispatcherIncidentTableModel = (DefaultTableModel) tbldispatcherWQ.getModel();
-        dispatcherIncidentTableModel.setRowCount(0);
 
-        WorkQueue workQueue = dispatcherUserAccount.getWorkQueue();
-        if (workQueue != null) {
-            List<WorkRequest> dispatcherWorkRequestList = workQueue.getWorkRequestList();
-            if (CollectionUtils.isNotEmpty(dispatcherWorkRequestList)) {
-                for (WorkRequest wr : dispatcherWorkRequestList) {
-                    Object[] row = new Object[4];
-                    row[0] = wr;
-                    row[1] = wr.getCaller().getLocation();
-                    row[2] = wr.getEmergencyLevel();
-                    row[3] = wr.getStatus();
-                    dispatcherIncidentTableModel.addRow(row);
-                }
-            }
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,9 +85,6 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         emergencyCategory = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbldispatcherWQ = new javax.swing.JTable();
         nameText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         callerId = new javax.swing.JTextField();
@@ -145,101 +124,52 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(990, 590));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Incoming Calls", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
-
-        tbldispatcherWQ.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Request No.", "Location", "Emergency Level", "Request Status"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        tbldispatcherWQ.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
-        tbldispatcherWQ.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tbldispatcherWQ.setShowGrid(true);
-        tbldispatcherWQ.setShowHorizontalLines(false);
-        tbldispatcherWQ.getTableHeader().setResizingAllowed(false);
-        tbldispatcherWQ.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(tbldispatcherWQ);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 5, 970, 200));
-        add(nameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 242, 40));
+        add(nameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 242, 40));
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel1.setText("Name:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 113, 40));
-        add(callerId, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 290, 242, 40));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 113, 40));
+        add(callerId, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 150, 242, 40));
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel2.setText("Phone Number:");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 113, 40));
-        add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, 242, 40));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 113, 40));
+        add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 242, 40));
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel3.setText("Address:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 113, 40));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 113, 40));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel4.setText("Message:");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 390, 113, 90));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 113, 90));
 
         messageText.setColumns(20);
         messageText.setRows(5);
         jScrollPane3.setViewportView(messageText);
 
-        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, 242, 100));
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, 242, 160));
 
         emergencyCategoryA.setText("A");
         emergencyCategoryA.setToolTipText("Emergency");
-        add(emergencyCategoryA, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 500, -1, 30));
+        add(emergencyCategoryA, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, -1, 30));
 
         emergencyCategoryC.setText("C");
         emergencyCategoryC.setToolTipText("Doctor");
-        add(emergencyCategoryC, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 500, -1, 30));
+        add(emergencyCategoryC, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, -1, 30));
 
         emergencyCategoryE.setText("E");
         emergencyCategoryE.setToolTipText("Volunteer");
-        add(emergencyCategoryE, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 500, -1, 30));
+        add(emergencyCategoryE, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, -1, 30));
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel5.setText("Emergency Category:");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, -1, 30));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 450, -1, 30));
 
         jLabel6.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Caller Location");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 230, 340, 30));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 40, 340, 30));
 
         jButton1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jButton1.setText("Next>");
@@ -248,15 +178,16 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 540, 134, 30));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 530, 134, 30));
 
+        jButton2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jButton2.setText("Locate");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 340, 60, 40));
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 200, 80, 40));
 
         resetMap.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         resetMap.setText("Reset");
@@ -265,7 +196,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
                 resetMapActionPerformed(evt);
             }
         });
-        add(resetMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 540, 340, 30));
+        add(resetMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 530, 340, 30));
 
         jPanel2.setMinimumSize(new java.awt.Dimension(990, 2));
         jPanel2.setPreferredSize(new java.awt.Dimension(990, 2));
@@ -284,7 +215,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 2));
 
         callerLocation.setLayout(new java.awt.BorderLayout());
-        add(callerLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 260, 340, 270));
+        add(callerLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 90, 340, 430));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -324,9 +255,18 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         String location = Address.getText();
         String message = messageText.getText();
         String emergencyLevel = emergencyCategory.getSelection().getActionCommand();
-
-        Caller caller = new Caller(firstName, lastName, contact, location);
+        double[] coords = MapsUtil.getGeoPointFromAddress(location);
+        if (coords[0] == 0 || coords[1] == 0) {
+            JPanel map = MapsUtil.defaultMap();
+            map.setBounds(callerLocation.getBounds());
+            callerLocation.add(map);
+            this.updateUI();
+            JOptionPane.showMessageDialog(this, "Wrong Address");
+            return;
+        }   
+        Caller caller = new Caller(firstName, lastName, contact, location, coords);
         // pass caller object, message, emergencyLevel to EmergencyPanels - A, C, E.
+        
         JPanel panel = null;
         if (emergencyCategory.getSelection() == null) {
             return;
@@ -360,16 +300,13 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea messageText;
     private javax.swing.JTextField nameText;
     private javax.swing.JButton resetMap;
-    private javax.swing.JTable tbldispatcherWQ;
     // End of variables declaration//GEN-END:variables
 
 }

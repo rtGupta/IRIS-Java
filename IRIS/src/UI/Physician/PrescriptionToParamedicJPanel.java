@@ -10,12 +10,12 @@ import UI.Hospital.*;
  *
  * @author akshatajadhav
  */
-public class PrescriptionToParamedicJPanel1 extends javax.swing.JPanel {
+public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public PrescriptionToParamedicJPanel1() {
+    public PrescriptionToParamedicJPanel() {
         initComponents();
     }
 
@@ -39,6 +39,7 @@ public class PrescriptionToParamedicJPanel1 extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(990, 590));
         setRequestFocusEnabled(false);
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Next");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

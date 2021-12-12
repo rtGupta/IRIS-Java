@@ -22,10 +22,12 @@ public class Caller {
     private double height;
     private double weight;
     private String bloodGrp;
+    private double[] coordinates;
 
-    public Caller(String firstName, String lastName, long contact, String location) {
+    public Caller(String firstName, String lastName, long contact, String location, double[] coordinates) {
         this.callerDetails = new Profile(firstName, lastName, contact);
         this.location = location;
+        this.coordinates = coordinates;
     }
 
     public Boolean isVitalSignsWithinNormalRange(Vitals vs) {
@@ -34,6 +36,14 @@ public class Caller {
                 || (vs.getPulse() < 60 || vs.getPulse() > 100)
                 || ((vs.getHighBP() < 90 || vs.getHighBP() > 120)
                 || (vs.getLowBP() < 60 || vs.getLowBP() > 80)));
+    }
+
+    public double[] getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(double[] coordinates) {
+        this.coordinates = coordinates;
     }
 
     public Profile getCallerDetails() {

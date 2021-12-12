@@ -36,6 +36,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
 
     boolean menuButton = false;
     boolean menuCollapse = false;
+    JPanel icjp;
 
     /**
      * Creates new form DispatcherJPanel
@@ -48,10 +49,10 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         this.enterprise = enterprise;
         this.userAccount = account;
 
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
+        icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
-
+    
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
         lpane.removeAll();
         lpane.add(panel);
@@ -264,29 +265,30 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/paramedics_40px.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/paramedic.png"))); // NOI18N
 
-        jLabel8.setText("Welcome Name");
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 3, 18)); // NOI18N
+        jLabel8.setText("Welcome Paramedic!");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel7)
-                .addGap(64, 64, 64)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(354, Short.MAX_VALUE))
+                .addContainerGap(422, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 790, 90));
@@ -347,7 +349,8 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseExited
 
     private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
-        // TODO add your handling code here:
+        icjp = new ParamedicHistoryJPanel(mainPane, workpane, system, userAccount);
+        displayPanel(workpane, icjp);
     }//GEN-LAST:event_historyMouseClicked
 
     private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered
@@ -359,7 +362,7 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_historyMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
+        icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }//GEN-LAST:event_homeMouseClicked
 
@@ -372,7 +375,8 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        LoginJPanel icjp = new LoginJPanel(mainPane, system);
+        
+        icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 

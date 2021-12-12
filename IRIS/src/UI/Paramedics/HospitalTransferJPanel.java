@@ -16,8 +16,14 @@ import Business.Role.HealthCare.StaffAdministrator;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
 import Util.DropdownItem;
+import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -30,6 +36,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
     private EcoSystem system;
     private UserAccount userAccount;
     private WorkRequest paramedicWorkRequest;
+    List<double[]> hospitalLocations;
 
     /**
      * Creates new form HospitalTransferJPanel
@@ -41,7 +48,10 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         this.system = system;
         this.userAccount = account;
         this.paramedicWorkRequest = request;
+        hospitalLocations = new ArrayList<>();
         loadHospitalDropdown();
+        JPanel map = MapsUtil.publishMap(request.getCaller().getCoordinates(), hospitalLocations);
+        displayPanel(maps, map);
     }
 
     private void loadHospitalDropdown() {
@@ -50,17 +60,28 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
                     .findEnterprise(Enterprise.EnterpriseType.HealthcareEnterprise.getValue());
             for (Organization org : hcEnterprise.getOrganizationDirectory().getOrganizationList()) {
                 if (org instanceof NonClinicalOrganization) {
-                    this.loadValues(org, hospitalDropdown);
+                    this.loadValues(org, hospitalDropdown, hospitalLocations);
                 }
             }
         }
     }
 
-    private void loadValues(Organization org, JComboBox<String> drpdown) {
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double[]> p) {
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
 //            System.out.println(paramedicAccount.getUsername());
-            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+            drpdown.addItem(acc);
+            p.add(acc.getProfileDetails().getLocation());
         }
+    }
+    
+    public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        lpane.repaint();
+        lpane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
     }
 
     /**
@@ -73,10 +94,10 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
+        maps = new javax.swing.JLayeredPane();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        hospitalDropdown = new javax.swing.JComboBox<>();
+        hospitalDropdown = new javax.swing.JComboBox();
         jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -97,20 +118,21 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
-        jLayeredPane1.setLayout(jLayeredPane1Layout);
-        jLayeredPane1Layout.setHorizontalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);
+        maps.setLayout(mapsLayout);
+        mapsLayout.setHorizontalGroup(
+            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jLayeredPane1Layout.setVerticalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        mapsLayout.setVerticalGroup(
+            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 430, Short.MAX_VALUE)
         );
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Reset");
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel1.setText("Hospital:");
 
         hospitalDropdown.addActionListener(new java.awt.event.ActionListener() {
@@ -119,6 +141,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Transfer");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,7 +153,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1)
+            .addComponent(maps)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(358, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,7 +177,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
@@ -190,11 +213,11 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> hospitalDropdown;
+    private javax.swing.JComboBox hospitalDropdown;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLayeredPane maps;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,6 +30,7 @@ public class LoginJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     EcoSystem system;
+
     /**
      * Creates new form LoginJPanel
      */
@@ -37,7 +38,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        
+
         Dispatcher.setActionCommand("Dispatcher");
         roles.add(Dispatcher);
         Hospital.setActionCommand("Hospital");
@@ -47,7 +48,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         Physician.setActionCommand("Physician");
         roles.add(Physician);
     }
-    
+
     public void displayPanel(JPanel panel) {
         mainPane.removeAll();
         mainPane.add(panel);
@@ -95,6 +96,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         jRadioButton4 = new javax.swing.JRadioButton();
         Paramedics = new javax.swing.JRadioButton();
         jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(1200, 675));
         setMinimumSize(new java.awt.Dimension(1200, 675));
@@ -262,6 +264,15 @@ public class LoginJPanel extends javax.swing.JPanel {
 
         jLabel12.setText("Just For Testing");
 
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("<html><a href=\"url\">Sign up as Volunteer</a></html>");
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -280,17 +291,7 @@ public class LoginJPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(txtLoginUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(txtLoginPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                            .addComponent(kGradientPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
+                        .addGap(61, 61, 61)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,7 +304,18 @@ public class LoginJPanel extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(Hospital)
                                 .addGap(18, 18, 18)
-                                .addComponent(Paramedics)))))
+                                .addComponent(Paramedics))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(txtLoginUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(txtLoginPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                            .addComponent(kGradientPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -329,7 +341,9 @@ public class LoginJPanel extends javax.swing.JPanel {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Hospital)
                     .addComponent(Paramedics)
@@ -339,7 +353,7 @@ public class LoginJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Physician)
                     .addComponent(jRadioButton4))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, 600, 670));
@@ -356,81 +370,79 @@ public class LoginJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void loginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseEntered
-        kGradientPanel2.setkEndColor(new Color(38,38,38));
-        kGradientPanel2.setkStartColor(new Color(22,116,188));
+        kGradientPanel2.setkEndColor(new Color(38, 38, 38));
+        kGradientPanel2.setkStartColor(new Color(22, 116, 188));
         mainPane.repaint();
         mainPane.revalidate();
     }//GEN-LAST:event_loginButtonMouseEntered
 
     private void loginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseExited
-        kGradientPanel2.setkStartColor(new Color(38,38,38));
-        kGradientPanel2.setkEndColor(new Color(22,116,188));
+        kGradientPanel2.setkStartColor(new Color(38, 38, 38));
+        kGradientPanel2.setkEndColor(new Color(22, 116, 188));
         mainPane.repaint();
         mainPane.revalidate();
     }//GEN-LAST:event_loginButtonMouseExited
 
     private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
-
-                // Get user name
+        
+        // Get user name
         String userName = txtLoginUserName.getText();
         // Get Password
         char[] passwordCharArray = txtLoginPassword.getPassword();
         String password = String.valueOf(passwordCharArray);
-        
+
         //Step1: Check in the system admin user account directory if you have the user
-        UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
-        
-        Enterprise inEnterprise=null;
-        Organization inOrganization=null;
-        
-        if(userAccount==null){
+        UserAccount userAccount = system.getUserAccountDirectory().authenticateUser(userName, password);
+
+        Enterprise inEnterprise = null;
+        Organization inOrganization = null;
+
+        if (userAccount == null) {
             //Step 2: Go inside each network and check each enterprise
-            for(Network network:system.getNetworkList()){
+            for (Network network : system.getNetworkList()) {
                 //Step 2.a: check against each enterprise
-                for(Enterprise enterprise:network.getEnterpriseDirectory().getEnterpriseList()){
-                    userAccount=enterprise.getUserAccountDirectory().authenticateUser(userName, password);
-                    if(userAccount==null){
-                       //Step 3:check against each organization for each enterprise
-                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
-                           userAccount=organization.getUserAccountDirectory().authenticateUser(userName, password);
-                           if(userAccount!=null){
-                               inEnterprise=enterprise;
-                               inOrganization=organization;
-                               break;
-                           }
-                       }
-                        
-                    }
-                    else{
-                       inEnterprise=enterprise;
-                       break;
-                    }
-                    if(inOrganization!=null){
+                for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+                    userAccount = enterprise.getUserAccountDirectory().authenticateUser(userName, password);
+                    if (userAccount == null) {
+                        //Step 3:check against each organization for each enterprise
+                        for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()) {
+                            userAccount = organization.getUserAccountDirectory().authenticateUser(userName, password);
+                            if (userAccount != null) {
+                                inEnterprise = enterprise;
+                                inOrganization = organization;
+                                break;
+                            }
+                        }
+
+                    } else {
+                        inEnterprise = enterprise;
                         break;
-                    }  
+                    }
+                    if (inOrganization != null) {
+                        break;
+                    }
                 }
-                if(inEnterprise!=null){
+                if (inEnterprise != null) {
                     break;
                 }
             }
         }
-        
-        if(userAccount==null){
+
+        if (userAccount == null) {
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
-        }
-        else{
+        } else {
             JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
-            displayPanel(djp);           
+            displayPanel(djp);
         }
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_rev_30px.png"))); 
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_rev_30px.png")));
     }//GEN-LAST:event_closeButtonMouseEntered
 
     private void closeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseExited
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_30px.png"))); 
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_30px.png")));
     }//GEN-LAST:event_closeButtonMouseExited
 
     private void minimizeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseEntered
@@ -440,6 +452,11 @@ public class LoginJPanel extends javax.swing.JPanel {
     private void minimizeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseExited
         minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png")));
     }//GEN-LAST:event_minimizeButtonMouseExited
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        VolunteerSignUpPageJPanel vsupjp = new VolunteerSignUpPageJPanel(mainPane, system);
+        displayPanel(vsupjp);
+    }//GEN-LAST:event_jLabel13MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -452,6 +469,7 @@ public class LoginJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

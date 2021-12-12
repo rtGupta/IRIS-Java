@@ -96,9 +96,17 @@ public class HomeJPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Request No.", "Location", "Emergency Level", "Request Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -134,8 +142,10 @@ public class HomeJPanel extends javax.swing.JPanel {
         messageText.setRows(5);
         jScrollPane2.setViewportView(messageText);
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Assign");
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Transfer To Hospital");
 
         javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);

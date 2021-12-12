@@ -51,16 +51,18 @@ public class AdminListJPanel extends javax.swing.JPanel {
     Pattern emailPattern;
     Pattern phonePattern;
     Pattern passwordPattern;
+    String selectedEnterprise;
 
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public AdminListJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system) {
+    public AdminListJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, String selectedEnterprise) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
         this.networkList = system.getNetworkList();
+        this.selectedEnterprise = selectedEnterprise;
         this.enterpriseDirectory = system.getNetworkList().get(0).getEnterpriseDirectory();
 
         String emailRegex = "^(.+)@(\\S+)$";
@@ -79,8 +81,19 @@ public class AdminListJPanel extends javax.swing.JPanel {
         buttonGroup1.add(radbtnFemale);
         buttonGroup1.add(radbtnNotToSay);
 
-        populateEnterpriseCmbbox();
+        if (selectedEnterprise.equalsIgnoreCase("Enterprise911")) {
+            enterpriseIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Dispatcher_40px.png")));
+            enterprise.setText("911 Enterprise");
+        } else if (selectedEnterprise.equalsIgnoreCase("FirstResponderEnterprise")) {
+            enterpriseIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/police_car_48px.png")));
+            enterprise.setText("First Responder Enterprise");
+        } else if (selectedEnterprise.equalsIgnoreCase("HealthCareEnterprise")) {
+            enterpriseIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/hospital_48px.png")));
+            enterprise.setText("Health Care Enterprise");
+        }
 
+//        populateEnterpriseCmbbox();
+        populateEnterpriseAdminTable(selectedEnterprise);
     }
 
     /**
@@ -95,9 +108,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         EnterpriseADminJPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblEnterpriseAdmin = new javax.swing.JTable();
         lblFirstName = new javax.swing.JLabel();
         lblLastName = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
@@ -124,14 +134,18 @@ public class AdminListJPanel extends javax.swing.JPanel {
         lblUserName = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
-        cmbboxEnterprise = new javax.swing.JComboBox();
-        lblRole = new javax.swing.JLabel();
+        enterprise = new javax.swing.JLabel();
         btnViewUser = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblEnterpriseAdmin = new javax.swing.JTable();
+        enterpriseIcon = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
         setMinimumSize(new java.awt.Dimension(990, 590));
         setPreferredSize(new java.awt.Dimension(990, 590));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,59 +158,32 @@ public class AdminListJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         EnterpriseADminJPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Enterprise Administrators", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
-
-        tblEnterpriseAdmin.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Name", "Contact No.", "Email", "Work Address"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblEnterpriseAdmin);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 26, Short.MAX_VALUE))
-        );
-
+        lblFirstName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFirstName.setText("First Name : ");
 
+        lblLastName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLastName.setText("Last Name : ");
 
+        lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmail.setText("Email : ");
 
+        lblPhoneNumber.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhoneNumber.setText("Phone Number : ");
 
+        lblDateOfBirth.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblDateOfBirth.setText("Date of Birth : ");
 
+        lblAddress.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblAddress.setText("Address : ");
 
+        lblWorkAddress.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblWorkAddress.setText("Work Address : ");
 
+        lblGender.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblGender.setText("Gender : ");
 
         txtAddress.addActionListener(new java.awt.event.ActionListener() {
@@ -254,8 +241,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
             }
         });
 
+        lblUserName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblUserName.setText("User Name : ");
 
+        lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPassword.setText("Password: ");
 
         btnClear.setBackground(new java.awt.Color(255, 255, 255));
@@ -273,21 +262,26 @@ public class AdminListJPanel extends javax.swing.JPanel {
             .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFirstName)
+                    .addComponent(lblEmail)
+                    .addComponent(lblDateOfBirth)
+                    .addComponent(lblAddress)
+                    .addComponent(lblUserName))
+                .addGap(14, 14, 14)
+                .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
-                        .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFirstName)
-                            .addComponent(lblEmail)
-                            .addComponent(lblDateOfBirth)
-                            .addComponent(lblAddress)
-                            .addComponent(lblUserName))
-                        .addGap(14, 14, 14)
-                        .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtAddress)
-                            .addComponent(txtDateOfBirth)
-                            .addComponent(txtEmail)
-                            .addComponent(txtFirstName)
-                            .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                        .addComponent(btnCreateAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(55, 55, 55)
+                        .addComponent(btnUpdateAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtAddress)
+                        .addComponent(txtDateOfBirth)
+                        .addComponent(txtEmail)
+                        .addComponent(txtFirstName)
+                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
                         .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
                                 .addComponent(lblWorkAddress)
@@ -310,72 +304,62 @@ public class AdminListJPanel extends javax.swing.JPanel {
                                             .addComponent(radbtnFemale)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(radbtnNotToSay))
-                                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(btnCreateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(btnUpdateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap())
+                    .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
+                        .addComponent(btnDeleteUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(52, 52, 52)
+                        .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(153, 153, 153))))
         );
         EnterpriseADminJPanelLayout.setVerticalGroup(
             EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(0, 0, 0)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUserName)
-                    .addComponent(lblPassword)
-                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFirstName)
-                    .addComponent(lblLastName)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmail)
-                    .addComponent(lblPhoneNumber)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDateOfBirth)
-                    .addComponent(lblGender)
-                    .addComponent(txtDateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(radbtnMale)
-                    .addComponent(radbtnFemale)
-                    .addComponent(radbtnNotToSay))
+                    .addComponent(lblDateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblGender, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(radbtnMale, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(radbtnFemale, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(radbtnNotToSay, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAddress)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtWorkAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblWorkAddress))
+                    .addComponent(lblAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtWorkAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblWorkAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreateAdmin)
                     .addComponent(btnUpdateAdmin)
                     .addComponent(btnDeleteUser)
                     .addComponent(btnClear))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
-        cmbboxEnterprise.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbboxEnterpriseActionPerformed(evt);
-            }
-        });
+        add(EnterpriseADminJPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, -1, 270));
 
-        lblRole.setText("Enterprise: ");
+        enterprise.setText("Enterprise: ");
+        add(enterprise, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 190, 40));
 
         btnViewUser.setBackground(new java.awt.Color(255, 255, 255));
         btnViewUser.setText("View User");
@@ -384,41 +368,47 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 btnViewUserActionPerformed(evt);
             }
         });
+        add(btnViewUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 30, 103, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblRole)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbboxEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(457, 457, 457)
-                        .addComponent(btnViewUser, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))
-                    .addComponent(EnterpriseADminJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Enterprise Administrators", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
+
+        tblEnterpriseAdmin.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Contact No.", "Email", "Work Address"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblEnterpriseAdmin);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbboxEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRole, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnViewUser)))
-                .addGap(18, 18, 18)
-                .addComponent(EnterpriseADminJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 5, Short.MAX_VALUE))
         );
+
+        add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 960, -1));
+        add(enterpriseIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 80, 70));
     }// </editor-fold>//GEN-END:initComponents
 
     private void radbtnFemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radbtnFemaleActionPerformed
@@ -442,7 +432,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
         UserAccount selectedUser = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+//        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
             String userName = txtUserName.getText();
@@ -469,7 +459,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
             }
-            
+
             //add validation for address
             boolean isUpdated = false;
 
@@ -477,7 +467,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 this.enterpriseDirectory = network.getEnterpriseDirectory();
                 if (enterpriseDirectory != null) {
                     for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
-                        if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
+                        if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterprise)) {
                             UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
                             if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
                                 for (UserAccount account : accountDirectory.getUserAccountList()) {
@@ -509,7 +499,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
+        populateEnterpriseAdminTable(selectedEnterprise);
         enableAllFields(true);
     }//GEN-LAST:event_btnUpdateAdminActionPerformed
 
@@ -523,14 +513,14 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
         UserAccount selectedUser = (UserAccount) tblEnterpriseAdmin.getValueAt(selectedRowIndex, 0);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+//        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
-            for(Network network : system.getNetworkList()){
+            for (Network network : system.getNetworkList()) {
                 this.enterpriseDirectory = network.getEnterpriseDirectory();
                 if (enterpriseDirectory != null) {
                     for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
-                        if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
+                        if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterprise)) {
                             UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
                             if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
                                 if (accountDirectory.removeUserAccount(selectedUser)) {
@@ -547,21 +537,13 @@ public class AdminListJPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
+        populateEnterpriseAdminTable(selectedEnterprise);
     }//GEN-LAST:event_btnDeleteUserActionPerformed
-
-    private void cmbboxEnterpriseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbboxEnterpriseActionPerformed
-        // TODO add your handling code here:
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
-        if (StringUtils.isNotBlank(selectedEnterpriseAdmin)) {
-            populateEnterpriseAdminTable(selectedEnterpriseAdmin);
-        }
-    }//GEN-LAST:event_cmbboxEnterpriseActionPerformed
 
     private void btnCreateAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAdminActionPerformed
         // TODO add your handling code here:
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
+        //String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
 
         try {
             String userName = txtUserName.getText();
@@ -612,7 +594,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
             UserAccount userAccount = null;
             for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
-                if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
+                if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterprise)) {
                     UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
                     if (accountDirectory != null && accountDirectory.checkIfUsernameIsUnique(userName)) {
                         Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
@@ -646,7 +628,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateEnterpriseAdminTable(String.valueOf(cmbboxEnterprise.getSelectedItem()));
+        populateEnterpriseAdminTable(selectedEnterprise);
     }//GEN-LAST:event_btnCreateAdminActionPerformed
 
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
@@ -713,7 +695,8 @@ public class AdminListJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnUpdateAdmin;
     private javax.swing.JButton btnViewUser;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox cmbboxEnterprise;
+    private javax.swing.JLabel enterprise;
+    private javax.swing.JLabel enterpriseIcon;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -725,7 +708,6 @@ public class AdminListJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPhoneNumber;
-    private javax.swing.JLabel lblRole;
     private javax.swing.JLabel lblUserName;
     private javax.swing.JLabel lblWorkAddress;
     private javax.swing.JRadioButton radbtnFemale;
@@ -743,14 +725,13 @@ public class AdminListJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtWorkAddress;
     // End of variables declaration//GEN-END:variables
 
-    private void populateEnterpriseCmbbox() {
-        cmbboxEnterprise.removeAllItems();
-        Arrays.asList(Enterprise.EnterpriseType.values()).stream().
-                filter(enterprise -> !StringUtils.equalsIgnoreCase(enterprise.getValue(), Enterprise.EnterpriseType.VoluntaryEnterprise.getValue()))
-                .forEach(enterprise -> cmbboxEnterprise.addItem(enterprise.getValue()));
-        cmbboxEnterprise.setSelectedIndex(0);
-    }
-
+//    private void populateEnterpriseCmbbox() {
+//        cmbboxEnterprise.removeAllItems();
+//        Arrays.asList(Enterprise.EnterpriseType.values()).stream().
+//                filter(enterprise -> !StringUtils.equalsIgnoreCase(enterprise.getValue(), Enterprise.EnterpriseType.VoluntaryEnterprise.getValue()))
+//                .forEach(enterprise -> cmbboxEnterprise.addItem(enterprise.getValue()));
+//        cmbboxEnterprise.setSelectedIndex(0);
+//    }
     private void populateEnterpriseAdminTable(String selectedEnterpriseAdmin) {
         DefaultTableModel enterpriseAdminTableModel = (DefaultTableModel) tblEnterpriseAdmin.getModel();
         enterpriseAdminTableModel.setRowCount(0);

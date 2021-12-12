@@ -61,14 +61,17 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(990, 590));
         setPreferredSize(new java.awt.Dimension(990, 590));
 
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 15)); // NOI18N
         jLabel1.setText("Volunteer Driver:");
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Dispatch");
 
         maps.setMaximumSize(new java.awt.Dimension(0, 325));
         maps.setMinimumSize(new java.awt.Dimension(0, 325));
         maps.setLayout(new java.awt.CardLayout());
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Reset");
 
         jPanel2.setMinimumSize(new java.awt.Dimension(990, 2));
@@ -91,7 +94,7 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(328, Short.MAX_VALUE)
+                .addContainerGap(318, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -100,9 +103,9 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(89, 89, 89)))
-                .addContainerGap(326, Short.MAX_VALUE))
+                .addContainerGap(316, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(906, Short.MAX_VALUE)
+                .addContainerGap(898, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -16,6 +16,8 @@ import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
 import Util.DropdownItem;
 import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +33,9 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
 
     private EcoSystem system;
     private UserAccount dispatcherUserAccount;
+    private Caller caller;
+    List<double[]> paramedicLocations;
+    
     
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -46,14 +51,15 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.dispatcherUserAccount = userAccount;
-        
+        this.caller = caller;
+        paramedicLocations = new ArrayList<>();
         dispatcherWorkRequest = new WorkRequest(this.dispatcherUserAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
         dispatcherWorkRequest.setCaller(caller);
         dispatcherWorkRequest.setMessage(message);
         dispatcherWorkRequest.setEmergencyLevel(emergencyLevel.charAt(0));
         
         loadDropdown();
-        JPanel map = MapsUtil.defaultMap();
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), paramedicLocations);
         displayPanel(maps, map);
     }
 
@@ -73,16 +79,18 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
                     .findEnterprise(Enterprise.EnterpriseType.FirstResponderEnterprise.getValue());
             for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
                 if (org instanceof EMTOrganization) {
-                    this.loadValues(org, jComboBox1);
+                    this.loadValues(org, jComboBox1, paramedicLocations);
                 }
             }
         }
     }
 
-    private void loadValues(Organization org, JComboBox<String> drpdown) {
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double []> p) {
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
 //            System.out.println(paramedicAccount.getUsername());
-            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+//            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+            drpdown.addItem(acc);
+            p.add(acc.getProfileDetails().getLocation());
         }
     }
 
@@ -97,7 +105,7 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         maps = new javax.swing.JLayeredPane();
         jButton2 = new javax.swing.JButton();
@@ -122,6 +130,7 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel1.setText("Paramedics:");
 
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +139,7 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Dispatch");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,28 +151,37 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         maps.setMinimumSize(new java.awt.Dimension(0, 325));
         maps.setLayout(new java.awt.CardLayout());
 
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(917, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addContainerGap())
             .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(319, 319, 319)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(898, Short.MAX_VALUE)
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(427, 427, 427)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(89, 89, 89))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(307, 307, 307)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 345, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -170,7 +189,7 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addGap(16, 16, 16)
@@ -204,11 +223,16 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         // redirect to the dispatcher home screen.
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), paramedicLocations);
+        displayPanel(maps, map);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLayeredPane maps;

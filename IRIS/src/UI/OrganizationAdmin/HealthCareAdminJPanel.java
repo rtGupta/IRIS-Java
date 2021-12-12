@@ -102,9 +102,6 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         menuTab = new javax.swing.JPanel();
         menuPanel = new keeptoo.KGradientPanel();
-        history = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         home = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -190,44 +187,6 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         menuPanel.setMinimumSize(new java.awt.Dimension(50, 551));
         menuPanel.setPreferredSize(new java.awt.Dimension(210, 551));
         menuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        history.setOpaque(false);
-        history.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                historyMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                historyMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                historyMouseExited(evt);
-            }
-        });
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/history_24px.png"))); // NOI18N
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("History");
-
-        javax.swing.GroupLayout historyLayout = new javax.swing.GroupLayout(history);
-        history.setLayout(historyLayout);
-        historyLayout.setHorizontalGroup(
-            historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, historyLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        historyLayout.setVerticalGroup(
-            historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        menuPanel.add(history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
 
         home.setOpaque(false);
         home.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -405,10 +364,13 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmail.setText("Email : ");
 
+        lblHospitalName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblHospitalName.setText("Hospital Name : ");
 
+        lblPhoneNumber.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhoneNumber.setText("Phone Number : ");
 
         txtUserName.addActionListener(new java.awt.event.ActionListener() {
@@ -417,10 +379,13 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        lblUserName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblUserName.setText("User Name : ");
 
+        lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPassword.setText("Password : ");
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel10.setText("Work Address : ");
 
         jLayeredPane2.setLayer(jPanel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -448,50 +413,42 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addComponent(lblHospitalName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtHospitalName, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                                .addComponent(btnCreateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnUpdateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                            .addComponent(txtEmail))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(btnCreateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(btnUpdateAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
-                        .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(177, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtHospitalName, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblUserName)
-                                            .addComponent(lblEmail))
-                                        .addGap(23, 23, 23)
-                                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                                            .addComponent(txtEmail))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                        .addComponent(lblPhoneNumber)
-                                        .addGap(6, 6, 6))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
-                                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel10)
-                                            .addComponent(lblPassword))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))))
-                            .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                .addComponent(lblHospitalName)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtWorkAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtPhoneNumber)
-                                .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)))
-                        .addGap(43, 43, 43))))
+                                .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))))
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(43, 43, 43))
         );
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,34 +457,46 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(255, 255, 255))
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHospitalName)
-                    .addComponent(txtHospitalName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtWorkAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUserName)
-                    .addComponent(lblPassword)
-                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmail)
-                    .addComponent(lblPhoneNumber)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addContainerGap()
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addComponent(txtHospitalName, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtWorkAddress)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblHospitalName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)))
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnUpdateAdmin)
+                        .addComponent(btnDeleteUser))
                     .addComponent(btnCreateAdmin)
-                    .addComponent(btnUpdateAdmin)
-                    .addComponent(btnDeleteUser)
                     .addComponent(btnClear))
-                .addGap(238, 238, 238))
+                .addGap(237, 237, 237))
         );
 
-        Admin911.add(jLayeredPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 900, 300));
+        Admin911.add(jLayeredPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 900, 200));
 
         btnViewUser.setBackground(new java.awt.Color(255, 255, 255));
         btnViewUser.setText("View User");
@@ -549,7 +518,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Admin911, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Admin911, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
         );
 
         jLayeredPane1.setLayer(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -657,18 +626,6 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png")));
     }//GEN-LAST:event_minimizeButtonMouseExited
 
-    private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_historyMouseClicked
-
-    private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered
-        history.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_historyMouseEntered
-
-    private void historyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseExited
-        history.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_historyMouseExited
-
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
         HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, account);
         displayPanel(workpane, icjp);
@@ -759,6 +716,11 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter work address");
                 return;
             }
+            double[] coords = MapsUtil.getGeoPointFromAddress(workAddress);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
 
             
             boolean isUpdated = false;
@@ -772,7 +734,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                             existingUserProfile.setPhone(Long.parseLong(phoneNumber));
                             existingUserProfile.setEmail(email);
                             existingUserProfile.setWorkAddress(workAddress);
-                            
+                            existingUserProfile.setLocation(coords);
                             accountDirectory.findAccount(selectedUser.getUsername()).setProfileDetails(existingUserProfile);
                             isUpdated = true;
                             JOptionPane.showMessageDialog(this, "User details updated Successfull!!");
@@ -832,12 +794,18 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter work address");
                 return;
             }
-
+            
+            double[] coords = MapsUtil.getGeoPointFromAddress(workAddress);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
             UserAccount userAccount = null;
             for (Organization organization : organizationDirectory.getOrganizationList()) {
                 if (organization instanceof NonClinicalOrganization && organization != null) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     Profile userProfile = new Profile(hospitalName, email, Long.valueOf(phoneNumber), workAddress);
+                    userProfile.setLocation(coords);
                     userAccount = accountDirectory.createUserAccount(userName, password, new StaffAdministrator(), userProfile);
                     organization.setUserAccountDirectory(accountDirectory);                    
                     if (userAccount == null) {
@@ -899,14 +867,11 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnUpdateAdmin;
     private javax.swing.JButton btnViewUser;
     private javax.swing.JLabel closeButton;
-    private javax.swing.JPanel history;
     private javax.swing.JPanel home;
     private javax.swing.JPanel home1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
