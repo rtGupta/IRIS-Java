@@ -573,6 +573,8 @@ public class AdminListJPanel extends javax.swing.JPanel {
             String email = txtEmail.getText();
             Date dob = simpleDateFormat.parse(String.valueOf(txtDateOfBirth.getText()));
             String gender = buttonGroup1.getSelection().getActionCommand();
+            String home = txtAddress.getText();
+            String work = txtWorkAddress.getText();
             
             Matcher emailMatcher = emailPattern.matcher(email);
             Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
@@ -609,7 +611,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                 if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterpriseAdmin)) {
                     UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
                     if(accountDirectory!=null && accountDirectory.checkIfUsernameIsUnique(userName)){
-                        Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, null);
+                        Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
                         Role role = null;
                         switch(enterprise.getEnterpriseType().getValue()){
                             case "Enterprise911":

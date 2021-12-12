@@ -26,7 +26,6 @@ import org.apache.commons.collections4.CollectionUtils;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    
     private EcoSystem system;
     public static DB4OUtil dB4OUtil = DB4OUtil.getInstance();
     public Network network;
@@ -37,7 +36,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
-        
+
         system = dB4OUtil.retrieveSystem();
         
 //        Network network = null;
@@ -98,6 +97,7 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,7 +136,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mainPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainPaneMouseClicked
-        
+
     }//GEN-LAST:event_mainPaneMouseClicked
 
     /**
