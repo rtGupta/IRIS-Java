@@ -16,6 +16,8 @@ public class Profile {
     private Date dob;
     private String homeAddress;
     private String workAddress;
+    private double latitude;
+    private double longitude;
     
     public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String Address) {
       this.firstName = firstName;
@@ -97,6 +99,22 @@ public class Profile {
 
     public void setWorkAddress(String workAddress) {
         this.workAddress = workAddress;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
     
 }
