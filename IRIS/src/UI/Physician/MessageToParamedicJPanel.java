@@ -17,6 +17,7 @@ import org.bytedeco.javacv.FrameGrabber;
  */
 public class MessageToParamedicJPanel extends javax.swing.JPanel {
 
+    final String VIDEO_FILE_NAME;
     boolean initializeCamera = true;
     boolean cameraOn = false;
     boolean recorderOn = false;
@@ -27,6 +28,7 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
      */
     public MessageToParamedicJPanel() {
         initComponents();
+        VIDEO_FILE_NAME = "test_physician";
     }
 
     /**
@@ -150,7 +152,7 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
         CameraUtil cu = null;
         if (initializeCamera) {
             try {
-                cu = new CameraUtil("test_physician", 640, 400);
+                cu = new CameraUtil(VIDEO_FILE_NAME, 640, 400);
                 cu.startCamera(camera);
                 cameraOn = true;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/record_video.png")));

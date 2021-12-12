@@ -5,6 +5,7 @@
 package UI.Physician;
 
 import UI.Hospital.*;
+import Util.FileExistUtil;
 import Util.VideoUtil;
 
 /**
@@ -13,11 +14,13 @@ import Util.VideoUtil;
  */
 public class MessageFromParamedicJPanel extends javax.swing.JPanel {
 
+    final String VIDEO_FILE_NAME;
     /**
      * Creates new form HosptialHomeJPanel
      */
     public MessageFromParamedicJPanel() {
         initComponents();
+        VIDEO_FILE_NAME = "test_physician";
     }
 
     /**
@@ -66,6 +69,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
         );
 
         jPanel2.setBackground(new java.awt.Color(38, 38, 38));
+        jPanel2.setMinimumSize(new java.awt.Dimension(990, 475));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -73,6 +77,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
         jLabel1.setText("Message From Paramedic");
 
         video.setBackground(new java.awt.Color(255, 255, 255));
+        video.setMinimumSize(new java.awt.Dimension(639, 420));
 
         jButton2.setText("Check Message!");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -86,16 +91,16 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
         videoLayout.setHorizontalGroup(
             videoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(videoLayout.createSequentialGroup()
-                .addGap(260, 260, 260)
+                .addGap(259, 259, 259)
                 .addComponent(jButton2)
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
         videoLayout.setVerticalGroup(
             videoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(videoLayout.createSequentialGroup()
-                .addGap(182, 182, 182)
+                .addGap(193, 193, 193)
                 .addComponent(jButton2)
-                .addContainerGap(213, Short.MAX_VALUE))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -119,7 +124,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -142,7 +147,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -155,7 +160,8 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new VideoUtil("test_paramedic", video);
+        if(FileExistUtil.isVideoFileExists(VIDEO_FILE_NAME));
+        new VideoUtil(VIDEO_FILE_NAME, video);
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

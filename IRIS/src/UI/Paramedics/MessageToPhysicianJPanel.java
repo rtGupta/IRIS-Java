@@ -16,6 +16,7 @@ import org.bytedeco.javacv.FrameGrabber;
  */
 public class MessageToPhysicianJPanel extends javax.swing.JPanel {
 
+    final String VIDEO_FILE_NAME;
     boolean initializeCamera = true;
     boolean cameraOn = false;
     boolean recorderOn = false;
@@ -26,6 +27,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
      */
     public MessageToPhysicianJPanel() {
         initComponents();
+        VIDEO_FILE_NAME = "test_physician";
     }
 
     /**
@@ -163,10 +165,10 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void cameraBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cameraBtnMouseClicked
-        
-        if (initializeCamera && !messageRecorded) {
+        if (!cameraOn && initializeCamera && !messageRecorded) {
+            System.out.println("initialized");
             try {
-                cu = new CameraUtil("t", 640, 480);
+                cu = new CameraUtil(VIDEO_FILE_NAME, 640, 480);
                 cu.startCamera(camera);
                 cameraOn = true;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/record_video.png")));
@@ -177,10 +179,12 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         }
         if (cameraOn && !messageRecorded) {
             if (recorderOn == false) {
+                System.out.println("recording.......");
                 recorderOn = true;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
                 cu.startRecording();
             } else if (recorderOn) {
+                System.out.println("stopped.......");
                 recorderOn = false;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
                 cu.stopCamera();

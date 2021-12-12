@@ -6,6 +6,7 @@ package Util;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -26,13 +27,14 @@ public class VideoUtil {
     private JPanel contentPane;
 
     public VideoUtil(String filename, JPanel panel) {
-        VIDEO_PATH = "video/"+filename+".avi";
+        VIDEO_PATH = "video\\"+filename+".avi";
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 //        contentPane = new JPanel();
         contentPane = panel;
         contentPane.removeAll();
         contentPane.setBackground(new Color(38, 38, 38));
-        contentPane.setSize(640, 480);
+        contentPane.setPreferredSize(new Dimension(639, 420));
+        contentPane.setSize(639, 420);
         contentPane.setLayout(new BorderLayout());
         contentPane.add(mediaPlayerComponent, BorderLayout.CENTER);
 
@@ -56,10 +58,6 @@ public class VideoUtil {
             }
         });
         mediaPlayerComponent.mediaPlayer().media().startPaused(VIDEO_PATH);
-    }
-
-    public JPanel getVideoJPanel() {
-        return contentPane;
     }
 
     protected void finalize() {
