@@ -149,7 +149,7 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cameraBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cameraBtnMouseClicked
-        CameraUtil cu = null;
+        
         if (initializeCamera) {
             try {
                 cu = new CameraUtil(VIDEO_FILE_NAME, 640, 400);
