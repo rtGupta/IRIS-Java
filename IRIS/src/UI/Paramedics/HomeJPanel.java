@@ -69,7 +69,7 @@ public class HomeJPanel extends javax.swing.JPanel {
                     txtMessage.setText(paramedicWorkRequest.getMessage());
                     JPanel map = MapsUtil.mapWayPoint(paramedicWorkRequest.getCaller().getCoordinates());
                     displayPanel(maps, map);
-                    if (paramedicWorkRequest.getStatus().equals("Transport Care Required") ||
+                    if (paramedicWorkRequest.getStatus().equals("Transport Care Reqduired") ||
                             paramedicWorkRequest.getStatus().equals("Scene Assessment in progress")) {
                         btnHospitalTransfer.setEnabled(true);
                         btnAcknowledge.setEnabled(false);
