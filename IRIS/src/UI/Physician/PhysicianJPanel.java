@@ -50,6 +50,14 @@ public class PhysicianJPanel extends javax.swing.JPanel {
         PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
+     public PhysicianJPanel(JLayeredPane mainPane) {
+        initComponents();
+        this.mainPane = mainPane;
+
+        //PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane, system, userAccount);
+        MessageFromParamedicJPanel icjp = new MessageFromParamedicJPanel();
+        displayPanel(workpane, icjp);
+    }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
         lpane.removeAll();
@@ -373,8 +381,8 @@ public class PhysicianJPanel extends javax.swing.JPanel {
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
 //        undo this change later while working on this panel      
-//        LoginJPanel icjp = new LoginJPanel(mainPane);
-//        displayPanel(mainPane, icjp);
+        LoginJPanel icjp = new LoginJPanel(mainPane, system);
+        displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
 
     private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered

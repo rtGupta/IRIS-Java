@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Paramedics;
+package UI.Physician;
 
+import UI.Paramedics.*;
 import Util.CameraUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +15,7 @@ import org.bytedeco.javacv.FrameGrabber;
  *
  * @author akshatajadhav
  */
-public class MessageToPhysicianJPanel extends javax.swing.JPanel {
+public class MessageToParamedicJPanel extends javax.swing.JPanel {
 
     boolean initializeCamera = true;
     boolean cameraOn = false;
@@ -24,7 +25,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
     /**
      * Creates new form VitalCollectionsJPanel
      */
-    public MessageToPhysicianJPanel() {
+    public MessageToParamedicJPanel() {
         initComponents();
     }
 
@@ -44,8 +45,6 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         cameraBtn = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
@@ -121,7 +120,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(camera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(175, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -138,53 +137,38 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 500));
 
         jButton5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton5.setText("Submit");
+        jButton5.setText("Next");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 550, -1, -1));
-
-        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
-        jLabel1.setText("Physician:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 510, -1, 22));
-
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 510, 202, -1));
+        add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(379, 530, 230, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        //workRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void cameraBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cameraBtnMouseClicked
-        
-        if (initializeCamera && !messageRecorded) {
+        CameraUtil cu = null;
+        if (initializeCamera) {
             try {
-                cu = new CameraUtil("t", 640, 480);
+                cu = new CameraUtil("test_physician", 640, 400);
                 cu.startCamera(camera);
                 cameraOn = true;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/record_video.png")));
             } catch (FrameGrabber.Exception ex) {
-                Logger.getLogger(MessageToPhysicianJPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MessageToParamedicJPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             return;
         }
-        if (cameraOn && !messageRecorded) {
+        if (cameraOn) {
             if (recorderOn == false) {
                 recorderOn = true;
-                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
                 cu.startRecording();
+                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
             } else if (recorderOn) {
-                recorderOn = false;
-                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
-                cu.stopCamera();
                 messageRecorded = true;
+                recorderOn = false;
+                cu.stopCamera();
+                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
             }
             return;
         }
@@ -204,8 +188,6 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel camera;
     private javax.swing.JLabel cameraBtn;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

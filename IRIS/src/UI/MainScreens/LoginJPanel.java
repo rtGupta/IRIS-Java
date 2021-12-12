@@ -30,6 +30,7 @@ public class LoginJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     EcoSystem system;
+
     /**
      * Creates new form LoginJPanel
      */
@@ -37,7 +38,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        
+
         Dispatcher.setActionCommand("Dispatcher");
         roles.add(Dispatcher);
         Hospital.setActionCommand("Hospital");
@@ -47,7 +48,7 @@ public class LoginJPanel extends javax.swing.JPanel {
         Physician.setActionCommand("Physician");
         roles.add(Physician);
     }
-    
+
     public void displayPanel(JPanel panel) {
         mainPane.removeAll();
         mainPane.add(panel);
@@ -369,81 +370,96 @@ public class LoginJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void loginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseEntered
-        kGradientPanel2.setkEndColor(new Color(38,38,38));
-        kGradientPanel2.setkStartColor(new Color(22,116,188));
+        kGradientPanel2.setkEndColor(new Color(38, 38, 38));
+        kGradientPanel2.setkStartColor(new Color(22, 116, 188));
         mainPane.repaint();
         mainPane.revalidate();
     }//GEN-LAST:event_loginButtonMouseEntered
 
     private void loginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseExited
-        kGradientPanel2.setkStartColor(new Color(38,38,38));
-        kGradientPanel2.setkEndColor(new Color(22,116,188));
+        kGradientPanel2.setkStartColor(new Color(38, 38, 38));
+        kGradientPanel2.setkEndColor(new Color(22, 116, 188));
         mainPane.repaint();
         mainPane.revalidate();
     }//GEN-LAST:event_loginButtonMouseExited
 
     private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
-
-                // Get user name
+        JPanel djp1 = null;
+        if (roles.getSelection() == null) {
+            return;
+        } else if (roles.getSelection().getActionCommand().equals("Physician")) {
+            djp1 = new PhysicianJPanel(mainPane);
+        } else if (roles.getSelection().getActionCommand().equals("Dispatcher")) {
+//            djp1 = new DispatcherJPanel(mainPane);
+        } else if (roles.getSelection().getActionCommand().equals("Hospital")) {
+//            djp1 = new HospitalJPanel(mainPane);
+        } else if (roles.getSelection().getActionCommand().equals("Paramedics")) {
+            djp1 = new ParamedicsJPanel(mainPane);
+        } else {
+            return;
+        }
+        displayPanel(djp1);
+        if(true){
+            return;
+        }
+        // Get user name
         String userName = txtLoginUserName.getText();
         // Get Password
         char[] passwordCharArray = txtLoginPassword.getPassword();
         String password = String.valueOf(passwordCharArray);
-        
+
         //Step1: Check in the system admin user account directory if you have the user
-        UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
-        
-        Enterprise inEnterprise=null;
-        Organization inOrganization=null;
-        
-        if(userAccount==null){
+        UserAccount userAccount = system.getUserAccountDirectory().authenticateUser(userName, password);
+
+        Enterprise inEnterprise = null;
+        Organization inOrganization = null;
+
+        if (userAccount == null) {
             //Step 2: Go inside each network and check each enterprise
-            for(Network network:system.getNetworkList()){
+            for (Network network : system.getNetworkList()) {
                 //Step 2.a: check against each enterprise
-                for(Enterprise enterprise:network.getEnterpriseDirectory().getEnterpriseList()){
-                    userAccount=enterprise.getUserAccountDirectory().authenticateUser(userName, password);
-                    if(userAccount==null){
-                       //Step 3:check against each organization for each enterprise
-                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
-                           userAccount=organization.getUserAccountDirectory().authenticateUser(userName, password);
-                           if(userAccount!=null){
-                               inEnterprise=enterprise;
-                               inOrganization=organization;
-                               break;
-                           }
-                       }
-                        
-                    }
-                    else{
-                       inEnterprise=enterprise;
-                       break;
-                    }
-                    if(inOrganization!=null){
+                for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+                    userAccount = enterprise.getUserAccountDirectory().authenticateUser(userName, password);
+                    if (userAccount == null) {
+                        //Step 3:check against each organization for each enterprise
+                        for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()) {
+                            userAccount = organization.getUserAccountDirectory().authenticateUser(userName, password);
+                            if (userAccount != null) {
+                                inEnterprise = enterprise;
+                                inOrganization = organization;
+                                break;
+                            }
+                        }
+
+                    } else {
+                        inEnterprise = enterprise;
                         break;
-                    }  
+                    }
+                    if (inOrganization != null) {
+                        break;
+                    }
                 }
-                if(inEnterprise!=null){
+                if (inEnterprise != null) {
                     break;
                 }
             }
         }
-        
-        if(userAccount==null){
+
+        if (userAccount == null) {
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
-        }
-        else{
-              JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
-              displayPanel(djp);            
+        } else {
+            JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
+            displayPanel(djp);
         }
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_rev_30px.png"))); 
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_rev_30px.png")));
     }//GEN-LAST:event_closeButtonMouseEntered
 
     private void closeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseExited
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_30px.png"))); 
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_30px.png")));
     }//GEN-LAST:event_closeButtonMouseExited
 
     private void minimizeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseEntered

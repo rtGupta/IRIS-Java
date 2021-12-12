@@ -51,6 +51,15 @@ public class ParamedicsJPanel extends javax.swing.JPanel {
         HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
+    
+    public ParamedicsJPanel(JLayeredPane mainPane) {
+        initComponents();
+        this.mainPane = mainPane;
+
+        //HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
+        MessageToPhysicianJPanel icjp = new MessageToPhysicianJPanel();
+        displayPanel(workpane, icjp);
+    }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
         lpane.removeAll();

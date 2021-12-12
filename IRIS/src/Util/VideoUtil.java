@@ -26,7 +26,7 @@ public class VideoUtil {
     private JPanel contentPane;
 
     public VideoUtil(String filename, JPanel panel) {
-        VIDEO_PATH = filename;
+        VIDEO_PATH = "video/"+filename+".avi";
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 //        contentPane = new JPanel();
         contentPane = panel;
