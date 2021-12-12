@@ -352,7 +352,8 @@ public class HospitalJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseExited
 
     private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
-        // TODO add your handling code here:
+        AdmitHistoryJPanel ajp = new AdmitHistoryJPanel(mainPane, workpane, system, userAccount);
+        displayPanel(workpane, ajp);
     }//GEN-LAST:event_historyMouseClicked
 
     private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered

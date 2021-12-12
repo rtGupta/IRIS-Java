@@ -18,7 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
  *
  * @author akshatajadhav
  */
-public class HospitalHomeJPanel extends javax.swing.JPanel {
+public class AdmitHistoryJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -28,7 +28,7 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public HospitalHomeJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
+    public AdmitHistoryJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
@@ -71,7 +71,6 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblStaffAdminWQ = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
@@ -104,7 +103,7 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Request No.", "Location", "Emergency Level", "Request Status"
+                "Request No.", "Location", "Emergency Level", "Status"
             }
         ));
         jScrollPane1.setViewportView(tblStaffAdminWQ);
@@ -122,17 +121,9 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("Admit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -141,12 +132,7 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -155,36 +141,13 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(jButton1)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        WorkRequest request = getSelectedWR();
-        
-        if (request != null) {
-            request.setStatus("Resolved");
-            request.getSender().getWorkQueue().findWorkRequestByID(request.getWorkRequestID()).setStatus("Resolved");
-            for (UserAccount receiver: request.getReceivers()) {
-                receiver.getWorkQueue().findWorkRequestByID(request.getWorkRequestID()).setStatus("Resolved");
-            }
-        }
-        JOptionPane.showMessageDialog(this, "The emergency has been resolved!");
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    public WorkRequest getSelectedWR() {
-        int selectedRowIndex = tblStaffAdminWQ.getSelectedRow();
-        if (selectedRowIndex < 0) {
-            JOptionPane.showMessageDialog(null, "Please select a work request from the table to view incident details.");
-        }
-        WorkRequest workRequest = (WorkRequest) tblStaffAdminWQ.getValueAt(selectedRowIndex, 0);
-        return workRequest;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
