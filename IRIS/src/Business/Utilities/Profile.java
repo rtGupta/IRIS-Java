@@ -14,10 +14,10 @@ public class Profile {
     private String email;
     private long phone;
     private Date dob;
-    private Address homeAddress;
-    private Address workAddress;
+    private String homeAddress;
+    private String workAddress;
     
-    public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, Address homeAddress) {
+    public Profile(String firstName, String lastName, String gender, String email, long phone, Date dob, String homeAddress, String Address) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.gender = gender;
@@ -25,6 +25,7 @@ public class Profile {
       this.phone = phone;
       this.dob = dob;
       this.homeAddress = homeAddress;
+      this.workAddress = workAddress;
     }
     
     public Profile(String firstName, String lastName, long phone) {
@@ -82,19 +83,19 @@ public class Profile {
         this.dob = dob;
     }
 
-    public Address getHomeAddress() {
+    public String getHomeAddress() {
         return homeAddress;
     }
 
-    public void setHomeAddress(Address homeAddress) {
+    public void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
     }
 
-    public Address getWorkAddress() {
+    public String getWorkAddress() {
         return workAddress;
     }
 
-    public void setWorkAddress(Address workAddress) {
+    public void setWorkAddress(String workAddress) {
         this.workAddress = workAddress;
     }
     
