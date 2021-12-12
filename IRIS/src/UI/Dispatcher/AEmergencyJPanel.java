@@ -250,29 +250,36 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        workRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        workRequest.setReceiver((UserAccount) jComboBox2.getSelectedItem());
+        
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        workRequest.setReceiver((UserAccount) jComboBox3.getSelectedItem());
+
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // set receivers for the WR.
+        workRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
+        workRequest.setReceiver((UserAccount) jComboBox2.getSelectedItem());
+        workRequest.setReceiver((UserAccount) jComboBox3.getSelectedItem());
+        
         // set sender of the WR as the current dispatcher.
         workRequest.setSender(userAccount);
         // set status of the WR.
-        workRequest.setStatus("LTEOpen");
+        workRequest.setStatus("Open");
         // push the WR in the work queue of all the receivers and senders?
         userAccount.getWorkQueue().getWorkRequestList().add(workRequest);
         workRequest.getReceivers().forEach(receiver -> {
             receiver.getWorkQueue().getWorkRequestList().add(workRequest);
         });
         // redirect to the dispatcher home screen.
-
+        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workPane, system, userAccount);
+        displayPanel(workPane, icjp);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

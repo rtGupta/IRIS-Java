@@ -8,6 +8,7 @@ import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
+import UI.MainJFrame;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -375,7 +376,8 @@ public class DispatcherJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-//        undo this change later while working on this panel          
+        MainJFrame.dB4OUtil.storeSystem(system);
+        
         LoginJPanel icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
