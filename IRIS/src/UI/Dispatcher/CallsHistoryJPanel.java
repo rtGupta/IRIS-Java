@@ -4,14 +4,21 @@
  */
 package UI.Dispatcher;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import Util.MapsUtil;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -19,19 +26,22 @@ import javax.swing.SwingUtilities;
  */
 public class CallsHistoryJPanel extends javax.swing.JPanel {
 
+    private EcoSystem system;
+    private UserAccount dispatcherUserAccount;
     JLayeredPane mainPane;
     JLayeredPane workPane;
-   
 
     /**
      * Creates new form IncomingCallsJPanel
      */
-    public CallsHistoryJPanel(JLayeredPane mainPane, JLayeredPane workPane) {
+    public CallsHistoryJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
-       
-     
+        this.system = system;
+        this.dispatcherUserAccount = account;
+        populateIncidentTable();
+
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -59,7 +69,7 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
         Separator_imp = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbldispatcherWQ = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -100,7 +110,7 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Calls History", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbldispatcherWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"", "", "", ""},
                 {"", "", "", ""},
@@ -108,16 +118,16 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
                 {"", "", "", null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Request No.", "Location", "Emergency Level", "Request Status"
             }
         ));
-        jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
-        jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTable2.setShowGrid(true);
-        jTable2.setShowHorizontalLines(false);
-        jTable2.getTableHeader().setResizingAllowed(false);
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
+        tbldispatcherWQ.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tbldispatcherWQ.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tbldispatcherWQ.setShowGrid(true);
+        tbldispatcherWQ.setShowHorizontalLines(false);
+        tbldispatcherWQ.getTableHeader().setResizingAllowed(false);
+        tbldispatcherWQ.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tbldispatcherWQ);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,12 +142,11 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 5, 970, 200));
-        jPanel1.getAccessibleContext().setAccessibleName("Calls History");
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 5, 970, 570));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -148,7 +157,25 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbldispatcherWQ;
     // End of variables declaration//GEN-END:variables
+    public void populateIncidentTable() {
+        DefaultTableModel dispatcherIncidentTableModel = (DefaultTableModel) tbldispatcherWQ.getModel();
+        dispatcherIncidentTableModel.setRowCount(0);
 
+        WorkQueue workQueue = dispatcherUserAccount.getWorkQueue();
+        if (workQueue != null) {
+            List<WorkRequest> dispatcherWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(dispatcherWorkRequestList)) {
+                for (WorkRequest wr : dispatcherWorkRequestList) {
+                    Object[] row = new Object[4];
+                    row[0] = wr;
+                    row[1] = wr.getCaller().getLocation();
+                    row[2] = wr.getEmergencyLevel();
+                    row[3] = wr.getStatus();
+                    dispatcherIncidentTableModel.addRow(row);
+                }
+            }
+        }
+    }
 }

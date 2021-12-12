@@ -349,7 +349,8 @@ public class DispatcherJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseExited
 
     private void historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseClicked
-        // TODO add your handling code here:
+        CallsHistoryJPanel chjp = new CallsHistoryJPanel(mainPane, workpane, system, userAccount);
+        displayPanel(workpane, chjp);
     }//GEN-LAST:event_historyMouseClicked
 
     private void historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyMouseEntered

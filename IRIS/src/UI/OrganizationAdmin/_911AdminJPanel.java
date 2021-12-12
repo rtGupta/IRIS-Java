@@ -779,12 +779,19 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
             }
+
+            double[] coords = MapsUtil.getGeoPointFromAddress(work);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
             //add validation for address
             UserAccount userAccount = null;
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
+                    userProfile.setLocation(coords);
                     if (organization instanceof Physician911Organization) {
                         userAccount = accountDirectory.createUserAccount(userName, password, new Physician911(), userProfile);
                     } else if (organization instanceof Dispatcher911Organization) {
@@ -826,7 +833,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             txtDob.setText(simpleDateFormat.format(userProfile.getDob()));
             txtHomeAddress.setText(userProfile.getHomeAddress());
             txtWorkAddress.setText(userProfile.getWorkAddress());
-            
+
             switch (userProfile.getGender()) {
                 case "Male":
                     btnGrpGender.setSelected(radbtnMale.getModel(), true);
@@ -883,7 +890,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             String email = txtEmail.getText();
             String home = txtHomeAddress.getText();
             String work = txtWorkAddress.getText();
-            
+
             if (StringUtils.isBlank(email)) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
@@ -892,7 +899,11 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
             }
-
+            double[] coords = MapsUtil.getGeoPointFromAddress(work);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
             boolean isUpdated = false;
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
@@ -905,7 +916,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                             existingUserProfile.setEmail(email);
                             existingUserProfile.setHomeAddress(home);
                             existingUserProfile.setWorkAddress(work);
-                            
+                            existingUserProfile.setLocation(coords);
                             accountDirectory.findAccount(selectedUser.getUsername()).setProfileDetails(existingUserProfile);
                             isUpdated = true;
                             JOptionPane.showMessageDialog(this, "User details updated Successfull!!");

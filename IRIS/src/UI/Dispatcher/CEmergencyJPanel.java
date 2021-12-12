@@ -16,6 +16,8 @@ import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
 import Util.DropdownItem;
 import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +33,9 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
 
     private EcoSystem system;
     private UserAccount dispatcherUserAccount;
+    private Caller caller;
+    List<double[]> paramedicLocations;
+    
     
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -46,14 +51,15 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.dispatcherUserAccount = userAccount;
-        
+        this.caller = caller;
+        paramedicLocations = new ArrayList<>();
         dispatcherWorkRequest = new WorkRequest(this.dispatcherUserAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
         dispatcherWorkRequest.setCaller(caller);
         dispatcherWorkRequest.setMessage(message);
         dispatcherWorkRequest.setEmergencyLevel(emergencyLevel.charAt(0));
         
         loadDropdown();
-        JPanel map = MapsUtil.defaultMap();
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), paramedicLocations);
         displayPanel(maps, map);
     }
 
@@ -73,16 +79,18 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
                     .findEnterprise(Enterprise.EnterpriseType.FirstResponderEnterprise.getValue());
             for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
                 if (org instanceof EMTOrganization) {
-                    this.loadValues(org, jComboBox1);
+                    this.loadValues(org, jComboBox1, paramedicLocations);
                 }
             }
         }
     }
 
-    private void loadValues(Organization org, JComboBox<String> drpdown) {
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double []> p) {
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
 //            System.out.println(paramedicAccount.getUsername());
-            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+//            drpdown.addItem(new DropdownItem(acc.getUsername(), acc).toString());
+            drpdown.addItem(acc);
+            p.add(acc.getProfileDetails().getLocation());
         }
     }
 
@@ -97,7 +105,7 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         maps = new javax.swing.JLayeredPane();
         jButton2 = new javax.swing.JButton();
@@ -145,6 +153,11 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -210,11 +223,16 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         // redirect to the dispatcher home screen.
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), paramedicLocations);
+        displayPanel(maps, map);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLayeredPane maps;

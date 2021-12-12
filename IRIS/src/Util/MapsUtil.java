@@ -169,7 +169,7 @@ public class MapsUtil {
         GeoPosition youLocation = new GeoPosition(location);
 
         // Set the focus
-        mapViewer.setZoom(10);
+        mapViewer.setZoom(7);
         mapViewer.setAddressLocation(youLocation);
 
         // Add interactions
@@ -218,7 +218,7 @@ public class MapsUtil {
         GeoPosition youLocation = new GeoPosition(location);
 
         // Set the focus
-        mapViewer.setZoom(10);
+        mapViewer.setZoom(6);
         mapViewer.setAddressLocation(youLocation);
 
         // Add interactions
@@ -234,7 +234,7 @@ public class MapsUtil {
                 new CustomWayPoint("C", "white", youLocation)
                 ));
         for (double[] loc: paramedics){
-            waypoints.add(new CustomWayPoint("F", "yellow", new GeoPosition(loc)));
+            waypoints.add(new CustomWayPoint("+", "yellow", new GeoPosition(loc)));
         }
         // Create a waypoint painter that takes all the waypoints
         WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();

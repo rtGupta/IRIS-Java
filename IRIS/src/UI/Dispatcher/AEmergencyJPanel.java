@@ -13,6 +13,7 @@ import Business.Organization.FirstResponder.EMTOrganization;
 import Business.Organization.FirstResponder.FireOrganization;
 import Business.Organization.FirstResponder.LawEnforcementOrganization;
 import Business.Organization.Organization;
+import Business.Role.FirstResponder.Fireman;
 import Business.Role.Role;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
@@ -34,6 +35,7 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
 
     private EcoSystem system;
     private UserAccount userAccount;
+    private Caller caller;
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
@@ -52,6 +54,7 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.userAccount = userAccount;
+        this.caller = caller;
 
         policeLocations = new ArrayList<>();
         fireFighterLocations = new ArrayList<>();
@@ -63,7 +66,7 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         workRequest.setEmergencyLevel(emergencyLevel.charAt(0));
 
         loadDropdowns();
-        JPanel map = MapsUtil.publishMap(userAccount.getProfileDetails().getLocation(), policeLocations, fireFighterLocations, paramedicLocations);
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), policeLocations, fireFighterLocations, paramedicLocations);
         displayPanel(maps, map);
     }
 
@@ -73,27 +76,21 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
                     .findEnterprise(EnterpriseType.FirstResponderEnterprise.getValue());
             for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
                 if (org instanceof EMTOrganization) {
-                    this.loadValues(org, jComboBox2);
+                    this.loadValues(org, jComboBox2, paramedicLocations);
                 } else if (org instanceof LawEnforcementOrganization) {
-                    this.loadValues(org, jComboBox1);
+                    this.loadValues(org, jComboBox1, policeLocations);
                 } else if (org instanceof FireOrganization) {
-                    this.loadValues(org, jComboBox3);
+                    this.loadValues(org, jComboBox3, fireFighterLocations);
                 }
             }
         }
     }
 
-    private void loadValues(Organization org, JComboBox<UserAccount> drpdown) {
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double []> p) {
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
 //            System.out.println(paramedicAccount.getUsername());
-            if(acc.getRole().equals(Role.FirstResponderRoleType.FireMan)){
-                fireFighterLocations.add(acc.getProfileDetails().getLocation());
-            }else if(acc.getRole().equals(Role.FirstResponderRoleType.Paramedic)){
-                paramedicLocations.add(acc.getProfileDetails().getLocation());
-            }else if(acc.getRole().equals(Role.FirstResponderRoleType.Police)){
-                policeLocations.add(acc.getProfileDetails().getLocation());
-            }
             drpdown.addItem(acc);
+            p.add(acc.getProfileDetails().getLocation());
         }
     }
 
@@ -186,6 +183,11 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -272,6 +274,11 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         // redirect to the dispatcher home screen.
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       JPanel map = MapsUtil.publishMap(caller.getCoordinates(), policeLocations, fireFighterLocations, paramedicLocations);
+        displayPanel(maps, map);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -54,11 +54,12 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
-    
+
     EcoSystem system;
     UserAccount userAccount;
     EnterpriseDirectory enterpriseDirectory;
     OrganizationDirectory organizationDirectory;
+
     /**
      * Creates new form DispatcherJPanel
      */
@@ -68,7 +69,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         this.system = system;
         this.userAccount = account;
         this.enterpriseDirectory = system.getNetworkList().get(0).getEnterpriseDirectory();
-        
+
         jButton1.setEnabled(false);
         radbtnMale.setActionCommand("Male");
         radbtnFemale.setActionCommand("Female");
@@ -714,7 +715,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
         MainJFrame.dB4OUtil.storeSystem(system);
-        
+
         LoginJPanel icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
@@ -791,12 +792,19 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
             }
+            double[] coords = MapsUtil.getGeoPointFromAddress(work);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
+
             //add validation for address
             UserAccount userAccount = null;
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
+                    userProfile.setLocation(coords);
                     if (organization instanceof EMTOrganization) {
                         userAccount = accountDirectory.createUserAccount(userName, password, new Paramedic(), userProfile);
                     } else if (organization instanceof FireOrganization) {
@@ -839,14 +847,14 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
 
             switch (userProfile.getGender()) {
                 case "Male":
-                btnGrpGender.setSelected(radbtnMale.getModel(), true);
-                break;
+                    btnGrpGender.setSelected(radbtnMale.getModel(), true);
+                    break;
                 case "Female":
-                btnGrpGender.setSelected(radbtnFemale.getModel(), true);
-                break;
+                    btnGrpGender.setSelected(radbtnFemale.getModel(), true);
+                    break;
                 case "Prefer not to say":
-                btnGrpGender.setSelected(radbtnNotToSay.getModel(), true);
-                break;
+                    btnGrpGender.setSelected(radbtnNotToSay.getModel(), true);
+                    break;
             }
         }
         jButton1.setEnabled(true);
@@ -867,7 +875,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             String email = txtEmail.getText();
             String home = txtHomeAddress.getText();
             String work = txtWorkAddress.getText();
-            
+
             if (StringUtils.isBlank(email)) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
@@ -876,7 +884,11 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
             }
-
+            double[] coords = MapsUtil.getGeoPointFromAddress(work);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Wrong Address");
+                return;
+            }
             boolean isUpdated = false;
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
@@ -889,7 +901,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                             existingUserProfile.setEmail(email);
                             existingUserProfile.setHomeAddress(home);
                             existingUserProfile.setWorkAddress(work);
-                            
+                            existingUserProfile.setLocation(coords);
                             accountDirectory.findAccount(selectedUser.getUsername()).setProfileDetails(existingUserProfile);
                             isUpdated = true;
                             JOptionPane.showMessageDialog(this, "User details updated Successfull!!");
@@ -954,7 +966,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
 
         return (UserAccount) jTable2.getValueAt(selectedRowIndex, 0);
     }
-    
+
     public void populateOrganizationAdminTable(String selectedOrg) {
         DefaultTableModel orgAdminTableModel = (DefaultTableModel) jTable2.getModel();
         orgAdminTableModel.setRowCount(0);
@@ -1002,7 +1014,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         txtWorkAddress.setText("");
         btnGrpGender.clearSelection();
     }
-    
+
     private void enableAllFields(boolean enable) {
         txtUserName.setEditable(enable);
         txtPassword.setEditable(enable);
@@ -1086,7 +1098,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     System.out.println("...");
                 }
-               
+
             }
         };
 
