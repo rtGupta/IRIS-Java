@@ -507,6 +507,9 @@ public class AdminListJPanel extends javax.swing.JPanel {
         txtPassword.setEnabled(true);
         txtDateOfBirth.setEnabled(true);
         txtPassword.setEnabled(true);
+        radbtnMale.setEnabled(true);
+        radbtnFemale.setEnabled(true);
+        radbtnNotToSay.setEnabled(true);
     }//GEN-LAST:event_btnUpdateAdminActionPerformed
 
     private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
@@ -690,7 +693,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
         txtUserName.setEnabled(false);
         txtPassword.setEnabled(false);
         txtDateOfBirth.setEnabled(false);
-        txtPassword.setEnabled(false);        
+        txtPassword.setEnabled(false);
+        radbtnMale.setEnabled(false);
+        radbtnFemale.setEnabled(false);
+        radbtnNotToSay.setEnabled(false);        
     }//GEN-LAST:event_btnViewUserActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
