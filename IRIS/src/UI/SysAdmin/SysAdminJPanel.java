@@ -321,8 +321,12 @@ public class SysAdminJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        MainJFrame.dB4OUtil.storeSystem(system);
+
         JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this);
         parentFrame.dispose();
+        
+        
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered

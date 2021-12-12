@@ -3,6 +3,8 @@ package Business.UserAccount;
 import Business.Role.Role;
 import Business.Utilities.Profile;
 import java.util.ArrayList;
+import java.util.Iterator;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -53,5 +55,19 @@ public class UserAccountDirectory {
             }
         }
         return null;
+    }
+    
+    public boolean removeUserAccount(UserAccount userAccount){
+        boolean deleted = false;
+        if(userAccount != null && CollectionUtils.isNotEmpty(userAccountList)){
+            Iterator iterator = userAccountList.iterator();
+            while(iterator.hasNext()){
+                if(userAccount.equals(iterator.next())){
+                    iterator.remove();
+                    deleted = true;
+                }
+            }
+        }
+        return deleted;
     }
 }
