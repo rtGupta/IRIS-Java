@@ -179,7 +179,11 @@ public class HospitalHomeJPanel extends javax.swing.JPanel {
                 receiver.getWorkQueue().findWorkRequestByID(request.getWorkRequestID()).setStatus("Resolved");
             }
         }
+        userAccount.getWorkQueue()
+                        .findWorkRequestByID(request.getWorkRequestID()).setStatus("Resolved");
+
         JOptionPane.showMessageDialog(this, "The emergency has been resolved!");
+        populateHospitalWQTable();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public WorkRequest getSelectedWR() {
