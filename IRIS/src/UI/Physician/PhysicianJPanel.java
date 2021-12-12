@@ -50,14 +50,6 @@ public class PhysicianJPanel extends javax.swing.JPanel {
         PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
-//     public PhysicianJPanel(JLayeredPane mainPane) {
-//        initComponents();
-//        this.mainPane = mainPane;
-//
-//        //PhysicianHomeJPanel icjp = new PhysicianHomeJPanel(mainPane, workpane, system, userAccount);
-//        MessageFromParamedicJPanel icjp = new MessageFromParamedicJPanel();
-//        displayPanel(workpane, icjp);
-//    }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
         lpane.removeAll();

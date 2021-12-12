@@ -384,24 +384,7 @@ public class LoginJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_loginButtonMouseExited
 
     private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
-//        JPanel djp1 = null;
-//        if (roles.getSelection() == null) {
-//            return;
-//        } else if (roles.getSelection().getActionCommand().equals("Physician")) {
-//            djp1 = new PhysicianJPanel(mainPane);
-//        } else if (roles.getSelection().getActionCommand().equals("Dispatcher")) {
-////            djp1 = new DispatcherJPanel(mainPane);
-//        } else if (roles.getSelection().getActionCommand().equals("Hospital")) {
-////            djp1 = new HospitalJPanel(mainPane);
-//        } else if (roles.getSelection().getActionCommand().equals("Paramedics")) {
-//            djp1 = new ParamedicsJPanel(mainPane);
-//        } else {
-//            return;
-//        }
-//        displayPanel(djp1);
-//        if(true){
-//            return;
-//        }
+        
         // Get user name
         String userName = txtLoginUserName.getText();
         // Get Password

@@ -168,6 +168,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         if (!cameraOn && initializeCamera && !messageRecorded) {
             System.out.println("initialized");
             try {
+                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/loadingCamera.gif")));
                 cu = new CameraUtil(VIDEO_FILE_NAME, 640, 480);
                 cu.startCamera(camera);
                 cameraOn = true;

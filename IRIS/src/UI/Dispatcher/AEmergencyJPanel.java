@@ -13,10 +13,13 @@ import Business.Organization.FirstResponder.EMTOrganization;
 import Business.Organization.FirstResponder.FireOrganization;
 import Business.Organization.FirstResponder.LawEnforcementOrganization;
 import Business.Organization.Organization;
+import Business.Role.Role;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
 import Util.DropdownItem;
 import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -34,6 +37,9 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    List<double[]> policeLocations;
+    List<double[]> fireFighterLocations;
+    List<double[]> paramedicLocations;
 
     WorkRequest workRequest;
 
@@ -47,13 +53,17 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         this.system = system;
         this.userAccount = userAccount;
 
+        policeLocations = new ArrayList<>();
+        fireFighterLocations = new ArrayList<>();
+        paramedicLocations = new ArrayList<>();
+
         workRequest = new WorkRequest(this.userAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
         workRequest.setCaller(caller);
         workRequest.setMessage(message);
         workRequest.setEmergencyLevel(emergencyLevel.charAt(0));
 
         loadDropdowns();
-        JPanel map = MapsUtil.defaultMap();
+        JPanel map = MapsUtil.publishMap(userAccount.getProfileDetails().getLocation(), policeLocations, fireFighterLocations, paramedicLocations);
         displayPanel(maps, map);
     }
 
@@ -76,6 +86,13 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
     private void loadValues(Organization org, JComboBox<UserAccount> drpdown) {
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
 //            System.out.println(paramedicAccount.getUsername());
+            if(acc.getRole().equals(Role.FirstResponderRoleType.FireMan)){
+                fireFighterLocations.add(acc.getProfileDetails().getLocation());
+            }else if(acc.getRole().equals(Role.FirstResponderRoleType.Paramedic)){
+                paramedicLocations.add(acc.getProfileDetails().getLocation());
+            }else if(acc.getRole().equals(Role.FirstResponderRoleType.Police)){
+                policeLocations.add(acc.getProfileDetails().getLocation());
+            }
             drpdown.addItem(acc);
         }
     }
@@ -251,9 +268,9 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         userAccount.getWorkQueue().getWorkRequestList().add(workRequest);
         workRequest.getReceivers().forEach(receiver -> {
             receiver.getWorkQueue().getWorkRequestList().add(workRequest);
-        }); 
+        });
         // redirect to the dispatcher home screen.
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
