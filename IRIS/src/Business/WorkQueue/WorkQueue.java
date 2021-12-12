@@ -29,7 +29,6 @@ public class WorkQueue {
 
     public int retrieveLastWRID() {
         int wqLength = getWorkRequestList().size();
-        return getWorkRequestList().get(wqLength - 1) != null
-                ? getWorkRequestList().get(wqLength - 1).getWorkRequestID() : 1;
+        return wqLength > 0 ? getWorkRequestList().get(wqLength - 1).getWorkRequestID() : 0;
     }
 }
