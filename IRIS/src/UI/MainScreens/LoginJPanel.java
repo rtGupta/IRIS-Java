@@ -420,8 +420,8 @@ public class LoginJPanel extends javax.swing.JPanel {
             return;
         }
         else{
-              JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
-              displayPanel(djp);            
+            JPanel djp = userAccount.getRole().createWorkArea(mainPane, userAccount, inOrganization, inEnterprise, system);
+            displayPanel(djp);           
         }
     }//GEN-LAST:event_loginButtonMouseClicked
 
