@@ -7,8 +7,14 @@ package UI;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Enterprise.Enterprise911;
 import Business.Enterprise.EnterpriseDirectory;
+import Business.Enterprise.FirstResponderEnterprise;
+import Business.Enterprise.HealthcareEnterprise;
+import Business.Enterprise.VoluntaryEnterprise;
 import Business.Network.Network;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
 import UI.MainScreens.LoginJPanel;
 import UI.MainScreens.LandingScreenJPanel;
 import javax.swing.JPanel;
@@ -23,6 +29,9 @@ public class MainJFrame extends javax.swing.JFrame {
     
     private EcoSystem system;
     public static DB4OUtil dB4OUtil = DB4OUtil.getInstance();
+    public Network network;
+    public EnterpriseDirectory enterpriseDirectory;
+    public OrganizationDirectory organizationDirectory;
     /**
      * Creates new form MainJFrame
      */
@@ -31,22 +40,51 @@ public class MainJFrame extends javax.swing.JFrame {
         
         system = dB4OUtil.retrieveSystem();
         
-        Network network = null;
+//        Network network = null;
         if(CollectionUtils.isEmpty(system.getNetworkList())){
-            network = system.createAndAddNetwork();
+            this.network = system.createAndAddNetwork();
             network.setName("Boston");
         }else {
-            network = system.getNetworkList().get(0);
+            this.network = system.getNetworkList().get(0);
         }
-        if(network != null && network.getEnterpriseDirectory()!=null && CollectionUtils.isEmpty(network.getEnterpriseDirectory().getEnterpriseList())){
-            EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
-            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.Enterprise911.getValue(), Enterprise.EnterpriseType.Enterprise911);
-            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.FirstResponderEnterprise.getValue(), Enterprise.EnterpriseType.FirstResponderEnterprise);
-            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.HealthcareEnterprise.getValue(), Enterprise.EnterpriseType.HealthcareEnterprise);
-            enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue(), Enterprise.EnterpriseType.VoluntaryEnterprise);
-            network.setEnterpriseDirectory(enterpriseDirectory);            
+        if(network != null ){
+            if(network.getEnterpriseDirectory()!=null && CollectionUtils.isEmpty(network.getEnterpriseDirectory().getEnterpriseList())){
+                EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
+                enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.Enterprise911.getValue(), Enterprise.EnterpriseType.Enterprise911);
+                enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.FirstResponderEnterprise.getValue(), Enterprise.EnterpriseType.FirstResponderEnterprise);
+                enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.HealthcareEnterprise.getValue(), Enterprise.EnterpriseType.HealthcareEnterprise);
+                enterpriseDirectory.createAndAddEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue(), Enterprise.EnterpriseType.VoluntaryEnterprise);
+                network.setEnterpriseDirectory(enterpriseDirectory);                
+            }
+            this.enterpriseDirectory = network.getEnterpriseDirectory();            
         }
-                
+        if(enterpriseDirectory != null) {
+            for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
+                if (enterprise != null && enterprise.getOrganizationDirectory()!=null
+                        && CollectionUtils.isEmpty(enterprise.getOrganizationDirectory().getOrganizationList())) {
+                    OrganizationDirectory organizationDirectory = enterprise.getOrganizationDirectory();
+                    if(enterprise instanceof Enterprise911){
+                        organizationDirectory.createEnterprise911Organization(Organization.Enterprise911OrgType.DispatcherOrg);
+                        organizationDirectory.createEnterprise911Organization(Organization.Enterprise911OrgType.Physician911);
+                        enterprise.setOrganizationDirectory(organizationDirectory);
+                    } else if(enterprise instanceof FirstResponderEnterprise) {
+                        organizationDirectory.createFirstResponderOrganization(Organization.FirstResponderOrgType.EMTOrg);
+                        organizationDirectory.createFirstResponderOrganization(Organization.FirstResponderOrgType.FireOrg);
+                        organizationDirectory.createFirstResponderOrganization(Organization.FirstResponderOrgType.LawEnforcementOrg);
+                        enterprise.setOrganizationDirectory(organizationDirectory);                        
+                    } else if(enterprise instanceof HealthcareEnterprise) {
+                        organizationDirectory.createHealthCareOrganization(Organization.HealthCareOrgType.NonClinicalOrg);
+                        enterprise.setOrganizationDirectory(organizationDirectory);                        
+                    } else if(enterprise instanceof VoluntaryEnterprise) {
+                        organizationDirectory.createVoluntaryOrganization(Organization.VoluntaryOrgType.VoluntaryClinicianOrg);
+                        organizationDirectory.createVoluntaryOrganization(Organization.VoluntaryOrgType.VoluntaryTransportOrg);
+                        enterprise.setOrganizationDirectory(organizationDirectory);                        
+                    }
+                }
+            }
+            network.setEnterpriseDirectory(enterpriseDirectory);
+        }
+        //system.getNetworkList().set(0, network);
         
         LandingScreenJPanel lsjp = new LandingScreenJPanel(mainPane, system);
         displayPanel(lsjp);
