@@ -198,21 +198,11 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
             });
 
             physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-        } else {
-            // prescription submission screen flow?
-            physicianWorkRequest.setStatus("Resolved"); // resolve here or transfer the control back to paramedic?
-            physicianWorkRequest.getSender().getWorkQueue()
-                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
-            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
-                receiverAccount.getWorkQueue()
-                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
-            });
-
-            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+            // Redirect to Physician Home screen
+            PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
+            displayPanel(workPane, phjp);
         }
-        // Redirect to Physician Home screen
-        PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
-        displayPanel(workPane, phjp);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

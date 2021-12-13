@@ -31,7 +31,7 @@ public class Caller {
     }
 
     public Boolean isVitalSignsWithinNormalRange(Vitals vs) {
-        return !((vs.getBodyTemp() < 98.6)
+        return !((vs.getBodyTemp() > 98.6)
                 || (vs.getOxyLevel() < 88)
                 || (vs.getPulse() < 60 || vs.getPulse() > 100)
                 || ((vs.getHighBP() < 90 || vs.getHighBP() > 120)
