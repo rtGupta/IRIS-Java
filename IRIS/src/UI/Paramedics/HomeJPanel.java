@@ -337,6 +337,8 @@ public class HomeJPanel extends javax.swing.JPanel {
                 
                 if (paramedicWorkRequest.getEmergencyLevel() == 'C') {
                     // go to the medicalRecords screen and pass workRequest object.
+                    MedicalRecordsJPanel mrjp = new MedicalRecordsJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
+                    displayPanel(workPane, mrjp);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "The work request is already in progress!");

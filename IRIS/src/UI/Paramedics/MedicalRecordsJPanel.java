@@ -442,6 +442,7 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
             paramedicWorkRequest.setIsIRISeligible(true);
             // go to video recording screen - assign physician and add WR to physician's WQ and change status in senders and receivers.
             MessageToPhysicianJPanel mtjp = new MessageToPhysicianJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
+            displayPanel(workPane, mtjp);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
