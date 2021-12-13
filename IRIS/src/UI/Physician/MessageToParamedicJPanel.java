@@ -11,8 +11,11 @@ import UI.Paramedics.*;
 import Util.CameraUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.bytedeco.javacv.FrameGrabber;
 
 /**
@@ -24,8 +27,8 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     JLayeredPane workPane;
     private EcoSystem system;
-    private UserAccount paramedicUserAccount;
-    WorkRequest request;
+    private UserAccount physicianUserAccount;
+    WorkRequest physicianWorkRequest;
     final String VIDEO_FILE_NAME;
     boolean initializeCamera = true;
     boolean cameraOn = false;
@@ -40,11 +43,21 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
-        this.paramedicUserAccount = account;
-        this.request = request;
+        this.physicianUserAccount = account;
+        this.physicianWorkRequest = request;
         VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_physician";
     }
 
+    public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        lpane.repaint();
+        lpane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -102,7 +115,7 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Message to Physician");
+        jLabel2.setText("Message to Paramedic");
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -197,6 +210,32 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
         if(messageRecorded){
             JOptionPane.showMessageDialog(this, "Please record video message!");
         }
+        
+        if (physicianWorkRequest.isIRISeligible()) {
+            physicianWorkRequest.setStatus("Transport Care Required");
+            physicianWorkRequest.getSender().getWorkQueue()
+                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
+                receiverAccount.getWorkQueue()
+                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+            }); 
+            
+            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+        } else {
+            // prescription submission screen flow?
+            physicianWorkRequest.setStatus("Resolved"); // resolve here or transfer the control back to paramedic?
+            physicianWorkRequest.getSender().getWorkQueue()
+                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
+                receiverAccount.getWorkQueue()
+                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            }); 
+            
+            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+        }
+        // Redirect to Physician Home screen
+            PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
+            displayPanel(workPane, phjp);
     }//GEN-LAST:event_jButton5ActionPerformed
 
 
