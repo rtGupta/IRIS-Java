@@ -207,10 +207,11 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        dispatcherWorkRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispatcherWorkRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
         // set sender of the WR as the current dispatcher.
         dispatcherWorkRequest.setSender(dispatcherUserAccount);
         // set status of the WR.
@@ -221,6 +222,8 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
             receiver.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
         }); 
         // redirect to the dispatcher home screen.
+        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workPane, system, dispatcherUserAccount);
+        displayPanel(workPane, icjp);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
