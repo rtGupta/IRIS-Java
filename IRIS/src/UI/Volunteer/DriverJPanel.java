@@ -4,15 +4,25 @@
  */
 package UI.Volunteer;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.Utilities.Profile;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import UI.PoliceOfficer.*;
 import UI.Paramedics.*;
 import UI.Dispatcher.*;
 import Util.MapsUtil;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -22,13 +32,55 @@ public class DriverJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    EcoSystem system;
+    UserAccount driverUserAccount;
+    WorkRequest driverWorkRequest;
+    
     /**
      * Creates new form AEmergencyJPanel
      */
-    public DriverJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public DriverJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
+        this.system = system;
+        this.driverUserAccount = account;
+        
+        populateWorkQueueTable();
+        
+        tblDriverWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                int selectedRowIndex = tblDriverWQ.getSelectedRow();
+                if (selectedRowIndex < 0) {
+                    txtCallerName.setText("");
+                    txtContact.setText("");
+                    txtLocation.setText("");
+                    //txtMessage.setText("");
+                    
+                    return;
+                }
+                
+                 driverWorkRequest = (WorkRequest) tblDriverWQ.getValueAt(selectedRowIndex, 0);
+                if (driverWorkRequest != null){
+                    Profile callerInfo = driverWorkRequest.getCaller().getCallerDetails();
+                    txtCallerName.setText(callerInfo.getFirstName() +" "+callerInfo.getLastName());
+                    txtContact.setText(String.valueOf(callerInfo.getPhone()));
+                    txtLocation.setText(driverWorkRequest.getCaller().getLocation());
+                    //txtMessage.setText(driverWorkRequest.getMessage());
+                     JPanel map = MapsUtil.mapWayPoint(driverWorkRequest.getCaller().getCoordinates());
+                    displayPanel(maps, map);
+                     if (driverWorkRequest.getStatus().equals("Transport Care Reqduired") ||
+                            driverWorkRequest.getStatus().equals("Scene Assessment in progress")) {
+                       // btnHospitalTransfer.setEnabled(true);
+                        btnTransferToHosp.setEnabled(false);
+                        // go to HospitalTransferJPanel screen
+                    } else if (!driverWorkRequest.getStatus().equals("Open")) {
+                        btnTransferToHosp.setEnabled(false);
+                    }
+                   
+                }
+            }
+        });
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -40,6 +92,27 @@ public class DriverJPanel extends javax.swing.JPanel {
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
     }
+    
+    public void populateWorkQueueTable(){
+        DefaultTableModel driverTableModel = (DefaultTableModel) tblDriverWQ.getModel();
+        driverTableModel.setRowCount(0);
+        
+        WorkQueue workQueue = driverUserAccount.getWorkQueue();
+        if(workQueue != null){
+            List<WorkRequest> driverWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(driverWorkRequestList)){
+                for(WorkRequest wr : driverWorkRequestList) {
+                    Object[] row = new Object[4];
+                    row[0] = wr;
+                    row[1] = wr.getCaller().getLocation();
+                    row[2] = wr.getEmergencyLevel();
+                    row[3] = wr.getStatus();
+                    driverTableModel.addRow(row);
+                }
+            }
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,9 +126,15 @@ public class DriverJPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        tblDriverWQ = new javax.swing.JTable();
         maps = new javax.swing.JLayeredPane();
+        btnTransferToHosp = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtCallerName = new javax.swing.JTextField();
+        txtContact = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtLocation = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
@@ -76,10 +155,10 @@ public class DriverJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
-        jPanel1.setBackground(new java.awt.Color(255, 51, 51));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDriverWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -98,7 +177,7 @@ public class DriverJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDriverWQ);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,19 +196,25 @@ public class DriverJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton2.setText("Transfer To Hospital");
+        maps.setPreferredSize(new java.awt.Dimension(600, 200));
+        maps.setLayout(new java.awt.CardLayout());
 
-        javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);
-        maps.setLayout(mapsLayout);
-        mapsLayout.setHorizontalGroup(
-            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
-        );
-        mapsLayout.setVerticalGroup(
-            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
-        );
+        btnTransferToHosp.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnTransferToHosp.setText("Transfer To Hospital");
+        btnTransferToHosp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransferToHospActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel1.setText("Name:");
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel2.setText("Phone Number:");
+
+        jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel3.setText("Address:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -139,17 +224,31 @@ public class DriverJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(374, 374, 374)
+                .addComponent(btnTransferToHosp)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,22 +258,51 @@ public class DriverJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtContact)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                            .addComponent(txtLocation)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jButton2)))
-                .addContainerGap(129, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(btnTransferToHosp)
+                .addGap(26, 26, 26))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTransferToHospActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferToHospActionPerformed
+        // TODO add your handling code here:
+        
+        HospitalTransferJPanel htjp = new HospitalTransferJPanel(mainPane, workPane, system, driverUserAccount, driverWorkRequest);
+        displayPanel(workPane, htjp);
+        
+        
+        
+        
+    }//GEN-LAST:event_btnTransferToHospActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnTransferToHosp;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLayeredPane maps;
+    private javax.swing.JTable tblDriverWQ;
+    private javax.swing.JTextField txtCallerName;
+    private javax.swing.JTextField txtContact;
+    private javax.swing.JTextField txtLocation;
     // End of variables declaration//GEN-END:variables
 }
