@@ -18,6 +18,7 @@ public class Profile {
     private String homeAddress;
     private String workAddress;
     private double[] location;
+    private boolean available = true; 
 //    private double latitude;
 //    private double longitude;
     
@@ -31,6 +32,15 @@ public class Profile {
       this.homeAddress = homeAddress;
       this.workAddress = workAddress;
     }
+    // For volunteers
+    public Profile(String firstName, String lastName, String gender, long phone, String homeAddress) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.gender = gender;
+      this.phone = phone;
+      this.homeAddress = homeAddress;
+      this.available = true;
+    }    
     
     public Profile(String firstName, String lastName, long phone) {
         this.firstName = firstName;
@@ -43,7 +53,9 @@ public class Profile {
         this.email = email;
         this.workAddress = workAddress;
         this.phone = phone;
-    }    
+    }   
+    
+    
     
     // Getters and Setters
     public String getFirstName() {
@@ -124,6 +136,14 @@ public class Profile {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
     
 }

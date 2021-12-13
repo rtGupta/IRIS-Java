@@ -4,12 +4,35 @@
  */
 package UI.Dispatcher;
 
+import Business.Caller.Caller;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.EnterpriseDirectory;
+import Business.Enterprise.VoluntaryEnterprise;
+import Business.Network.Network;
+import Business.Organization.FirstResponder.EMTOrganization;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
+import Business.Organization.Voluntary.VoluntaryClinicianOrganization;
+import Business.Organization.Voluntary.VoluntaryTransportOrganization;
+import Business.Role.Enterprise911.Physician911;
+import Business.Role.Voluntary.Driver;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
+import UI.Volunteer.ClinicianHomeJPanel;
+import UI.Volunteer.DriverHomeJPanel;
 import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -17,17 +40,49 @@ import javax.swing.SwingUtilities;
  */
 public class EEmergencyJPanel extends javax.swing.JPanel {
 
+    private EcoSystem system;
+    private UserAccount dispatcherUserAccount;
+    private Caller caller;
+    List<double[]> volunteerLocations;
+
     JLayeredPane mainPane;
     JLayeredPane workPane;
+
+    WorkRequest dispatcherWorkRequest;
+
     /**
      * Creates new form AEmergencyJPanel
      */
-    public EEmergencyJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public EEmergencyJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount userAccount, Caller caller, String message, String emergencyLevel) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
-        JPanel map = MapsUtil.defaultMap();
+        this.system = system;
+        this.dispatcherUserAccount = userAccount;
+        this.caller = caller;
+        volunteerLocations = new ArrayList<>();
+        dispatcherWorkRequest = new WorkRequest(this.dispatcherUserAccount.getWorkQueue().retrieveLastWRID() + 1); // pass the actual WR_ID.
+        dispatcherWorkRequest.setCaller(caller);
+        dispatcherWorkRequest.setMessage(message);
+        dispatcherWorkRequest.setEmergencyLevel(emergencyLevel.charAt(0));
+
+        JPanel map = MapsUtil.defaultMap();//publishVolunteerMap
         displayPanel(maps, map);
+        cmbboxVolunteerType.setSelectedIndex(0);
+    }
+
+    public EEmergencyJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount userAccount, WorkRequest request) {
+        initComponents();
+        this.mainPane = mainPane;
+        this.workPane = workPane;
+        this.system = system;
+        this.dispatcherUserAccount = userAccount;
+        this.dispatcherWorkRequest = request;
+        volunteerLocations = new ArrayList<>();
+        this.caller = request.getCaller();
+        JPanel map = MapsUtil.defaultMap();//publishVolunteerMap
+        displayPanel(maps, map);
+        cmbboxVolunteerType.setSelectedIndex(1);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -49,30 +104,48 @@ public class EEmergencyJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        lblVolunteer = new javax.swing.JLabel();
+        cmbboxVolunteer = new javax.swing.JComboBox();
+        btnDispatch = new javax.swing.JButton();
         maps = new javax.swing.JLayeredPane();
-        jButton2 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        lblVolunteerType = new javax.swing.JLabel();
+        cmbboxVolunteerType = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
         setMinimumSize(new java.awt.Dimension(990, 590));
         setPreferredSize(new java.awt.Dimension(990, 590));
 
-        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
-        jLabel1.setText("Volunteer:");
+        lblVolunteer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
+        lblVolunteer.setText("Volunteer:");
 
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("Dispatch");
+        cmbboxVolunteer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbboxVolunteerActionPerformed(evt);
+            }
+        });
+
+        btnDispatch.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnDispatch.setText("Dispatch");
+        btnDispatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDispatchActionPerformed(evt);
+            }
+        });
 
         maps.setMaximumSize(new java.awt.Dimension(0, 325));
         maps.setMinimumSize(new java.awt.Dimension(0, 325));
         maps.setLayout(new java.awt.CardLayout());
 
-        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton2.setText("Reset");
+        btnReset.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         jPanel2.setMinimumSize(new java.awt.Dimension(990, 2));
         jPanel2.setPreferredSize(new java.awt.Dimension(990, 2));
@@ -88,26 +161,40 @@ public class EEmergencyJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
+        lblVolunteerType.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
+        lblVolunteerType.setText("Volunteer Type:");
+
+        cmbboxVolunteerType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clinician", "Driver" }));
+        cmbboxVolunteerType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbboxVolunteerTypeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 990, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addComponent(lblVolunteerType)
+                .addGap(18, 18, 18)
+                .addComponent(cmbboxVolunteerType, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addComponent(lblVolunteer)
+                .addGap(28, 28, 28)
+                .addComponent(cmbboxVolunteer, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(342, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(28, 28, 28)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89)))
-                .addContainerGap(326, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(898, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnReset)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnDispatch, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(436, 436, 436))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -115,16 +202,18 @@ public class EEmergencyJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                .addComponent(maps, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnReset)
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblVolunteer, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbboxVolunteer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblVolunteerType, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbboxVolunteerType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(30, 30, 30))
+                .addComponent(btnDispatch)
+                .addGap(32, 32, 32))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -132,13 +221,105 @@ public class EEmergencyJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cmbboxVolunteerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbboxVolunteerActionPerformed
+
+    }//GEN-LAST:event_cmbboxVolunteerActionPerformed
+
+    private void loadVolunteerDropdownValues(String volunteerType) {
+        cmbboxVolunteer.removeAllItems();
+        for (Network network : system.getNetworkList()) {
+            Enterprise voluntaryEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue());
+            for (Organization org : voluntaryEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                if ((org instanceof VoluntaryClinicianOrganization && StringUtils.equalsIgnoreCase(volunteerType, "Clinician"))
+                        || (org instanceof VoluntaryTransportOrganization && StringUtils.equalsIgnoreCase(volunteerType, "Driver"))) {
+                    this.loadValues(org, cmbboxVolunteer, volunteerLocations);
+                }
+            }
+        }
+    }
+
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double[]> p) {
+        for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
+//            System.out.println(paramedicAccount.getUsername());
+            if (acc.getProfileDetails().isAvailable()) {
+                drpdown.addItem(acc);
+                p.add(acc.getProfileDetails().getLocation());
+            }
+        }
+    }
+
+    private void cmbboxVolunteerTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbboxVolunteerTypeActionPerformed
+        String volunteerType = cmbboxVolunteerType.getSelectedItem() != null ? String.valueOf(cmbboxVolunteerType.getSelectedItem()) : null;
+        volunteerLocations = new ArrayList<>();
+        loadVolunteerDropdownValues(volunteerType);
+        JPanel map = null;
+        if(volunteerType.equalsIgnoreCase("Clinician")){
+            map = MapsUtil.publishVolunteerCMap(caller.getCoordinates(), volunteerLocations);
+        }else{
+            map = MapsUtil.publishVolunteerTMap(caller.getCoordinates(), volunteerLocations);
+        }
+        displayPanel(maps, map);
+    }//GEN-LAST:event_cmbboxVolunteerTypeActionPerformed
+
+    private void btnDispatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDispatchActionPerformed
+        if (dispatcherWorkRequest.getStatus() != null && dispatcherWorkRequest.getStatus().equals("Voluntary Transport Required")) {
+            dispatcherWorkRequest.setReceiver((UserAccount) cmbboxVolunteer.getSelectedItem());
+            // set status of the WR.
+            dispatcherWorkRequest.setStatus("Driver dispatched");
+            // update status of this WR in sender's workqueue as well.
+            dispatcherUserAccount.getWorkQueue()
+                    .findWorkRequestByID(dispatcherWorkRequest.getWorkRequestID()).setStatus("Driver dispatched");
+            // update status of this WR in receiver's work queue as well.
+            dispatcherWorkRequest.getReceivers().forEach(receiver -> {
+                if (receiver.getRole() instanceof Driver) {
+                    receiver.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
+                } else {
+                    receiver.getWorkQueue().findWorkRequestByID(dispatcherWorkRequest.getWorkRequestID()).setStatus("Driver dispatched");
+                }
+            });
+            dispatcherUserAccount.getWorkQueue()
+                    .findWorkRequestByID(dispatcherWorkRequest.getWorkRequestID()).setStatus("Driver dispatched");
+
+            // Redirect to CallHistoryJPanel
+            CallsHistoryJPanel chjp = new CallsHistoryJPanel(mainPane, workPane, system, dispatcherUserAccount);
+            displayPanel(workPane, chjp);
+
+        } else {
+            dispatcherWorkRequest.setReceiver((UserAccount) cmbboxVolunteer.getSelectedItem());
+            // set sender of the WR as the current dispatcher.
+            dispatcherWorkRequest.setSender(dispatcherUserAccount);
+            // set status of the WR.
+            dispatcherWorkRequest.setStatus("Open");
+            // push the WR in the work queue of all the receivers and senders?
+            dispatcherUserAccount.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
+            dispatcherWorkRequest.getReceivers().forEach(receiver -> {
+                receiver.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
+            });
+            // redirect to the dispatcher home screen.
+//            IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workPane, system, dispatcherUserAccount);
+//            displayPanel(workPane, icjp);
+            
+            CallsHistoryJPanel chjp = new CallsHistoryJPanel(mainPane, workPane, system, dispatcherUserAccount);
+            displayPanel(workPane, chjp);
+        }
+    }//GEN-LAST:event_btnDispatchActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), volunteerLocations);
+        displayPanel(maps, map);
+    }//GEN-LAST:event_btnResetActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnDispatch;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JComboBox cmbboxVolunteer;
+    private javax.swing.JComboBox<String> cmbboxVolunteerType;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblVolunteer;
+    private javax.swing.JLabel lblVolunteerType;
     private javax.swing.JLayeredPane maps;
     // End of variables declaration//GEN-END:variables
+
 }

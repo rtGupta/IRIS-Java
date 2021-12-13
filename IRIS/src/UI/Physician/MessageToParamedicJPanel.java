@@ -24,17 +24,18 @@ import org.bytedeco.javacv.FrameGrabber;
  */
 public class MessageToParamedicJPanel extends javax.swing.JPanel {
 
-    JLayeredPane mainPane;
-    JLayeredPane workPane;
-    private EcoSystem system;
-    private UserAccount physicianUserAccount;
-    WorkRequest physicianWorkRequest;
     final String VIDEO_FILE_NAME;
     boolean initializeCamera = true;
     boolean cameraOn = false;
     boolean recorderOn = false;
     boolean messageRecorded = false;
     CameraUtil cu;
+    JLayeredPane mainPane;
+    JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount physicianUserAccount;
+    WorkRequest physicianWorkRequest;
+
     /**
      * Creates new form VitalCollectionsJPanel
      */
@@ -57,7 +58,7 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,68 +177,67 @@ public class MessageToParamedicJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cameraBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cameraBtnMouseClicked
-        
-        if (initializeCamera) {
+        if (!cameraOn && initializeCamera && !messageRecorded) {
+            System.out.println("initialized");
             try {
-                cu = new CameraUtil(VIDEO_FILE_NAME, 640, 400);
+                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/loadingCamera.gif")));
+                cu = new CameraUtil(VIDEO_FILE_NAME, 640, 480);
                 cu.startCamera(camera);
                 cameraOn = true;
-                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/record_video.png")));
-            } catch (FrameGrabber.Exception ex) {
-                Logger.getLogger(MessageToParamedicJPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return;
-        }
-        if (cameraOn) {
-            if (recorderOn == false) {
                 recorderOn = true;
-                cu.startRecording();
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
-            } else if (recorderOn) {
-                messageRecorded = true;
-                recorderOn = false;
-                cu.stopCamera();
-                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
+            } catch (FrameGrabber.Exception ex) {
+                Logger.getLogger(MessageToPhysicianJPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
             return;
         }
-        if(messageRecorded){
+        if (cameraOn && !messageRecorded) {
+            if (recorderOn == false) {
+//                cu.startRecording();
+            } else if (recorderOn) {
+                recorderOn = false;
+                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
+                cu.stopCamera();
+                messageRecorded = true;
+            }
+            return;
+        }
+        if (messageRecorded) {
             JOptionPane.showMessageDialog(this, "Video Message Recorded");
         }
     }//GEN-LAST:event_cameraBtnMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(messageRecorded){
+//        if (physicianWorkRequest.isIRISeligible()) {
+//            updateWorkRequest("Awaiting Paramedic's Action");
+//        } else {
+//            updateWorkRequest("Resolved");
+//        }
+//        // Redirect to Physician Home screen
+//        PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
+//        displayPanel(workPane, phjp);
+        if (!messageRecorded) {
             JOptionPane.showMessageDialog(this, "Please record video message!");
+            return;
         }
-        
-        if (physicianWorkRequest.isIRISeligible()) {
-            physicianWorkRequest.setStatus("Transport Care Required");
-            physicianWorkRequest.getSender().getWorkQueue()
-                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
-                receiverAccount.getWorkQueue()
-                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-            }); 
-            
-            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-        } else {
-            // prescription submission screen flow?
-            physicianWorkRequest.setStatus("Resolved"); // resolve here or transfer the control back to paramedic?
-            physicianWorkRequest.getSender().getWorkQueue()
-                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
-            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
-                receiverAccount.getWorkQueue()
-                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
-            }); 
-            
-            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+        if (cu != null) {
+            cu.stopCamera();
         }
-        // Redirect to Physician Home screen
-            PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
-            displayPanel(workPane, phjp);
+        PrescriptionToParamedicJPanel ppjp = new PrescriptionToParamedicJPanel(mainPane, workPane, system, physicianUserAccount, physicianWorkRequest);
+        displayPanel(workPane, ppjp);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void updateWorkRequest(String requestStatus) {
+        physicianWorkRequest.setStatus(requestStatus);
+        physicianWorkRequest.getSender().getWorkQueue()
+                .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus(requestStatus);
+        physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
+            receiverAccount.getWorkQueue()
+                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus(requestStatus);
+        });
+
+        physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus(requestStatus);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel camera;

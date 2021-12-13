@@ -16,7 +16,6 @@ import Business.UserAccount.UserAccount;
 import Business.UserAccount.UserAccountDirectory;
 import Business.Utilities.Profile;
 import UI.MainJFrame;
-import UI.Paramedics.*;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Frame;
@@ -50,7 +49,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     OrganizationDirectory organizationDirectory;
     Pattern emailPattern;
     Pattern phonePattern;
-    Pattern passwordPattern;    
+    Pattern passwordPattern;
 
     /**
      * Creates new form DispatcherJPanel
@@ -64,14 +63,13 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
 
         String emailRegex = "^(.+)@(\\S+)$";
         emailPattern = Pattern.compile(emailRegex);
-            
+
         String phoneRegex = "^\\d{10}$";
         phonePattern = Pattern.compile(phoneRegex);
-            
-            
+
         String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
-        passwordPattern = Pattern.compile(passwordRegex);        
-        
+        passwordPattern = Pattern.compile(passwordRegex);
+
         btnUpdateAdmin.setEnabled(false);
 //        HomeJPanel icjp = new HomeJPanel(mainPane, workpane);
 //        displayPanel(workpane, icjp);
@@ -109,8 +107,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
-        jPanel3 = new javax.swing.JPanel();
+        orgCrud = new javax.swing.JPanel();
         Admin911 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -201,11 +198,11 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/home_24px.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/hospital_24px.png"))); // NOI18N
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Home");
+        jLabel15.setText("Hospital");
 
         javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
         home.setLayout(homeLayout);
@@ -269,9 +266,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         workpane.setMaximumSize(new java.awt.Dimension(790, 550));
         workpane.setLayout(new java.awt.CardLayout());
 
-        jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        orgCrud.setBackground(new java.awt.Color(255, 255, 255));
 
         Admin911.setBackground(new java.awt.Color(255, 255, 255));
         Admin911.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -421,7 +416,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                         .addComponent(txtHospitalName, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jLayeredPane2Layout.createSequentialGroup()
                         .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 88, Short.MAX_VALUE)
                             .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -507,34 +502,21 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         });
         Admin911.add(btnViewUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 10, -1, -1));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout orgCrudLayout = new javax.swing.GroupLayout(orgCrud);
+        orgCrud.setLayout(orgCrudLayout);
+        orgCrudLayout.setHorizontalGroup(
+            orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orgCrudLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Admin911, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(29, 29, 29))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        orgCrudLayout.setVerticalGroup(
+            orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Admin911, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
         );
 
-        jLayeredPane1.setLayer(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
-        jLayeredPane1.setLayout(jLayeredPane1Layout);
-        jLayeredPane1Layout.setHorizontalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jLayeredPane1Layout.setVerticalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        workpane.add(jLayeredPane1, "card2");
+        workpane.add(orgCrud, "card3");
 
         menuTab.add(workpane, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 990, 590));
 
@@ -544,18 +526,19 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/paramedics_40px.png"))); // NOI18N
 
-        jLabel8.setText("Welcome HealthCareAdmin");
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 3, 18)); // NOI18N
+        jLabel8.setText("Welcome Health Care Admin!");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel7)
-                .addGap(64, 64, 64)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(354, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(413, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -599,8 +582,8 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        MainJFrame.dB4OUtil.storeSystem(system);               
-        
+        MainJFrame.dB4OUtil.storeSystem(system);
+
         JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this);
         parentFrame.dispose();
     }//GEN-LAST:event_closeButtonMouseClicked
@@ -627,8 +610,8 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_minimizeButtonMouseExited
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        HomeJPanel icjp = new HomeJPanel(mainPane, workpane, system, account);
-        displayPanel(workpane, icjp);
+        displayPanel(workpane, orgCrud);
+        btnClear.doClick();
     }//GEN-LAST:event_homeMouseClicked
 
     private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
@@ -640,7 +623,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
-        MainJFrame.dB4OUtil.storeSystem(system);        
+        MainJFrame.dB4OUtil.storeSystem(system);
 
         LoginJPanel loginJPanel = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, loginJPanel);
@@ -670,6 +653,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
                         if (accountDirectory.removeUserAccount(selectedUser)) {
+                            system.deleteUsername(selectedUser.getUsername());
                             JOptionPane.showMessageDialog(this, "User details deleted Successfully!!");
                         }
                     }
@@ -698,10 +682,10 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             String phoneNumber = txtPhoneNumber.getText();
             String email = txtEmail.getText();
             String workAddress = txtWorkAddress.getText();
-            
+
             Matcher emailMatcher = emailPattern.matcher(email);
             Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
-            
+
             if (StringUtils.isBlank(hospitalName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid hospital name");
                 return;
@@ -722,7 +706,6 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 return;
             }
 
-            
             boolean isUpdated = false;
             for (Organization organization : organizationDirectory.getOrganizationList()) {
                 if (organization instanceof NonClinicalOrganization) {
@@ -772,7 +755,10 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             Matcher emailMatcher = emailPattern.matcher(email);
             Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
             Matcher passworMatcher = passwordPattern.matcher(password);
-
+            if (!system.isUniqueUsername(userName)) {
+                JOptionPane.showMessageDialog(this, "Please enter a unique user Name");
+                return;
+            }
             //add address and work address
             if (StringUtils.isBlank(userName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid user Name");
@@ -790,11 +776,11 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(workAddress)){
+            } else if (StringUtils.isBlank(workAddress)) {
                 JOptionPane.showMessageDialog(this, "Please enter work address");
                 return;
             }
-            
+
             double[] coords = MapsUtil.getGeoPointFromAddress(workAddress);
             if (coords[0] == 0 || coords[1] == 0) {
                 JOptionPane.showMessageDialog(this, "Wrong Address");
@@ -807,13 +793,16 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                     Profile userProfile = new Profile(hospitalName, email, Long.valueOf(phoneNumber), workAddress);
                     userProfile.setLocation(coords);
                     userAccount = accountDirectory.createUserAccount(userName, password, new StaffAdministrator(), userProfile);
-                    organization.setUserAccountDirectory(accountDirectory);                    
+                    
                     if (userAccount == null) {
                         JOptionPane.showMessageDialog(this, "User creation failed");
+                        return;
                     }
+                    organization.setUserAccountDirectory(accountDirectory);
+                    system.addUsername(userName);
                     break;
                 }
-            }            
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
@@ -824,7 +813,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            UserAccount userAccount = getSelectedUser();
+        UserAccount userAccount = getSelectedUser();
         if (userAccount != null) {
             Profile userProfile = userAccount.getProfileDetails();
             txtUserName.setText(userAccount.getUsername());
@@ -846,14 +835,14 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
             return null;
         }
         return (UserAccount) tblStaffAdmin.getValueAt(selectedRowIndex, 0);
-    }    
-    
+    }
+
     private void enableAllFields(boolean enable) {
         txtHospitalName.setEditable(enable);
         txtUserName.setEditable(enable);
-        txtPassword.setEditable(enable);        
-    }    
-    
+        txtPassword.setEditable(enable);
+    }
+
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserNameActionPerformed
@@ -878,11 +867,9 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
@@ -894,6 +881,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
     private keeptoo.KGradientPanel menuPanel;
     private javax.swing.JPanel menuTab;
     private javax.swing.JLabel minimizeButton;
+    private javax.swing.JPanel orgCrud;
     private javax.swing.JTable tblStaffAdmin;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtHospitalName;
@@ -918,7 +906,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     System.out.println("...");
                 }
-               
+
             }
         };
 
@@ -980,7 +968,7 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         }
         clearAllFields();
     }
-    
+
     private void clearAllFields() {
         txtUserName.setText("");
         txtPassword.setText("");
@@ -988,5 +976,5 @@ public class HealthCareAdminJPanel extends javax.swing.JPanel {
         txtWorkAddress.setText("");
         txtHospitalName.setText("");
         txtPhoneNumber.setText("");
-    }    
+    }
 }

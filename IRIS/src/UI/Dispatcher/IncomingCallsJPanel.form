@@ -137,7 +137,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="220" y="250" width="242" height="160"/>
+          <AbsoluteConstraints x="220" y="250" width="242" height="150"/>
         </Constraint>
       </Constraints>
 
@@ -153,34 +153,34 @@
     </Container>
     <Component class="javax.swing.JRadioButton" name="emergencyCategoryA">
       <Properties>
-        <Property name="text" type="java.lang.String" value="A"/>
+        <Property name="text" type="java.lang.String" value="Urgent Support"/>
         <Property name="toolTipText" type="java.lang.String" value="Emergency"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="220" y="450" width="-1" height="30"/>
+          <AbsoluteConstraints x="220" y="410" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JRadioButton" name="emergencyCategoryC">
       <Properties>
-        <Property name="text" type="java.lang.String" value="C"/>
+        <Property name="text" type="java.lang.String" value="Immediate Support"/>
         <Property name="toolTipText" type="java.lang.String" value="Doctor"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="320" y="450" width="-1" height="30"/>
+          <AbsoluteConstraints x="220" y="450" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JRadioButton" name="emergencyCategoryE">
       <Properties>
-        <Property name="text" type="java.lang.String" value="E"/>
+        <Property name="text" type="java.lang.String" value="Non-Emergent Support"/>
         <Property name="toolTipText" type="java.lang.String" value="Volunteer"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="430" y="450" width="-1" height="30"/>
+          <AbsoluteConstraints x="220" y="490" width="150" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -294,7 +294,7 @@
         </Constraint>
       </Constraints>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
     </Container>
   </SubComponents>
 </Form>

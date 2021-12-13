@@ -1,6 +1,8 @@
 package Business.Network;
 
 import Business.Enterprise.EnterpriseDirectory;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -28,6 +30,8 @@ public class Network {
     public void setEnterpriseDirectory(EnterpriseDirectory enterpriseDirectory) {
         this.enterpriseDirectory = enterpriseDirectory;
     }
+
+
     
     @Override
     public String toString(){

@@ -1,5 +1,6 @@
 /IRIS/nbproject/private/
 /IRIS/build/
 /IRIS/dist/
-/IRIS/video/*.avi
+/IRIS/video/
+/IRIS/video/*.flv
 .DS_Store

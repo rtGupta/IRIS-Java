@@ -17,13 +17,14 @@ import Business.UserAccount.UserAccount;
 import Business.UserAccount.UserAccountDirectory;
 import Business.Utilities.Profile;
 import UI.MainJFrame;
-import UI.Paramedics.*;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Frame;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -49,6 +50,9 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     UserAccount userAccount;
     EnterpriseDirectory enterpriseDirectory;
     OrganizationDirectory organizationDirectory;
+    Pattern emailPattern;
+    Pattern phonePattern;
+    Pattern passwordPattern;
 
     /**
      * Creates new form DispatcherJPanel
@@ -68,6 +72,21 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         btnGrpGender.add(radbtnFemale);
         btnGrpGender.add(radbtnNotToSay);
 
+        String emailRegex = "^(.+)@(\\S+)$";
+        emailPattern = Pattern.compile(emailRegex);
+
+        String phoneRegex = "^\\d{10}$";
+        phonePattern = Pattern.compile(phoneRegex);
+
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+        passwordPattern = Pattern.compile(passwordRegex);
+        
+        selectedOrganization = "911 Physician";
+        orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Dispatcher_40px.png")));
+        organization.setText("911 Physician Organization");
+        populateOrganizationAdminTable(selectedOrganization);
+        btnClear.doClick();
+        displayPanel(workpane, orgCrud);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -98,9 +117,6 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         physicianBtn = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        home = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         home1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -108,8 +124,6 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
-        homeWorkPanel = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
         orgCrud = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -230,49 +244,11 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         );
         physicianBtnLayout.setVerticalGroup(
             physicianBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(physicianBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
-
-        home.setOpaque(false);
-        home.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                homeMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                homeMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                homeMouseExited(evt);
-            }
-        });
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/home_24px.png"))); // NOI18N
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Home");
-
-        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
-        home.setLayout(homeLayout);
-        homeLayout.setHorizontalGroup(
-            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        homeLayout.setVerticalGroup(
-            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, -1));
+        menuPanel.add(physicianBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
 
         home1.setOpaque(false);
         home1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -344,47 +320,17 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         );
         dispatcherBtnLayout.setVerticalGroup(
             dispatcherBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
             .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(dispatcherBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
+        menuPanel.add(dispatcherBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, 40));
 
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
         workpane.setBackground(new java.awt.Color(255, 255, 255));
         workpane.setMaximumSize(new java.awt.Dimension(790, 550));
         workpane.setLayout(new java.awt.CardLayout());
-
-        homeWorkPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel8.setPreferredSize(new java.awt.Dimension(990, 2));
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 990, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout homeWorkPanelLayout = new javax.swing.GroupLayout(homeWorkPanel);
-        homeWorkPanel.setLayout(homeWorkPanelLayout);
-        homeWorkPanelLayout.setHorizontalGroup(
-            homeWorkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        homeWorkPanelLayout.setVerticalGroup(
-            homeWorkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homeWorkPanelLayout.createSequentialGroup()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(588, Short.MAX_VALUE))
-        );
-
-        workpane.add(homeWorkPanel, "card2");
 
         orgCrud.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -399,7 +345,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 {"", "", "", null}
             },
             new String [] {
-                "Name", "Email", "Phone Number", "Work Address"
+                "User Name", "Email", "Phone Number", "Work Address"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -486,6 +432,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Update");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -493,6 +440,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Add");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -500,6 +448,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Delete");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -547,13 +496,14 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
+        organization.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         organization.setText("Org");
 
         javax.swing.GroupLayout orgCrudLayout = new javax.swing.GroupLayout(orgCrud);
         orgCrud.setLayout(orgCrudLayout);
         orgCrudLayout.setHorizontalGroup(
             orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 998, Short.MAX_VALUE)
             .addGroup(orgCrudLayout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -610,16 +560,16 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                                 .addComponent(radbtnFemale)
                                 .addGap(18, 18, 18)
                                 .addComponent(radbtnNotToSay))
-                            .addComponent(txtWorkAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))))
+                            .addComponent(txtWorkAddress))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(orgCrudLayout.createSequentialGroup()
                 .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(orgCrudLayout.createSequentialGroup()
-                        .addGap(400, 400, 400)
+                        .addGap(411, 411, 411)
                         .addComponent(orgIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(126, 126, 126)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
                         .addComponent(btnViewWR))
                     .addGroup(orgCrudLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -635,16 +585,15 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(orgCrudLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(orgIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(orgCrudLayout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(btnViewWR))))
+                        .addGap(38, 38, 38)
+                        .addComponent(btnViewWR))
+                    .addGroup(orgCrudLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(orgIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(orgCrudLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -702,7 +651,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(17, 17, 17)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1)
@@ -808,6 +757,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Dispatcher_40px.png")));
         organization.setText("911 Physician Organization");
         populateOrganizationAdminTable(selectedOrganization);
+        btnClear.doClick();
         displayPanel(workpane, orgCrud);
     }//GEN-LAST:event_physicianBtnMouseClicked
 
@@ -818,19 +768,6 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private void physicianBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicianBtnMouseExited
         physicianBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
     }//GEN-LAST:event_physicianBtnMouseExited
-
-    private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        
-        displayPanel(workpane, homeWorkPanel);
-    }//GEN-LAST:event_homeMouseClicked
-
-    private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
-        home.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_homeMouseEntered
-
-    private void homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseExited
-        home.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
         MainJFrame.dB4OUtil.storeSystem(system);
@@ -862,7 +799,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         //String selectedOrganization = jComboBox1.getSelectedItem() != null ? String.valueOf(jComboBox1.getSelectedItem()) : null;
-
+        simpleDateFormat.setLenient(false);
         try {
             String userName = txtUserName.getText();
             String password = txtPassword.getText();
@@ -870,39 +807,60 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             String lastName = txtLastName.getText();
             String phoneNumber = txtPhone.getText();
             String email = txtEmail.getText();
-            Date dob = simpleDateFormat.parse(String.valueOf(txtDob.getText()));
-            String gender = btnGrpGender.getSelection().getActionCommand();
-            String home = txtHomeAddress.getText();
+
+            String homeAddress = txtHomeAddress.getText();
             String work = txtWorkAddress.getText();
 
+            Matcher emailMatcher = emailPattern.matcher(email);
+            Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+            Matcher passworMatcher = passwordPattern.matcher(password);
+            if (!system.isUniqueUsername(userName)) {
+                JOptionPane.showMessageDialog(this, "Please enter a unique user Name");
+                return;
+            }
             //add address and work address
             if (StringUtils.isBlank(userName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid user Name");
                 return;
-            } else if (StringUtils.isBlank(password)) {
+            } else if (StringUtils.isBlank(password) || !passworMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid password");
                 return;
-            } else if (StringUtils.isBlank(firstName)) {
+            } else if (StringUtils.isBlank(firstName) || StringUtils.isNumeric(firstName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid first Name");
                 return;
-            } else if (StringUtils.isBlank(lastName)) {
+            } else if (StringUtils.isBlank(lastName) || StringUtils.isNumeric(lastName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid last Name");
                 return;
-            } else if (StringUtils.isBlank(email)) {
+            } else if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
                 return;
-            } else if (StringUtils.isBlank(phoneNumber)) {
+            } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(gender)) {
+            } else if (btnGrpGender.getSelection() == null || StringUtils.isBlank(btnGrpGender.getSelection().getActionCommand())) {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
+                return;
+            } else if (StringUtils.isBlank(homeAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter home address");
+                return;
+            } else if (StringUtils.isBlank(work)) {
+                JOptionPane.showMessageDialog(this, "Please enter work address");
+                return;
+            }
+
+            Date dob = simpleDateFormat.parse(String.valueOf(txtDob.getText()));
+            String gender = btnGrpGender.getSelection().getActionCommand();
+
+            double[] homeCoords = MapsUtil.getGeoPointFromAddress(homeAddress);
+            if (homeCoords[0] == 0 || homeCoords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid home address");
                 return;
             }
 
             double[] coords = MapsUtil.getGeoPointFromAddress(work);
             if (coords[0] == 0 || coords[1] == 0) {
-                JOptionPane.showMessageDialog(this, "Wrong Address");
+                JOptionPane.showMessageDialog(this, "Please enter valid work address");
                 return;
             }
             //add validation for address
@@ -910,7 +868,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
-                    Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
+                    Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, homeAddress, work);
                     userProfile.setLocation(coords);
                     if (organization instanceof Physician911Organization) {
                         userAccount = accountDirectory.createUserAccount(userName, password, new Physician911(), userProfile);
@@ -919,19 +877,19 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid Organization!");
                     }
-                    organization.setUserAccountDirectory(accountDirectory);
-
                     if (userAccount == null) {
                         JOptionPane.showMessageDialog(this, "User creation failed");
+                        return;
                     }
+                    organization.setUserAccountDirectory(accountDirectory);
+                    system.addUsername(userName);
                     break;
                 }
             }
-
+            populateOrganizationAdminTable(selectedOrganization);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateOrganizationAdminTable(selectedOrganization);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
@@ -976,52 +934,68 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         UserAccount selectedUser = getSelectedUser();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //String selectedOrganization = jComboBox1.getSelectedItem() != null
-                //? String.valueOf(jComboBox1.getSelectedItem()) : null;
 
         try {
-            //add validation for address
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
                         if (accountDirectory.removeUserAccount(selectedUser)) {
+                            system.deleteUsername(selectedUser.getUsername());
                             JOptionPane.showMessageDialog(this, "User details deleted Successfully!!");
                         }
                     }
                     break;
                 }
             }
+            clearAllFields();
+            populateOrganizationAdminTable(selectedOrganization);
+            jButton1.setEnabled(false);
+            jButton2.setEnabled(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something went wrong!");
         }
-        populateOrganizationAdminTable(selectedOrganization);
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         UserAccount selectedUser = getSelectedUser();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String selectedOrganization = jComboBox1.getSelectedItem() != null
-//                ? String.valueOf(jComboBox1.getSelectedItem()) : null;
 
         try {
             String phoneNumber = txtPhone.getText();
             String email = txtEmail.getText();
-            String home = txtHomeAddress.getText();
+            String homeAddress = txtHomeAddress.getText();
             String work = txtWorkAddress.getText();
 
-            if (StringUtils.isBlank(email)) {
+            Matcher emailMatcher = emailPattern.matcher(email);
+            Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+
+            if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
                 return;
-            } else if (StringUtils.isBlank(phoneNumber)) {
+            } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
+            } else if (StringUtils.isBlank(homeAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter home address");
+                return;
+            } else if (StringUtils.isBlank(work)) {
+                JOptionPane.showMessageDialog(this, "Please enter work address");
+                return;
             }
+
+            double[] homeCoords = MapsUtil.getGeoPointFromAddress(homeAddress);
+            if (homeCoords[0] == 0 || homeCoords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid home address");
+                return;
+            }
+
             double[] coords = MapsUtil.getGeoPointFromAddress(work);
             if (coords[0] == 0 || coords[1] == 0) {
-                JOptionPane.showMessageDialog(this, "Wrong Address");
+                JOptionPane.showMessageDialog(this, "Please enter a valid work address");
                 return;
             }
             boolean isUpdated = false;
@@ -1034,7 +1008,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                         if (existingUserProfile != null) {
                             existingUserProfile.setPhone(Long.parseLong(phoneNumber));
                             existingUserProfile.setEmail(email);
-                            existingUserProfile.setHomeAddress(home);
+                            existingUserProfile.setHomeAddress(homeAddress);
                             existingUserProfile.setWorkAddress(work);
                             existingUserProfile.setLocation(coords);
                             accountDirectory.findAccount(selectedUser.getUsername()).setProfileDetails(existingUserProfile);
@@ -1070,6 +1044,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
         selectedOrganization = "Dispatcher";
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/medical_doctor_40px.png")));
         organization.setText("911 Dispatcher Organization");
+        btnClear.doClick();
         populateOrganizationAdminTable(selectedOrganization);
         displayPanel(workpane, orgCrud);
     }//GEN-LAST:event_dispatcherBtnMouseClicked
@@ -1124,6 +1099,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
                 }
             }
         }
+        //btnClear.doClick();
         clearAllFields();
     }
 
@@ -1157,9 +1133,7 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnViewWR;
     private javax.swing.JLabel closeButton;
     private javax.swing.JPanel dispatcherBtn;
-    private javax.swing.JPanel home;
     private javax.swing.JPanel home1;
-    private javax.swing.JPanel homeWorkPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1168,7 +1142,6 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -1176,7 +1149,6 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1187,7 +1159,6 @@ public class _911AdminJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblPassword;

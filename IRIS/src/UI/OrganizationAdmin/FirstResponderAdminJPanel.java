@@ -23,7 +23,6 @@ import Business.UserAccount.UserAccount;
 import Business.UserAccount.UserAccountDirectory;
 import Business.Utilities.Profile;
 import UI.MainJFrame;
-import UI.Paramedics.*;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -35,6 +34,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -60,6 +61,9 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     EnterpriseDirectory enterpriseDirectory;
     OrganizationDirectory organizationDirectory;
     String selectedOrganization;
+    Pattern emailPattern;
+    Pattern phonePattern;
+    Pattern passwordPattern;
 
     /**
      * Creates new form DispatcherJPanel
@@ -79,7 +83,21 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         btnGrpGender.add(radbtnFemale);
         btnGrpGender.add(radbtnNotToSay);
 
+        String emailRegex = "^(.+)@(\\S+)$";
+        emailPattern = Pattern.compile(emailRegex);
+
+        String phoneRegex = "^\\d{10}$";
+        phonePattern = Pattern.compile(phoneRegex);
+
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+        passwordPattern = Pattern.compile(passwordRegex);
 //        jComboBox1.setSelectedIndex(0);
+        selectedOrganization = "EMTOrg";
+        orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/ambulance_48px.png")));
+        organization.setText("Paramedics Organization");
+        populateOrganizationAdminTable(selectedOrganization);
+        btnClear.doClick();
+        displayPanel(workpane, orgCrud);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -110,9 +128,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         paramedicBtn = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        home = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         home1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -123,8 +138,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
-        homeWorkPanel = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
         orgCrud = new javax.swing.JPanel();
         orgIcon = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -249,45 +262,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(paramedicBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 190, -1));
-
-        home.setOpaque(false);
-        home.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                homeMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                homeMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                homeMouseExited(evt);
-            }
-        });
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/home_24px.png"))); // NOI18N
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Home");
-
-        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
-        home.setLayout(homeLayout);
-        homeLayout.setHorizontalGroup(
-            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        homeLayout.setVerticalGroup(
-            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, -1));
+        menuPanel.add(paramedicBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 190, -1));
 
         home1.setOpaque(false);
         home1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -363,7 +338,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(fireFighterBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 190, -1));
+        menuPanel.add(fireFighterBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 190, -1));
 
         policeBtn.setOpaque(false);
         policeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -401,42 +376,12 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        menuPanel.add(policeBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 190, -1));
+        menuPanel.add(policeBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 190, -1));
 
         menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
 
         workpane.setMaximumSize(new java.awt.Dimension(790, 550));
         workpane.setLayout(new java.awt.CardLayout());
-
-        homeWorkPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel8.setPreferredSize(new java.awt.Dimension(990, 2));
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 990, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout homeWorkPanelLayout = new javax.swing.GroupLayout(homeWorkPanel);
-        homeWorkPanel.setLayout(homeWorkPanelLayout);
-        homeWorkPanelLayout.setHorizontalGroup(
-            homeWorkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        homeWorkPanelLayout.setVerticalGroup(
-            homeWorkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homeWorkPanelLayout.createSequentialGroup()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(588, Short.MAX_VALUE))
-        );
-
-        workpane.add(homeWorkPanel, "card2");
 
         orgCrud.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -532,6 +477,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Update");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -539,6 +485,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Add");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -546,6 +493,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Delete");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -593,6 +541,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
+        organization.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         organization.setText("Org");
 
         javax.swing.GroupLayout orgCrudLayout = new javax.swing.GroupLayout(orgCrud);
@@ -661,28 +610,31 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                 .addGap(65, 65, 65))
             .addGroup(orgCrudLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(orgCrudLayout.createSequentialGroup()
                 .addGap(353, 353, 353)
                 .addComponent(orgIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnViewWR)
                 .addGap(22, 22, 22))
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         orgCrudLayout.setVerticalGroup(
             orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(orgCrudLayout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(orgIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(orgCrudLayout.createSequentialGroup()
-                        .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9))
-                    .addComponent(btnViewWR))
+                        .addGap(11, 11, 11)
+                        .addGroup(orgCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(orgIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnViewWR)))
+                    .addGroup(orgCrudLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(organization, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(8, 8, 8)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
@@ -750,18 +702,19 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/firstResponder.png"))); // NOI18N
 
-        jLabel8.setText("Welcome FirstResponderAdmin");
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 3, 18)); // NOI18N
+        jLabel8.setText("Welcome First ResponderAdmin");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(117, 117, 117)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel7)
-                .addGap(51, 51, 51)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -835,6 +788,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/ambulance_48px.png")));
         organization.setText("Paramedics Organization");
         populateOrganizationAdminTable(selectedOrganization);
+        btnClear.doClick();
         displayPanel(workpane, orgCrud);
     }//GEN-LAST:event_paramedicBtnMouseClicked
 
@@ -845,18 +799,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     private void paramedicBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramedicBtnMouseExited
         paramedicBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
     }//GEN-LAST:event_paramedicBtnMouseExited
-
-    private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-        displayPanel(workpane, homeWorkPanel);
-    }//GEN-LAST:event_homeMouseClicked
-
-    private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
-        home.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_homeMouseEntered
-
-    private void homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseExited
-        home.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
-    }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
         MainJFrame.dB4OUtil.storeSystem(system);
@@ -900,38 +842,59 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             String lastName = txtLastName.getText();
             String phoneNumber = txtPhone.getText();
             String email = txtEmail.getText();
-            Date dob = simpleDateFormat.parse(String.valueOf(txtDob.getText()));
-            String gender = btnGrpGender.getSelection().getActionCommand();
-            String home = txtHomeAddress.getText();
+            String homeAddress = txtHomeAddress.getText();
             String work = txtWorkAddress.getText();
 
+            Matcher emailMatcher = emailPattern.matcher(email);
+            Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+            Matcher passworMatcher = passwordPattern.matcher(password);
+
+            if (!system.isUniqueUsername(userName)) {
+                JOptionPane.showMessageDialog(this, "Please enter a unique user Name");
+                return;
+            }
             //add address and work address
             if (StringUtils.isBlank(userName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid user Name");
                 return;
-            } else if (StringUtils.isBlank(password)) {
+            } else if (StringUtils.isBlank(password) || !passworMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid password");
                 return;
-            } else if (StringUtils.isBlank(firstName)) {
+            } else if (StringUtils.isBlank(firstName) || StringUtils.isNumeric(firstName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid first Name");
                 return;
-            } else if (StringUtils.isBlank(lastName)) {
+            } else if (StringUtils.isBlank(lastName) || StringUtils.isNumeric(lastName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid last Name");
                 return;
-            } else if (StringUtils.isBlank(email)) {
+            } else if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
                 return;
-            } else if (StringUtils.isBlank(phoneNumber)) {
+            } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(gender)) {
+            } else if (btnGrpGender.getSelection() == null || StringUtils.isBlank(btnGrpGender.getSelection().getActionCommand())) {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
+            } else if (StringUtils.isBlank(homeAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter home address");
+                return;
+            } else if (StringUtils.isBlank(work)) {
+                JOptionPane.showMessageDialog(this, "Please enter work address");
+                return;
             }
+            Date dob = simpleDateFormat.parse(String.valueOf(txtDob.getText()));
+            String gender = btnGrpGender.getSelection().getActionCommand();
+
+            double[] homeCoords = MapsUtil.getGeoPointFromAddress(homeAddress);
+            if (homeCoords[0] == 0 || homeCoords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid home address");
+                return;
+            }
+
             double[] coords = MapsUtil.getGeoPointFromAddress(work);
             if (coords[0] == 0 || coords[1] == 0) {
-                JOptionPane.showMessageDialog(this, "Wrong Address");
+                JOptionPane.showMessageDialog(this, "Please enter a valid work address");
                 return;
             }
 
@@ -940,7 +903,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
             for (Organization organization : this.organizationDirectory.getOrganizationList()) {
                 if (organization != null && StringUtils.equalsIgnoreCase(organization.getName(), selectedOrganization)) {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
-                    Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
+                    Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, homeAddress, work);
                     userProfile.setLocation(coords);
                     if (organization instanceof EMTOrganization) {
                         userAccount = accountDirectory.createUserAccount(userName, password, new Paramedic(), userProfile);
@@ -951,19 +914,20 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid Organization!");
                     }
-                    organization.setUserAccountDirectory(accountDirectory);
-
                     if (userAccount == null) {
                         JOptionPane.showMessageDialog(this, "User creation failed");
+                        return;
                     }
+                    organization.setUserAccountDirectory(accountDirectory);
+                    system.addUsername(userName);
                     break;
                 }
             }
-
+            populateOrganizationAdminTable(selectedOrganization);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateOrganizationAdminTable(selectedOrganization);
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnViewWRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewWRActionPerformed
@@ -1010,20 +974,36 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         try {
             String phoneNumber = txtPhone.getText();
             String email = txtEmail.getText();
-            String home = txtHomeAddress.getText();
+            String homeAddress = txtHomeAddress.getText();
             String work = txtWorkAddress.getText();
 
-            if (StringUtils.isBlank(email)) {
+            Matcher emailMatcher = emailPattern.matcher(email);
+            Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+
+            if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
                 //add regex validations
                 JOptionPane.showMessageDialog(this, "Please enter a valid email");
                 return;
-            } else if (StringUtils.isBlank(phoneNumber)) {
+            } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
+            } else if (StringUtils.isBlank(homeAddress)) {
+                JOptionPane.showMessageDialog(this, "Please enter home address");
+                return;
+            } else if (StringUtils.isBlank(work)) {
+                JOptionPane.showMessageDialog(this, "Please enter work address");
+                return;
             }
+
+            double[] homeCoords = MapsUtil.getGeoPointFromAddress(homeAddress);
+            if (homeCoords[0] == 0 || homeCoords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid home address");
+                return;
+            }
+
             double[] coords = MapsUtil.getGeoPointFromAddress(work);
             if (coords[0] == 0 || coords[1] == 0) {
-                JOptionPane.showMessageDialog(this, "Wrong Address");
+                JOptionPane.showMessageDialog(this, "Please enter a valid work address");
                 return;
             }
             boolean isUpdated = false;
@@ -1036,7 +1016,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                         if (existingUserProfile != null) {
                             existingUserProfile.setPhone(Long.parseLong(phoneNumber));
                             existingUserProfile.setEmail(email);
-                            existingUserProfile.setHomeAddress(home);
+                            existingUserProfile.setHomeAddress(homeAddress);
                             existingUserProfile.setWorkAddress(work);
                             existingUserProfile.setLocation(coords);
                             accountDirectory.findAccount(selectedUser.getUsername()).setProfileDetails(existingUserProfile);
@@ -1052,20 +1032,18 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                     break;
                 }
             }
+            populateOrganizationAdminTable(selectedOrganization);
+            jButton2.setEnabled(true);
+            enableAllFields(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
         }
-        populateOrganizationAdminTable(selectedOrganization);
-        jButton2.setEnabled(true);
-        enableAllFields(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         UserAccount selectedUser = getSelectedUser();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String selectedOrganization = jComboBox1.getSelectedItem() != null
-//                ? String.valueOf(jComboBox1.getSelectedItem()) : null;
 
         try {
             //add validation for address
@@ -1074,6 +1052,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
                     UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
                     if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
                         if (accountDirectory.removeUserAccount(selectedUser)) {
+                            system.deleteUsername(selectedUser.getUsername());
                             JOptionPane.showMessageDialog(this, "User details deleted Successfully!!");
                         }
                     }
@@ -1099,6 +1078,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/fire_engine_48px.png")));
         organization.setText("Fire Fighter Organization");
         populateOrganizationAdminTable(selectedOrganization);
+        btnClear.doClick();
         displayPanel(workpane, orgCrud);
     }//GEN-LAST:event_fireFighterBtnMouseClicked
 
@@ -1115,6 +1095,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
         orgIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/police_car_48px.png")));
         organization.setText("Police Organization");
         populateOrganizationAdminTable(selectedOrganization);
+        btnClear.doClick();
         displayPanel(workpane, orgCrud);
     }//GEN-LAST:event_policeBtnMouseClicked
 
@@ -1201,9 +1182,7 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnViewWR;
     private javax.swing.JLabel closeButton;
     private javax.swing.JPanel fireFighterBtn;
-    private javax.swing.JPanel home;
     private javax.swing.JPanel home1;
-    private javax.swing.JPanel homeWorkPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1212,7 +1191,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -1222,7 +1200,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1233,7 +1210,6 @@ public class FirstResponderAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblPassword;

@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolTip;
 import javax.swing.event.MouseInputListener;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jxmapviewer.JXMapKit;
 import org.jxmapviewer.JXMapViewer;
@@ -51,13 +53,13 @@ import org.jxmapviewer.viewer.WaypointPainter;
 public class MapsUtil {
 
     public static Color tabColor = Color.MAGENTA;
-    
+
     public static JPanel mapWayPoint(double loc[]) {
         return mapWayPoint(loc[0], loc[1]);
     }
-    
+
     public static JPanel mapWayPoint(double latitude, double longitude) {
-        final JXMapKit jXMapKit = new JXMapKit();
+        JXMapKit jXMapKit = new JXMapKit();
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         jXMapKit.setTileFactory(tileFactory);
@@ -108,7 +110,7 @@ public class MapsUtil {
     }
 
     public static JPanel mapWayPointWithLocationName(String locationName, double latitude, double longitude) {
-        final JXMapKit jXMapKit = new JXMapKit();
+        JXMapKit jXMapKit = new JXMapKit();
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         jXMapKit.setTileFactory(tileFactory);
@@ -157,8 +159,8 @@ public class MapsUtil {
 
         return jXMapKit;
     }
-    
-    public static JPanel publishMap(double location[], List<double []> police, List<double []> firefighter, List<double []> paramedics){
+
+    public static JPanel publishMap(double location[], List<double[]> police, List<double[]> firefighter, List<double[]> paramedics) {
         TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 
@@ -187,15 +189,15 @@ public class MapsUtil {
         // Create waypoints from the geo-positions
         Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
                 new CustomWayPoint("C", "waypoint_white.png", youLocation)
-                ));
-        
-        for (double[] loc: police){
+        ));
+
+        for (double[] loc : police) {
             waypoints.add(new CustomWayPoint("P", "police_car_40px.png", new GeoPosition(loc)));
         }
-        for (double[] loc: firefighter){
+        for (double[] loc : firefighter) {
             waypoints.add(new CustomWayPoint("F", "fire_engine_40px.png", new GeoPosition(loc)));
         }
-        for (double[] loc: paramedics){
+        for (double[] loc : paramedics) {
             waypoints.add(new CustomWayPoint("+", "ambulance_40px.png", new GeoPosition(loc)));
         }
         // Create a waypoint painter that takes all the waypoints
@@ -206,8 +208,8 @@ public class MapsUtil {
         mapViewer.setOverlayPainter(waypointPainter);
         return mapViewer;
     }
-    
-    public static JPanel publishMap(double location[], List<double []> paramedics){
+
+    public static JPanel publishMap(double location[], List<double[]> paramedics) {
         TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 
@@ -236,8 +238,8 @@ public class MapsUtil {
         // Create waypoints from the geo-positions
         Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
                 new CustomWayPoint("C", "waypoint_white.png", youLocation)
-                ));
-        for (double[] loc: paramedics){
+        ));
+        for (double[] loc : paramedics) {
             waypoints.add(new CustomWayPoint("+", "ambulance_40px.png", new GeoPosition(loc)));
         }
         // Create a waypoint painter that takes all the waypoints
@@ -248,7 +250,7 @@ public class MapsUtil {
         mapViewer.setOverlayPainter(waypointPainter);
         return mapViewer;
     }
-    
+
     public static JPanel defaultMap() {
         final JXMapViewer mapViewer = new JXMapViewer();
         TileFactoryInfo info = new OSMTileFactoryInfo();
@@ -276,9 +278,8 @@ public class MapsUtil {
 
         return mapViewer;
     }
-    
-    
-    public static JPanel publishHospitalMap(double location[], List<double []> hospitalLocations){
+
+    public static JPanel publishHospitalMap(double location[], List<double[]> hospitalLocations) {
         TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 
@@ -307,8 +308,8 @@ public class MapsUtil {
         // Create waypoints from the geo-positions
         Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
                 new CustomWayPoint("C", "waypoint_white.png", youLocation)
-                ));
-        for (double[] loc: hospitalLocations){
+        ));
+        for (double[] loc : hospitalLocations) {
             waypoints.add(new CustomWayPoint("+", "hospital_48px.png", new GeoPosition(loc)));
         }
         // Create a waypoint painter that takes all the waypoints
@@ -320,18 +321,105 @@ public class MapsUtil {
         return mapViewer;
     }
     
+    public static JPanel publishVolunteerCMap(double location[], List<double[]> volunteerClinician) {
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
 
+        // Setup local file cache
+        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+        // Setup JXMapViewer
+        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer.setTileFactory(tileFactory);
+
+        GeoPosition youLocation = new GeoPosition(location);
+
+        // Set the focus
+        mapViewer.setZoom(6);
+        mapViewer.setAddressLocation(youLocation);
+
+        // Add interactions
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseListener(new CenterMapListener(mapViewer));
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+        mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        // Create waypoints from the geo-positions
+        Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
+                new CustomWayPoint("C", "waypoint_white.png", youLocation)
+        ));
+        for (double[] loc : volunteerClinician) {
+            waypoints.add(new CustomWayPoint("+", "medical_doctor_48px.png", new GeoPosition(loc)));
+        }
+        // Create a waypoint painter that takes all the waypoints
+        WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
+        waypointPainter.setWaypoints(waypoints);
+        waypointPainter.setRenderer(new CustomWayPointRenderer());
+
+        mapViewer.setOverlayPainter(waypointPainter);
+        return mapViewer;
+    }
+    
+     public static JPanel publishVolunteerTMap(double location[], List<double[]> volunteerTransport) {
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+
+        // Setup local file cache
+        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+        // Setup JXMapViewer
+        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer.setTileFactory(tileFactory);
+
+        GeoPosition youLocation = new GeoPosition(location);
+
+        // Set the focus
+        mapViewer.setZoom(6);
+        mapViewer.setAddressLocation(youLocation);
+
+        // Add interactions
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseListener(new CenterMapListener(mapViewer));
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+        mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        // Create waypoints from the geo-positions
+        Set<CustomWayPoint> waypoints = new HashSet<CustomWayPoint>(Arrays.asList(
+                new CustomWayPoint("C", "waypoint_white.png", youLocation)
+        ));
+        for (double[] loc : volunteerTransport) {
+            waypoints.add(new CustomWayPoint("+", "driver_48px.png", new GeoPosition(loc)));
+        }
+        // Create a waypoint painter that takes all the waypoints
+        WaypointPainter<CustomWayPoint> waypointPainter = new WaypointPainter<CustomWayPoint>();
+        waypointPainter.setWaypoints(waypoints);
+        waypointPainter.setRenderer(new CustomWayPointRenderer());
+
+        mapViewer.setOverlayPainter(waypointPainter);
+        return mapViewer;
+    }
+    
     public static double[] getGeoPointFromAddress(String locationAddress) {
+
         double[] location = new double[2];
         String locationAddres = locationAddress.replaceAll(" ", "%20");
-        final String API_KEY = "40187b1ef383146c3f34ebc1bba4deda";
+        final String API_KEY = "b32e72aa51c4dcc3ad806847adc27940";
         URL url = null;
         try {
             url = new URL("http://api.positionstack.com/v1/forward?access_key=" + API_KEY
-                    + "&query=" + locationAddres
-                    + "&limit=1&output=json");
+                    + "&limit=1&output=json"
+                    + "&query=" + locationAddres);
+            
+            System.out.println(url);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
+            System.out.println(con.getResponseCode());
             if (con.getResponseCode() != 200) {
                 return location;
             }
@@ -340,6 +428,7 @@ public class MapsUtil {
             while ((output = br.readLine()) != null) {
                 full += output;
             }
+            System.out.print(full);
             JSONObject json;
             json = new JSONObject(full);
             JSONArray jarr = json.getJSONArray("data");
@@ -348,16 +437,64 @@ public class MapsUtil {
             location[1] = json.getDouble("longitude");
         } catch (MalformedURLException ex) {
             Logger.getLogger(MapsUtil.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
+            Logger.getLogger(MapsUtil.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
             Logger.getLogger(MapsUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         return location;
     }
     
-    public static double distance(double latitude1, double longitude1, double latitude2, double longitude2){
+//    public static double[] getGeoPointFromAddress(String locationAddress) {
+//
+//        double[] location = new double[2];
+//        String locationAddres = locationAddress.replaceAll(" ", "%20");
+//        final String API_KEY = "oMKSei31oWGLtp0LjdOfHIQWicxoPCWk";
+//        URL url = null;
+//        try {
+//            url = new URL("https://open.mapquestapi.com/geocoding/v1/address?key=" + API_KEY
+//                    + "&outFormat=json&location=" + locationAddres);
+//            
+//            System.out.println(url);
+//            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//            con.setRequestMethod("GET");
+//            if (con.getResponseCode() != 200) {
+//                return location;
+//            }
+//            BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+//            String output = "", full = "";
+//            while ((output = br.readLine()) != null) {
+//                full += output;
+//            }
+////            System.out.print(full);
+//            JSONObject json;
+//            json = new JSONObject(full);
+//            JSONArray jarr = json.getJSONArray("results");
+//            int statusCode = json.getJSONObject("info").getInt("statuscode");
+//            if(statusCode!=0){
+//                System.out.println("Util.MapsUtil.getGeoPointFromAddress()");
+//                return location;
+//            }
+//            json = jarr.getJSONObject(0);
+//            jarr = json.getJSONArray("locations");
+//            json = jarr.getJSONObject(0);
+//            json = json.getJSONObject("latLng");
+//            location[0] = json.getDouble("lat");
+//            location[1] = json.getDouble("lng");
+//        } catch (MalformedURLException ex) {
+//            Logger.getLogger(MapsUtil.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(MapsUtil.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (JSONException ex) {
+//            Logger.getLogger(MapsUtil.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return location;
+//    }
+
+    public static double distance(double latitude1, double longitude1, double latitude2, double longitude2) {
         double p = 0.017453292519943295;
-        double hav = 0.5 - Math.cos((latitude1-latitude2)*p)/2;
-        hav+= Math.cos(latitude1*p)* Math.cos(latitude2*p) * (1-Math.cos((longitude2-longitude1)*p)) / 2;
+        double hav = 0.5 - Math.cos((latitude1 - latitude2) * p) / 2;
+        hav += Math.cos(latitude1 * p) * Math.cos(latitude2 * p) * (1 - Math.cos((longitude2 - longitude1) * p)) / 2;
         return 12742 * Math.asin(Math.sqrt(hav));
     }
 }

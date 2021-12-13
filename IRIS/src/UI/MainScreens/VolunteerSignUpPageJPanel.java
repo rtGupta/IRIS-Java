@@ -6,8 +6,20 @@ package UI.MainScreens;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Enterprise.EnterpriseDirectory;
+import Business.Network.Network;
+import Business.Organization.HealthCare.NonClinicalOrganization;
 import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
+import Business.Organization.Voluntary.VoluntaryClinicianOrganization;
+import Business.Organization.Voluntary.VoluntaryTransportOrganization;
+import Business.Role.HealthCare.StaffAdministrator;
+import Business.Role.Voluntary.Driver;
+import Business.Role.Voluntary.VoluntaryClinician;
 import Business.UserAccount.UserAccount;
+import Business.UserAccount.UserAccountDirectory;
+import Business.Utilities.Profile;
+import UI.MainJFrame;
 import Util.MapsUtil;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,11 +27,16 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -28,13 +45,16 @@ import javax.swing.SwingUtilities;
 public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
 
     private EcoSystem system;
-//    private Organization organization;
-//    private Enterprise enterprise;
     private UserAccount userAccount;
-    
+    Pattern passwordPattern;
+    Network network;
+    EnterpriseDirectory enterpriseDirectory;
+    OrganizationDirectory organizationDirectory;
+
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
+    Pattern phonePattern;
 
     /**
      * Creates new form DispatcherJPanel
@@ -43,18 +63,26 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        
+        this.network = system.getNetworkList().get(0);
+        this.enterpriseDirectory = network.getEnterpriseDirectory();
+
         radbtnMale.setActionCommand("Male");
         radbtnFemale.setActionCommand("Female");
         radbtnNotToSay.setActionCommand("PreferNotToSay");
         gender.add(radbtnMale);
         gender.add(radbtnFemale);
         gender.add(radbtnNotToSay);
-        
-        Physician.setActionCommand("Physician");
+
+        Clinician.setActionCommand("Clinician");
         Transport.setActionCommand("Transport");
-        volunteerType.add(Physician);
+        volunteerType.add(Clinician);
         volunteerType.add(Transport);
+
+        String phoneRegex = "^\\d{10}$";
+        phonePattern = Pattern.compile(phoneRegex);
+
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+        passwordPattern = Pattern.compile(passwordRegex);
 
     }
 
@@ -87,31 +115,31 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         Transport = new javax.swing.JRadioButton();
         jLabel10 = new javax.swing.JLabel();
-        Physician = new javax.swing.JRadioButton();
-        jTextField1 = new javax.swing.JTextField();
+        Clinician = new javax.swing.JRadioButton();
+        txtUserName = new javax.swing.JTextField();
         jSeparator4 = new javax.swing.JSeparator();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel11 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         kGradientPanel2 = new keeptoo.KGradientPanel();
         loginButton = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
+        txtMobileNumber = new javax.swing.JTextField();
         kGradientPanel4 = new keeptoo.KGradientPanel();
-        loginButton2 = new javax.swing.JLabel();
+        btnVolunteerSignup = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
         radbtnMale = new javax.swing.JRadioButton();
         radbtnFemale = new javax.swing.JRadioButton();
         jLabel16 = new javax.swing.JLabel();
         jSeparator7 = new javax.swing.JSeparator();
         radbtnNotToSay = new javax.swing.JRadioButton();
-        jTextField5 = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
         jSeparator8 = new javax.swing.JSeparator();
         jLabel17 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -167,33 +195,36 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
         jLabel12.setText("<html><h2>Volunteer:</h2></html>");
         menuTab.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 390, 413, 44));
 
+        volunteerType.add(Transport);
         Transport.setText("Transport");
-        menuTab.add(Transport, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 440, -1, 45));
+        menuTab.add(Transport, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 440, -1, 45));
 
         jLabel10.setText("<html><h2>Username:</h2></html>");
         menuTab.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 413, 44));
 
-        Physician.setText("Physician");
-        menuTab.add(Physician, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 440, -1, 45));
+        volunteerType.add(Clinician);
+        Clinician.setText("Clinician");
+        menuTab.add(Clinician, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 440, -1, 45));
 
-        jTextField1.setText("Enter Username");
-        jTextField1.setBorder(null);
-        jTextField1.setOpaque(false);
-        menuTab.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 413, 45));
+        txtUserName.setBorder(null);
+        txtUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserNameActionPerformed(evt);
+            }
+        });
+        menuTab.add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 413, 45));
         menuTab.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 413, 10));
         menuTab.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 413, 10));
 
-        jLabel13.setText("<html><h2>Last Name:</h2></html>");
+        jLabel13.setText("<html><h2>First Name:</h2></html>");
         menuTab.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 413, 44));
         menuTab.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 120, 413, 10));
 
         jLabel11.setText("<html><h2>Password:</h2></html>");
         menuTab.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 20, 413, 44));
 
-        jPasswordField1.setText("jPasswordField");
-        jPasswordField1.setBorder(null);
-        jPasswordField1.setOpaque(false);
-        menuTab.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 70, 413, 50));
+        txtPassword.setBorder(null);
+        menuTab.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 70, 413, 50));
 
         kGradientPanel2.setkEndColor(new java.awt.Color(22, 116, 188));
         kGradientPanel2.setkStartColor(new java.awt.Color(38, 38, 38));
@@ -231,32 +262,28 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
         menuTab.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 270, 413, 44));
         menuTab.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 370, 413, 10));
 
-        jTextField2.setText("Enter First Name");
-        jTextField2.setBorder(null);
-        jTextField2.setOpaque(false);
-        menuTab.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, 413, 45));
+        txtFirstName.setBorder(null);
+        menuTab.add(txtFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, 413, 45));
 
-        jTextField3.setText("Enter Mobile Number");
-        jTextField3.setBorder(null);
-        jTextField3.setOpaque(false);
-        menuTab.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 320, 413, 45));
+        txtMobileNumber.setBorder(null);
+        menuTab.add(txtMobileNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 320, 413, 45));
 
         kGradientPanel4.setkEndColor(new java.awt.Color(22, 116, 188));
         kGradientPanel4.setkStartColor(new java.awt.Color(38, 38, 38));
 
-        loginButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        loginButton2.setForeground(new java.awt.Color(255, 255, 255));
-        loginButton2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        loginButton2.setText("Sign Up");
-        loginButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnVolunteerSignup.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVolunteerSignup.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolunteerSignup.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnVolunteerSignup.setText("Sign Up");
+        btnVolunteerSignup.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                loginButton2MouseClicked(evt);
+                btnVolunteerSignupMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                loginButton2MouseEntered(evt);
+                btnVolunteerSignupMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                loginButton2MouseExited(evt);
+                btnVolunteerSignupMouseExited(evt);
             }
         });
 
@@ -264,11 +291,11 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
         kGradientPanel4.setLayout(kGradientPanel4Layout);
         kGradientPanel4Layout.setHorizontalGroup(
             kGradientPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(loginButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+            .addComponent(btnVolunteerSignup, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
         );
         kGradientPanel4Layout.setVerticalGroup(
             kGradientPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(loginButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+            .addComponent(btnVolunteerSignup, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
         );
 
         menuTab.add(kGradientPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 510, -1, -1));
@@ -276,29 +303,33 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
         jLabel15.setText("<html><h2>Last Name:</h2></html>");
         menuTab.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 150, 413, 44));
 
-        jTextField4.setText("Enter Last Name");
-        jTextField4.setBorder(null);
-        jTextField4.setOpaque(false);
-        menuTab.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 200, 413, 45));
+        txtLastName.setBorder(null);
+        menuTab.add(txtLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 200, 413, 45));
         menuTab.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 250, 413, 10));
 
+        gender.add(radbtnMale);
         radbtnMale.setText("Male");
         menuTab.add(radbtnMale, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 440, -1, 45));
 
+        gender.add(radbtnFemale);
         radbtnFemale.setText("Female");
-        menuTab.add(radbtnFemale, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 440, -1, 45));
+        menuTab.add(radbtnFemale, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 440, -1, 45));
 
         jLabel16.setText("<html><h2>Gender:</h2></html>");
         menuTab.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 413, 44));
         menuTab.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 490, 413, 10));
 
+        gender.add(radbtnNotToSay);
         radbtnNotToSay.setText("Prefer not to say");
         menuTab.add(radbtnNotToSay, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 440, -1, 45));
 
-        jTextField5.setText("Enter Address");
-        jTextField5.setBorder(null);
-        jTextField5.setOpaque(false);
-        menuTab.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, 413, 45));
+        txtAddress.setBorder(null);
+        txtAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAddressActionPerformed(evt);
+            }
+        });
+        menuTab.add(txtAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, 413, 45));
         menuTab.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 413, 10));
 
         jLabel17.setText("<html><h2>Address:</h2></html>");
@@ -371,6 +402,8 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        MainJFrame.dB4OUtil.storeSystem(system);
+
         JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this);
         parentFrame.dispose();
     }//GEN-LAST:event_closeButtonMouseClicked
@@ -403,35 +436,137 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void loginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseEntered
-        kGradientPanel2.setkEndColor(new Color(38,38,38));
-        kGradientPanel2.setkStartColor(new Color(22,116,188));
+        kGradientPanel2.setkEndColor(new Color(38, 38, 38));
+        kGradientPanel2.setkStartColor(new Color(22, 116, 188));
         mainPane.repaint();
         mainPane.revalidate();
     }//GEN-LAST:event_loginButtonMouseEntered
 
     private void loginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseExited
-        kGradientPanel2.setkStartColor(new Color(38,38,38));
-        kGradientPanel2.setkEndColor(new Color(22,116,188));
+        kGradientPanel2.setkStartColor(new Color(38, 38, 38));
+        kGradientPanel2.setkEndColor(new Color(22, 116, 188));
         mainPane.repaint();
         mainPane.revalidate();
     }//GEN-LAST:event_loginButtonMouseExited
 
-    private void loginButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButton2MouseClicked
+    private void btnVolunteerSignupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVolunteerSignupMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_loginButton2MouseClicked
+        JPanel djp = null;
 
-    private void loginButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButton2MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_loginButton2MouseEntered
+        String userName = txtUserName.getText();
+        char[] passwordCharArray = txtPassword.getPassword();
+        String password = String.valueOf(passwordCharArray);
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+        String phoneNumber = txtMobileNumber.getText();
+        String address = txtAddress.getText();
+        
 
-    private void loginButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButton2MouseExited
+        Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
+        Matcher passworMatcher = passwordPattern.matcher(password);
+        System.out.println(system.isUniqueUsername(userName));
+        if (!system.isUniqueUsername(userName)) {
+            JOptionPane.showMessageDialog(this, "Please enter a unique user Name");
+            return;
+        }
+
+        //add address and work address
+        if (StringUtils.isBlank(userName)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid user Name");
+            return;
+        } else if (StringUtils.isBlank(password) || !passworMatcher.matches()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid password");
+            return;
+        } else if (StringUtils.isBlank(firstName)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid first Name");
+            return;
+        } else if (StringUtils.isBlank(lastName)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid last Name");
+            return;
+        } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+            return;
+        } else if (StringUtils.isBlank(address)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid home address");
+            return;
+        } 
+        
+        if (gender.getSelection() == null || StringUtils.isBlank(gender.getSelection().getActionCommand())) {
+            JOptionPane.showMessageDialog(this, "Please select an option for gender");
+            return;
+        } else if (volunteerType.getSelection()==null || StringUtils.isBlank(volunteerType.getSelection().getActionCommand())) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid role");
+            return;
+        }
+
+        String role = volunteerType.getSelection().getActionCommand();
+        String genderName = gender.getSelection().getActionCommand();
+        
+        double[] coords = MapsUtil.getGeoPointFromAddress(address);
+        if (coords[0] == 0 || coords[1] == 0) {
+            JOptionPane.showMessageDialog(this, "Wrong Address");
+            return;
+        }
+        UserAccount userAccount = null;
+        if (CollectionUtils.isNotEmpty(enterpriseDirectory.getEnterpriseList())) {
+            for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
+                if (Enterprise.EnterpriseType.VoluntaryEnterprise.equals(enterprise.getEnterpriseType())) {
+                    this.organizationDirectory = enterprise.getOrganizationDirectory();
+                    if (CollectionUtils.isNotEmpty(organizationDirectory.getOrganizationList())) {
+                        for (Organization organization : organizationDirectory.getOrganizationList()) {
+                            if (organization != null) {
+                                UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
+//                                if (accountDirectory != null && accountDirectory.checkIfUsernameIsUnique(userName)) {
+                                Profile userProfile = new Profile(firstName, lastName, genderName, Long.valueOf(phoneNumber), address);
+                                userProfile.setLocation(coords);
+                                if (organization instanceof VoluntaryClinicianOrganization && StringUtils.equalsIgnoreCase(role, "Clinician")) {
+                                    userAccount = accountDirectory.createUserAccount(userName, password, new VoluntaryClinician(), userProfile);
+                                } else if (organization instanceof VoluntaryTransportOrganization && StringUtils.equalsIgnoreCase(role, "Transport")) {
+                                    userAccount = accountDirectory.createUserAccount(userName, password, new Driver(), userProfile);
+                                }
+//                                } else {
+//                                    JOptionPane.showMessageDialog(this, "Enter a unique user name");
+//                                    return;
+//                                }
+                                organization.setUserAccountDirectory(accountDirectory);
+                                system.addUsername(userName);
+                            }
+                        }
+                        if (userAccount == null) {
+                            JOptionPane.showMessageDialog(this, "User creation failed");
+                        }
+                    }
+                }
+            }
+        }
+        if (userAccount != null) {
+            MainJFrame.dB4OUtil.storeSystem(system);
+            LoginJPanel loginJPanel = new LoginJPanel(mainPane, system);
+            displayPanel(mainPane, loginJPanel);
+        }
+    }//GEN-LAST:event_btnVolunteerSignupMouseClicked
+
+    private void btnVolunteerSignupMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVolunteerSignupMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_loginButton2MouseExited
+    }//GEN-LAST:event_btnVolunteerSignupMouseEntered
+
+    private void btnVolunteerSignupMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVolunteerSignupMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVolunteerSignupMouseExited
+
+    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserNameActionPerformed
+
+    private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAddressActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton Physician;
+    private javax.swing.JRadioButton Clinician;
     private javax.swing.JRadioButton Transport;
+    private javax.swing.JLabel btnVolunteerSignup;
     private javax.swing.JLabel closeButton;
     private javax.swing.ButtonGroup gender;
     private javax.swing.JLabel jLabel10;
@@ -448,7 +583,6 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -457,23 +591,21 @@ public class VolunteerSignUpPageJPanel extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private keeptoo.KGradientPanel kGradientPanel2;
-    private keeptoo.KGradientPanel kGradientPanel3;
     private keeptoo.KGradientPanel kGradientPanel4;
     private javax.swing.JLabel loginButton;
-    private javax.swing.JLabel loginButton1;
-    private javax.swing.JLabel loginButton2;
     private javax.swing.JPanel menuTab;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JRadioButton radbtnFemale;
     private javax.swing.JRadioButton radbtnMale;
     private javax.swing.JRadioButton radbtnNotToSay;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtMobileNumber;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUserName;
     private javax.swing.ButtonGroup volunteerType;
     // End of variables declaration//GEN-END:variables
-   
+
 }

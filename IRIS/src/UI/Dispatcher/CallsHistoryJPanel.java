@@ -6,8 +6,10 @@ package UI.Dispatcher;
 
 import Business.EcoSystem;
 import Business.UserAccount.UserAccount;
+import Business.Utilities.Profile;
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
+import UI.Paramedics.MessageFromPhysicianJPanel;
 import Util.MapsUtil;
 import java.awt.Component;
 import java.util.List;
@@ -17,6 +19,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -30,6 +34,7 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
     private UserAccount dispatcherUserAccount;
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    WorkRequest dispatcherWorkRequest;
 
     /**
      * Creates new form IncomingCallsJPanel
@@ -41,6 +46,27 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
         this.system = system;
         this.dispatcherUserAccount = account;
         populateIncidentTable();
+        tbldispatcherWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                int selectedRowIndex = tbldispatcherWQ.getSelectedRow();
+                if (selectedRowIndex < 0) {
+                    return;
+                }
+
+                dispatcherWorkRequest = (WorkRequest) tbldispatcherWQ.getValueAt(selectedRowIndex, 0);
+                if (dispatcherWorkRequest != null && dispatcherWorkRequest.getStatus().equals("Voluntary Transport Required")) {
+                    JOptionPane.showMessageDialog(mainPane, "Voluntary Driver needs to be dispatched to the scene!");
+                    EEmergencyJPanel panel = 
+                            new EEmergencyJPanel(
+                                    mainPane, 
+                                    workPane, 
+                                    system, 
+                                    dispatcherUserAccount, 
+                                    dispatcherWorkRequest);
+                    displayPanel(workPane, panel);
+                }
+            }
+        });
 
     }
 
@@ -167,6 +193,7 @@ public class CallsHistoryJPanel extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable tbldispatcherWQ;
     // End of variables declaration//GEN-END:variables
+
     public void populateIncidentTable() {
         DefaultTableModel dispatcherIncidentTableModel = (DefaultTableModel) tbldispatcherWQ.getModel();
         dispatcherIncidentTableModel.setRowCount(0);

@@ -5,6 +5,17 @@
 package UI.Volunteer;
 
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.EnterpriseDirectory;
+import Business.Network.Network;
+import Business.Organization.HealthCare.NonClinicalOrganization;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
+import Business.Organization.Voluntary.VoluntaryClinicianOrganization;
+import Business.Organization.Voluntary.VoluntaryTransportOrganization;
+import Business.UserAccount.UserAccount;
+import Business.UserAccount.UserAccountDirectory;
+import UI.MainJFrame;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
 import java.awt.Color;
@@ -18,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
@@ -30,16 +42,36 @@ public class VolunteerJPanel extends javax.swing.JPanel {
     boolean menuButton = false;
     boolean volunteerAvailable = false;
     EcoSystem system;
+    Network network;
+    Organization organization;
+    Enterprise enterprise;
+    EnterpriseDirectory enterpriseDirectory;
+    OrganizationDirectory organizationDirectory;
+    UserAccount account;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public VolunteerJPanel(JLayeredPane mainPane, EcoSystem system) {
+    public VolunteerJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
-        ThankYouMessageJPanel t = new ThankYouMessageJPanel();
-            displayPanel(workpane, t);
+        this.network = system.getNetworkList().get(0);
+        this.enterpriseDirectory = network.getEnterpriseDirectory();
+        this.account = account;
+        this.organization = organization;
+        this.enterprise = enterprise;
+
+        volunteerAvailable = account.getProfileDetails().isAvailable();
+
+        if (!volunteerAvailable) {
+            ThankYouMessageJPanel panel = new ThankYouMessageJPanel();
+            displayPanel(workpane, panel);
+            return;
+        }
+        avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
+        JPanel routeJPanel = new ClinicianHomeJPanel(mainPane, account, organization, enterprise, system);
+        displayPanel(workpane, routeJPanel);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -61,6 +93,7 @@ public class VolunteerJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        driver1 = new Business.Role.Voluntary.Driver();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -73,7 +106,7 @@ public class VolunteerJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         availablityBtn = new javax.swing.JPanel();
-        avaliablity = new javax.swing.JLabel();
+        avaliablityIcon = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         workpane = new javax.swing.JLayeredPane();
         jPanel2 = new javax.swing.JPanel();
@@ -219,7 +252,7 @@ public class VolunteerJPanel extends javax.swing.JPanel {
             }
         });
 
-        avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png"))); // NOI18N
+        avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png"))); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
@@ -233,13 +266,13 @@ public class VolunteerJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(avaliablity)
+                .addComponent(avaliablityIcon)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         availablityBtnLayout.setVerticalGroup(
             availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-            .addComponent(avaliablity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(avaliablityIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         menuPanel.add(availablityBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
@@ -350,6 +383,7 @@ public class VolunteerJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_homeMouseExited
 
     private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
+        MainJFrame.dB4OUtil.storeSystem(system);
         LoginJPanel icjp = new LoginJPanel(mainPane, system);
         displayPanel(mainPane, icjp);
     }//GEN-LAST:event_home1MouseClicked
@@ -364,16 +398,30 @@ public class VolunteerJPanel extends javax.swing.JPanel {
 
     private void availablityBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseClicked
         if (!volunteerAvailable) {
-            avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
-//            ForceCompleteSignUpJPanel t = new ForceCompleteSignUpJPanel();
-//            displayPanel(workpane, t);
+            avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
+            JPanel routeJPanel = new ClinicianHomeJPanel(mainPane, account, organization, enterprise, system);
+            displayPanel(workpane, routeJPanel);
         } else {
-            avaliablity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png")));
+            avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png")));
             ThankYouMessageJPanel t = new ThankYouMessageJPanel();
             displayPanel(workpane, t);
         }
-
         volunteerAvailable = !volunteerAvailable;
+        for (Network network : system.getNetworkList()) {
+            Enterprise voluntaryEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue());
+            for (Organization organization : voluntaryEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
+                if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())
+                        && accountDirectory.findAccount(account.getUsername()) != null) {
+                    account.getProfileDetails().setAvailable(volunteerAvailable);
+                    accountDirectory.findAccount(account.getUsername()).setProfileDetails(account.getProfileDetails());
+//                    organization.setUserAccountDirectory(accountDirectory);
+                    break;
+                }
+            }
+        }
+
     }//GEN-LAST:event_availablityBtnMouseClicked
 
     private void availablityBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseEntered
@@ -387,8 +435,9 @@ public class VolunteerJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availablityBtn;
-    private javax.swing.JLabel avaliablity;
+    private javax.swing.JLabel avaliablityIcon;
     private javax.swing.JLabel closeButton;
+    private Business.Role.Voluntary.Driver driver1;
     private javax.swing.JPanel home;
     private javax.swing.JPanel home1;
     private javax.swing.JLabel jLabel15;

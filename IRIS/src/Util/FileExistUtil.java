@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class FileExistUtil {
     static public boolean isVideoFileExists(String filename){
-        File f = new File("video\\"+filename+".avi");
+        File f = new File("video\\"+filename+".flv");
         return f.exists();            
     }
 }

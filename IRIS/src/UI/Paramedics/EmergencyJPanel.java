@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI.Firefighter;
+package UI.Paramedics;
 
+import Business.Caller.Caller;
 import Business.EcoSystem;
 import Business.UserAccount.UserAccount;
 import Business.Utilities.Profile;
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
-import UI.Paramedics.*;
 import UI.Dispatcher.*;
 import Util.MapsUtil;
 import java.util.List;
@@ -28,63 +28,69 @@ import org.apache.commons.collections4.CollectionUtils;
  *
  * @author akshatajadhav
  */
-public class HomeJPanel extends javax.swing.JPanel {
+public class EmergencyJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
     private EcoSystem system;
-    private UserAccount fireUserAccount;
-    WorkRequest fireWorkRequest;
-    
+    private UserAccount paramedicUserAccount;
+    WorkRequest paramedicWorkRequest;
+
     /**
      * Creates new form AEmergencyJPanel
      */
-    public HomeJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount account) {
+    public EmergencyJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
-        this.fireUserAccount = account;
-        //btnHospitalTransfer.setEnabled(false);
-        
+        this.paramedicUserAccount = account;
+        btnHospitalTransfer.setEnabled(false);
+
+        JPanel map = MapsUtil.defaultMap();
+        map.setBounds(maps.getBounds());
+        maps.removeAll();
+        maps.add(map);
+        this.updateUI();
+
         populateWorkQueueTable();
-        
-        tblFirefighterWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-        public void valueChanged(ListSelectionEvent event){
-            int selectedRowIndex = tblFirefighterWQ.getSelectedRow();
-            if (selectedRowIndex < 0) {
-                txtCallerName.setText("");
+        tblParamedicsWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                int selectedRowIndex = tblParamedicsWQ.getSelectedRow();
+                if (selectedRowIndex < 0) {
+                    txtCallerName.setText("");
                     txtContact.setText("");
                     txtLocation.setText("");
                     txtMessage.setText("");
-                    
+
                     return;
                 }
-            
-            fireWorkRequest = (WorkRequest) tblFirefighterWQ.getValueAt(selectedRowIndex, 0);
-            if (fireWorkRequest != null){
-                Profile callerInfo = fireWorkRequest.getCaller().getCallerDetails();
-                txtCallerName.setText(callerInfo.getFirstName() +" "+callerInfo.getLastName());
-                txtContact.setText(String.valueOf(callerInfo.getPhone()));
-                txtLocation.setText(fireWorkRequest.getCaller().getLocation());
-                txtMessage.setText(fireWorkRequest.getMessage());
-                JPanel map = MapsUtil.mapWayPoint(fireWorkRequest.getCaller().getCoordinates());
-                displayPanel(maps, map);
-                if (fireWorkRequest.getStatus().equals("Transport Care Reqduired") ||
-                        fireWorkRequest.getStatus().equals("Scene Assessment in progress")){
-                //btnHospitalTransfer.setEnabled(true);
-                btnAcknowledge.setEnabled(false);
-                
-            }else if (!fireWorkRequest.getStatus().equals("Open")){
-                    btnAcknowledge.setEnabled(false);
+
+                paramedicWorkRequest = (WorkRequest) tblParamedicsWQ.getValueAt(selectedRowIndex, 0);
+                if (paramedicWorkRequest != null) {
+                    Profile callerInfo = paramedicWorkRequest.getCaller().getCallerDetails();
+                    txtCallerName.setText(callerInfo.getFirstName() + " " + callerInfo.getLastName());
+                    txtContact.setText(String.valueOf(callerInfo.getPhone()));
+                    txtLocation.setText(paramedicWorkRequest.getCaller().getLocation());
+                    txtMessage.setText(paramedicWorkRequest.getMessage());
+                    JPanel map = MapsUtil.mapWayPoint(paramedicWorkRequest.getCaller().getCoordinates());
+                    displayPanel(maps, map);
+                    if (paramedicWorkRequest.getStatus().equals("Awaiting Paramedic's Action")) {
+                        JOptionPane.showMessageDialog(mainPane, "You have a message from the assigned Physician!");
+                        MessageFromPhysicianJPanel mpjp = new MessageFromPhysicianJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
+                        displayPanel(workPane, mpjp);
+                    } else if (paramedicWorkRequest.getStatus().equals("Transport Care Required")
+                            || paramedicWorkRequest.getStatus().equals("Scene Assessment in progress")) {
+                        btnHospitalTransfer.setEnabled(true);
+                        btnAcknowledge.setEnabled(false);
+                        // go to HospitalTransferJPanel screen
+                    } else if (!paramedicWorkRequest.getStatus().equals("Open")) {
+                        btnAcknowledge.setEnabled(false);
                     }
-                    
                 }
             }
         });
     }
-        
-    
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
         lpane.removeAll();
@@ -95,22 +101,22 @@ public class HomeJPanel extends javax.swing.JPanel {
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
     }
-    
-     public void populateWorkQueueTable() {
-        DefaultTableModel firefighterTableModel = (DefaultTableModel) tblFirefighterWQ.getModel();
-        firefighterTableModel.setRowCount(0);
 
-        WorkQueue workQueue = fireUserAccount.getWorkQueue();
+    public void populateWorkQueueTable() {
+        DefaultTableModel paramedicsTableModel = (DefaultTableModel) tblParamedicsWQ.getModel();
+        paramedicsTableModel.setRowCount(0);
+
+        WorkQueue workQueue = paramedicUserAccount.getWorkQueue();
         if (workQueue != null) {
-            List<WorkRequest> firefighterWorkRequestList = workQueue.getWorkRequestList();
-            if (CollectionUtils.isNotEmpty(firefighterWorkRequestList)) {
-                for (WorkRequest wr : firefighterWorkRequestList) {
+            List<WorkRequest> paramedicsWorkRequestList = workQueue.getWorkRequestList();
+            if (CollectionUtils.isNotEmpty(paramedicsWorkRequestList)) {
+                for (WorkRequest wr : paramedicsWorkRequestList) {
                     Object[] row = new Object[4];
                     row[0] = wr;
                     row[1] = wr.getCaller().getLocation();
                     row[2] = wr.getEmergencyLevel();
                     row[3] = wr.getStatus();
-                    firefighterTableModel.addRow(row);
+                    paramedicsTableModel.addRow(row);
                 }
             }
         }
@@ -128,7 +134,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblFirefighterWQ = new javax.swing.JTable();
+        tblParamedicsWQ = new javax.swing.JTable();
         txtCallerName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         txtContact = new javax.swing.JTextField();
@@ -139,6 +145,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtMessage = new javax.swing.JTextArea();
         btnAcknowledge = new javax.swing.JButton();
+        btnHospitalTransfer = new javax.swing.JButton();
         maps = new javax.swing.JLayeredPane();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -162,8 +169,9 @@ public class HomeJPanel extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
+        jPanel1.setForeground(new java.awt.Color(255, 0, 0));
 
-        tblFirefighterWQ.setModel(new javax.swing.table.DefaultTableModel(
+        tblParamedicsWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -174,15 +182,22 @@ public class HomeJPanel extends javax.swing.JPanel {
                 "Request No.", "Location", "Emergency Level", "Request Status"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblFirefighterWQ);
+        jScrollPane1.setViewportView(tblParamedicsWQ);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -225,6 +240,15 @@ public class HomeJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnHospitalTransfer.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnHospitalTransfer.setText("Transfer To Hospital");
+        btnHospitalTransfer.setEnabled(false);
+        btnHospitalTransfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHospitalTransferActionPerformed(evt);
+            }
+        });
+
         maps.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -235,33 +259,36 @@ public class HomeJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnAcknowledge)
-                .addGap(401, 401, 401))
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnAcknowledge)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnHospitalTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(146, 146, 146))))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAcknowledge, btnHospitalTransfer});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane2, txtCallerName, txtContact, txtLocation});
 
@@ -290,32 +317,46 @@ public class HomeJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(maps))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                .addComponent(btnAcknowledge)
-                .addGap(36, 36, 36))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnHospitalTransfer)
+                    .addComponent(btnAcknowledge))
+                .addGap(25, 25, 25))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+
+    private void btnHospitalTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospitalTransferActionPerformed
+        // pass the paramedicWorkRequest object when redirecting to HospitalTransferJPanel.
+        HospitalTransferJPanel htjp = new HospitalTransferJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
+        displayPanel(workPane, htjp);
+    }//GEN-LAST:event_btnHospitalTransferActionPerformed
+
     private void btnAcknowledgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcknowledgeActionPerformed
-        // TODO add your handling code here:
-        if (fireWorkRequest != null){
-            if (fireWorkRequest.getStatus().equals("Open")){
-                fireWorkRequest.setStatus("Scene Assessment in progress");
-                fireWorkRequest.getSender().getWorkQueue()
-                        .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-                for (UserAccount receieverAccount : fireWorkRequest.getReceivers()){
-                    receieverAccount.getWorkQueue()
-                            .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-                }
-                
-                fireUserAccount.getWorkQueue()
-                        .findWorkRequestByID(fireWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-                populateWorkQueueTable();
-                
-                if (fireWorkRequest.getEmergencyLevel() == 'C'){
+        if (paramedicWorkRequest != null) {
+            if (paramedicWorkRequest.getStatus().equals("Open")) {
+                paramedicWorkRequest.setStatus("Scene Assessment in progress");
+                // update status of this WR in sender's workqueue as well.
+                paramedicWorkRequest.getSender().getWorkQueue()
+                .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
+                // update status of this WR in receiver's work queue as well.
+                for (UserAccount receiverAccount : paramedicWorkRequest.getReceivers()) {
                     
+                    receiverAccount.getWorkQueue()
+                    .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
                 }
-            }else{
+                
+
+                paramedicUserAccount.getWorkQueue()
+                .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
+                populateWorkQueueTable();
+
+                if (paramedicWorkRequest.getEmergencyLevel() == 'C') {
+                    // go to the medicalRecords screen and pass workRequest object.
+                    MedicalRecordsJPanel mrjp = new MedicalRecordsJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
+                    displayPanel(workPane, mrjp);
+                }
+            } else {
                 JOptionPane.showMessageDialog(this, "The work request is already in progress!");
             }
         }
@@ -324,6 +365,7 @@ public class HomeJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAcknowledge;
+    private javax.swing.JButton btnHospitalTransfer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -333,7 +375,7 @@ public class HomeJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLayeredPane maps;
-    private javax.swing.JTable tblFirefighterWQ;
+    private javax.swing.JTable tblParamedicsWQ;
     private javax.swing.JTextField txtCallerName;
     private javax.swing.JTextField txtContact;
     private javax.swing.JTextField txtLocation;

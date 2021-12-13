@@ -216,7 +216,8 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
                 cu = new CameraUtil(VIDEO_FILE_NAME, 640, 480);
                 cu.startCamera(camera);
                 cameraOn = true;
-                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/record_video.png")));
+                recorderOn = true;
+                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
             } catch (FrameGrabber.Exception ex) {
                 Logger.getLogger(MessageToPhysicianJPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -224,9 +225,9 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         }
         if (cameraOn && !messageRecorded) {
             if (recorderOn == false) {
-                recorderOn = true;
-                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
-                cu.startRecording();
+//                recorderOn = true;
+//                cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/recording.png")));
+//                cu.startRecording();
             } else if (recorderOn) {
                 recorderOn = false;
                 cameraBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/video_48px.png")));
@@ -267,7 +268,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         }
         
         // redirect to Paramedic's home screen.
-        HomeJPanel phjp = new HomeJPanel(mainPane, workPane, system, paramedicUserAccount);
+        ParamedicHistoryJPanel phjp = new ParamedicHistoryJPanel(mainPane, workPane, system, paramedicUserAccount);
         displayPanel(workPane, phjp);
     }//GEN-LAST:event_submitBtnActionPerformed
 
@@ -298,7 +299,6 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
             cu.stopCamera();
         }
     }
-
     @Override
     protected void finalize() throws Throwable {
         super.finalize(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
@@ -306,5 +306,4 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
             cu.stopCamera();
         }
     }
-
 }

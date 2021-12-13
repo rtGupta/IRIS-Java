@@ -48,7 +48,6 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
-        this.workPane = workPane;
         this.system = system;
         this.dispatcherUserAccount = userAccount;
         this.caller = caller;
@@ -222,8 +221,12 @@ public class CEmergencyJPanel extends javax.swing.JPanel {
             receiver.getWorkQueue().getWorkRequestList().add(dispatcherWorkRequest);
         }); 
         // redirect to the dispatcher home screen.
-        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workPane, system, dispatcherUserAccount);
-        displayPanel(workPane, icjp);
+//        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workPane, system, dispatcherUserAccount);
+//        displayPanel(workPane, icjp);
+        
+        CallsHistoryJPanel chjp = new CallsHistoryJPanel(mainPane, workPane, system, dispatcherUserAccount);
+        displayPanel(workPane, chjp);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

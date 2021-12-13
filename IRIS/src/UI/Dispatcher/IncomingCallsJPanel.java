@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -35,6 +36,8 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     JLayeredPane workPane;
     boolean fromReset = false;
+    long contact = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
+    JPanel map;
 
     /**
      * Creates new form IncomingCallsJPanel
@@ -46,13 +49,14 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         this.system = system;
         this.dispatcherUserAccount = account;
 
-        
+        //set caller's phone
+        callerId.setText(String.valueOf(contact));
 
-        JPanel map = MapsUtil.defaultMap();
+        map = MapsUtil.defaultMap();
         map.setBounds(callerLocation.getBounds());
         callerLocation.removeAll();
         callerLocation.add(map);
-        this.updateUI();
+        callerLocation.updateUI();
         emergencyCategoryA.setActionCommand("A");
         emergencyCategoryC.setActionCommand("C");
         emergencyCategoryE.setActionCommand("E");
@@ -70,8 +74,6 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,19 +150,19 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         messageText.setRows(5);
         jScrollPane3.setViewportView(messageText);
 
-        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, 242, 160));
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 250, 242, 150));
 
-        emergencyCategoryA.setText("A");
+        emergencyCategoryA.setText("Urgent Support");
         emergencyCategoryA.setToolTipText("Emergency");
-        add(emergencyCategoryA, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, -1, 30));
+        add(emergencyCategoryA, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 410, 150, 30));
 
-        emergencyCategoryC.setText("C");
+        emergencyCategoryC.setText("Immediate Support");
         emergencyCategoryC.setToolTipText("Doctor");
-        add(emergencyCategoryC, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, -1, 30));
+        add(emergencyCategoryC, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, 150, 30));
 
-        emergencyCategoryE.setText("E");
+        emergencyCategoryE.setText("Non-Emergent Support");
         emergencyCategoryE.setToolTipText("Volunteer");
-        add(emergencyCategoryE, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, -1, 30));
+        add(emergencyCategoryE, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, 150, 30));
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel5.setText("Emergency Category:");
@@ -214,7 +216,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 2));
 
-        callerLocation.setLayout(new java.awt.BorderLayout());
+        callerLocation.setLayout(new java.awt.CardLayout());
         add(callerLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 90, 340, 430));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -222,10 +224,11 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         String address = Address.getText();
         double[] location = MapsUtil.getGeoPointFromAddress(address);
         if (location[0] == 0 || location[1] == 0) {
-            JPanel map = MapsUtil.defaultMap();
+            map = MapsUtil.defaultMap();
             map.setBounds(callerLocation.getBounds());
+            callerLocation.removeAll();
             callerLocation.add(map);
-            this.updateUI();
+            callerLocation.updateUI();
             if (fromReset) {
                 fromReset = false;
                 return;
@@ -235,6 +238,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         }
         JPanel map = MapsUtil.mapWayPointWithLocationName(nameText.getText(), location[0], location[1]);
         map.setBounds(callerLocation.getBounds());
+        callerLocation.removeAll();
         callerLocation.add(map);
         this.updateUI();
         //displayPanel(callerLocation, map);
@@ -246,15 +250,24 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetMapActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // data validations for text fields
-
         // register caller's name, contact and location in caller object.
-        String firstName = nameText.getText();
-        String lastName = " ";
-        long contact = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
         String location = Address.getText();
         String message = messageText.getText();
+
+        if (StringUtils.isBlank(nameText.getText()) || StringUtils.isNumeric(nameText.getText())) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Name");
+            return;
+        } else if (StringUtils.isBlank(message)) {
+            JOptionPane.showMessageDialog(this, "Please enter a message to dispatch");
+            return;
+        } else if (emergencyCategory.getSelection() == null || StringUtils.isBlank(emergencyCategory.getSelection().getActionCommand())) {
+            JOptionPane.showMessageDialog(this, "Please select one of the radio button for emergency level");
+            return;
+        }
+        String firstName = nameText.getText().split(" ")[0];
+        String lastName = nameText.getText().split(" ").length > 1 ? nameText.getText().split(" ")[1] : " ";
         String emergencyLevel = emergencyCategory.getSelection().getActionCommand();
+
         double[] coords = MapsUtil.getGeoPointFromAddress(location);
         if (coords[0] == 0 || coords[1] == 0) {
             JPanel map = MapsUtil.defaultMap();
@@ -263,10 +276,11 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
             this.updateUI();
             JOptionPane.showMessageDialog(this, "Wrong Address");
             return;
-        }   
+        }
+
         Caller caller = new Caller(firstName, lastName, contact, location, coords);
         // pass caller object, message, emergencyLevel to EmergencyPanels - A, C, E.
-        
+
         JPanel panel = null;
         if (emergencyCategory.getSelection() == null) {
             return;
@@ -276,7 +290,7 @@ public class IncomingCallsJPanel extends javax.swing.JPanel {
         } else if (emergencyCategory.getSelection().getActionCommand().equals("C")) {
             panel = new CEmergencyJPanel(mainPane, workPane, system, dispatcherUserAccount, caller, message, emergencyLevel);
         } else if (emergencyCategory.getSelection().getActionCommand().equals("E")) {
-            panel = new EEmergencyJPanel(mainPane, workPane);
+            panel = new EEmergencyJPanel(mainPane, workPane, system, dispatcherUserAccount, caller, message, emergencyLevel);
         } else {
             return;
         }

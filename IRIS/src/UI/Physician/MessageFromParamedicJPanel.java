@@ -29,6 +29,8 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
     WorkRequest physicianWorkRequest;
     final String VIDEO_FILE_NAME;
 
+    VideoUtil videoUtil;
+
     /**
      * Creates new form HosptialHomeJPanel
      */
@@ -122,14 +124,14 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
             .addGroup(videoLayout.createSequentialGroup()
                 .addGap(259, 259, 259)
                 .addComponent(jButton2)
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addContainerGap(287, Short.MAX_VALUE))
         );
         videoLayout.setVerticalGroup(
             videoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(videoLayout.createSequentialGroup()
                 .addGap(193, 193, 193)
                 .addComponent(jButton2)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -139,12 +141,12 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(404, 404, 404)
-                        .addComponent(jLabel1)))
-                .addContainerGap(176, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,8 +154,8 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -163,7 +165,7 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(634, 634, 634)
+                .addGap(233, 233, 233)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(396, 396, 396)
@@ -175,8 +177,8 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -185,29 +187,17 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        MessageToParamedicJPanel mpjp = new MessageToParamedicJPanel(mainPane, workPane, system, physicianUserAccount, physicianRequest);
-//        displayPanel(workPane, mpjp);
-
-        if (physicianWorkRequest.isIRISeligible()) {
-            physicianWorkRequest.setStatus("Transport Care Required");
-            physicianWorkRequest.getSender().getWorkQueue()
-                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
-                receiverAccount.getWorkQueue()
-                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-            });
-
-            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
-            // Redirect to Physician Home screen
-            PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
-            displayPanel(workPane, phjp);
+        if (videoUtil != null) {
+            videoUtil.releaseCamera();
         }
 
+        MessageToParamedicJPanel mpjp = new MessageToParamedicJPanel(mainPane, workPane, system, physicianUserAccount, physicianWorkRequest);
+        displayPanel(workPane, mpjp);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (FileExistUtil.isVideoFileExists(VIDEO_FILE_NAME))
-            new VideoUtil(VIDEO_FILE_NAME, video);
+            videoUtil = new VideoUtil(VIDEO_FILE_NAME, video);
         else
             JOptionPane.showMessageDialog(this, "No Message From paramedic");
     }//GEN-LAST:event_jButton2ActionPerformed

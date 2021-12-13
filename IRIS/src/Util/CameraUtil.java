@@ -56,8 +56,12 @@ public class CameraUtil {
     private Color color = null;
     private Image image = null;
     private BufferedImage buffer = null;
-    private boolean startRecord;
+//    private boolean startRecord;
+    private boolean stopCamera = false;
+    private boolean stopedRecorder = false;
     JPanel panel;
+    DataLine.Info dataLineInfo;
+    TargetDataLine line;
 
     public CameraUtil(String filename, int width, int height) throws FrameGrabber.Exception {
         String os = System.getProperty("os.name");
@@ -75,18 +79,20 @@ public class CameraUtil {
             } else {
                 grabber = FrameGrabber.createDefault(0);
             }
+
         }
+
         grabber.setImageWidth(captureWidth);
         grabber.setImageHeight(captureHeight);
         grabber.start();
-        recorder = new FFmpegFrameRecorder("video\\"+filename + ".avi", captureWidth, captureHeight, 2);
+        recorder = new FFmpegFrameRecorder("video\\" + filename + ".flv", captureWidth, captureHeight, 2);
         recorder.setInterleaved(true);
         recorder.setVideoOption("tune", "zerolatency");
         recorder.setVideoOption("preset", "ultrafast");
         recorder.setVideoOption("crf", "28");
         recorder.setVideoBitrate(2000000);
         recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-        recorder.setFormat("avi");
+        recorder.setFormat("flv");
         recorder.setFrameRate(FRAME_RATE);
         recorder.setGopSize(GOP_LENGTH_IN_FRAMES);
         recorder.setAudioOption("crf", "0");
@@ -105,7 +111,8 @@ public class CameraUtil {
                 DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
 
                 try {
-                    final TargetDataLine line = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+
+                    line = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
                     line.open(audioFormat);
                     line.start();
 
@@ -119,9 +126,6 @@ public class CameraUtil {
                         @Override
                         public void run() {
                             try {
-                                if (startRecord == false) {
-                                    latch.countDown();
-                                }
                                 int nBytesRead = 0;
                                 while (nBytesRead == 0) {
                                     nBytesRead = line.read(audioBytes, 0, line.available());
@@ -132,89 +136,71 @@ public class CameraUtil {
                                 ShortBuffer sBuff = ShortBuffer.wrap(samples, 0, nSamplesRead);
                                 recorder.recordSamples(sampleRate, numChannels, sBuff);
                             } catch (org.bytedeco.javacv.FrameRecorder.Exception e) {
-
+                                Logger.getLogger(CameraUtil.class.getName()).log(Level.SEVERE, null, e);
                             }
                         }
                     }, 0, (long) 1000 / FRAME_RATE, TimeUnit.MILLISECONDS);
-                    latch.await();
-                    exec.shutdownNow();
                 } catch (LineUnavailableException e1) {
                     e1.printStackTrace();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(CameraUtil.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        startCamera = new Thread(new Runnable() {
+    }
+
+//    public void startRecording() {
+//        try {
+//            this.startRecord = true;
+//            startRecording.start();
+//        } catch (FFmpegFrameRecorder.Exception ex) {
+//            Logger.getLogger(CameraUtil.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    public void startCamera(JPanel panel) {
+        this.panel = panel;
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+
+                    recorder.start();
                     Frame capturedFrame = null;
                     initCanvas(panel);
                     while ((capturedFrame = grabber.grab()) != null) {
-                        showImage(capturedFrame);
-                        if (startRecord) {
-                            if (startTime == 0) {
-                                startTime = System.currentTimeMillis();
-                            }
-                            videoTS = 1000 * (System.currentTimeMillis() - startTime);
-                            if (videoTS > recorder.getTimestamp()) {
-//                                        System.out.println(
-//                                                "Lip-flap correction: "
-//                                                + videoTS + " : "
-//                                                + recorder.getTimestamp() + " -> "
-//                                                + (videoTS - recorder.getTimestamp()));
-//capturedFrame.timestamp = videoTS;
-                                recorder.setTimestamp(videoTS);
-                            }
-                            recorder.record(capturedFrame);
+                        if (stopCamera) {
+                            break;
                         }
+                        showImage(capturedFrame);
+//                if (startRecord) {
+                        if (startTime == 0) {
+                            startTime = System.currentTimeMillis();
+                        }
+                        videoTS = 1000 * (System.currentTimeMillis() - startTime);
+                        if (videoTS > recorder.getTimestamp()) {
+                            recorder.setTimestamp(videoTS);
+                        }
+                        recorder.record(capturedFrame);
+//                }
+
                     }
+                    recorder.stop();
+                    grabber.stop();
                 } catch (FrameGrabber.Exception ex) {
                     Logger.getLogger(CameraUtil.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (FFmpegFrameRecorder.Exception ex) {
                     Logger.getLogger(CameraUtil.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
-        }
-        );
+        }).start();
+
     }
 
-    public void startRecording() {
-        try {
-            this.startRecord = true;
-            recorder.start();
-            startRecording.start();
-        } catch (FFmpegFrameRecorder.Exception ex) {
-            Logger.getLogger(CameraUtil.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void startCamera(JPanel panel) {
-        this.panel = panel;
-        startCamera.start();
-    }
-
-    public void stopRecording() {
-        try {
-            this.startRecord = false;
-            startRecording.stop();
-            recorder.stop();
-        } catch (FFmpegFrameRecorder.Exception ex) {
-            Logger.getLogger(CameraUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+//    public void stopRecording() {
+//        this.startRecord = false;
+//    }
     public void stopCamera() {
-        try {
-            stopRecording();
-            startCamera.stop();
-            grabber.stop();
-        } catch (FrameGrabber.Exception ex) {
-            Logger.getLogger(CameraUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        stopRecording();
+        this.stopCamera = true;
     }
 
     private void initCanvas(JPanel p) {

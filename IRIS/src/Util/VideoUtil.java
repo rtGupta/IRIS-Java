@@ -21,13 +21,13 @@ public class VideoUtil {
 
     private static final long serialVersionUID = 1L;
     private String VIDEO_PATH;
-    private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    private EmbeddedMediaPlayerComponent mediaPlayerComponent;
     private JButton playButton;
     private JButton stopButton;
     private JPanel contentPane;
 
     public VideoUtil(String filename, JPanel panel) {
-        VIDEO_PATH = "video\\"+filename+".avi";
+        VIDEO_PATH = "video\\"+filename+".flv";
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 //        contentPane = new JPanel();
         contentPane = panel;
@@ -60,10 +60,17 @@ public class VideoUtil {
         mediaPlayerComponent.mediaPlayer().media().startPaused(VIDEO_PATH);
     }
 
-    protected void finalize() {
+    @Override
+    public void finalize() {
         if (mediaPlayerComponent != null) {
             mediaPlayerComponent.release();
         }
     }
 
+    public void releaseCamera() {
+        if (mediaPlayerComponent != null) {
+            mediaPlayerComponent.release();
+            mediaPlayerComponent = null;
+        }
+    }
 }

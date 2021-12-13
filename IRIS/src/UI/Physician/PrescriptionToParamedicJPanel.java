@@ -4,20 +4,50 @@
  */
 package UI.Physician;
 
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
 import UI.Hospital.*;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author akshatajadhav
  */
 public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
+    
+    JLayeredPane mainPane;
+    JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount physicianUserAccount;
+    WorkRequest physicianWorkRequest;
+    
 
     /**
      * Creates new form HosptialHomeJPanel
      */
-    public PrescriptionToParamedicJPanel() {
+    public PrescriptionToParamedicJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
+        this.mainPane = mainPane;
+        this.workPane = workPane;
+        this.system = system;
+        this.physicianUserAccount = account;
+        this.physicianWorkRequest = request;
     }
+    
+     public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        lpane.repaint();
+        lpane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,6 +61,9 @@ public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        prescriptionTextArea = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
@@ -40,7 +73,7 @@ public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
         setRequestFocusEnabled(false);
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("Next");
+        jButton1.setText("Send Prescription");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -63,15 +96,33 @@ public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel1.setText("PRESCRIPTION : ");
+
+        prescriptionTextArea.setColumns(20);
+        prescriptionTextArea.setRows(5);
+        jScrollPane1.setViewportView(prescriptionTextArea);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 989, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 453, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -96,7 +147,7 @@ public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(jButton1)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -104,12 +155,38 @@ public class PrescriptionToParamedicJPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if (physicianWorkRequest.isIRISeligible()) {
+            updateWorkRequest("Awaiting Paramedic's Action");
+        } else {
+            updateWorkRequest("Resolved");
+        }
+        // Redirect to Physician Home screen
+        HistoryJPanel phjp = new HistoryJPanel(mainPane, workPane, system, physicianUserAccount);
+        displayPanel(workPane, phjp);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    
+     private void updateWorkRequest(String requestStatus) {
+        physicianWorkRequest.setStatus(requestStatus);
+        physicianWorkRequest.getSender().getWorkQueue()
+                .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus(requestStatus);
+        physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
+            receiverAccount.getWorkQueue()
+                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus(requestStatus);
+        });
+
+        physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus(requestStatus);
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea prescriptionTextArea;
     // End of variables declaration//GEN-END:variables
 }

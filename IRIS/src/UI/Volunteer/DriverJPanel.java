@@ -5,23 +5,29 @@
 package UI.Volunteer;
 
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.EnterpriseDirectory;
+import Business.Network.Network;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
+import Business.Organization.Voluntary.VoluntaryClinicianOrganization;
+import Business.Organization.Voluntary.VoluntaryTransportOrganization;
 import Business.UserAccount.UserAccount;
-import Business.Utilities.Profile;
-import Business.WorkQueue.WorkQueue;
-import Business.WorkQueue.WorkRequest;
-import UI.PoliceOfficer.*;
-import UI.Paramedics.*;
-import UI.Dispatcher.*;
+import Business.UserAccount.UserAccountDirectory;
+import UI.MainJFrame;
+import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
-import java.util.List;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import org.apache.commons.collections4.CollectionUtils;
 
 /**
@@ -30,57 +36,37 @@ import org.apache.commons.collections4.CollectionUtils;
  */
 public class DriverJPanel extends javax.swing.JPanel {
 
+    boolean menuCollapse = false;
     JLayeredPane mainPane;
-    JLayeredPane workPane;
+    boolean menuButton = false;
+    boolean volunteerAvailable = false;
     EcoSystem system;
-    UserAccount driverUserAccount;
-    WorkRequest driverWorkRequest;
-    
+    Organization organization;
+    Enterprise enterprise;
+    UserAccount account;
+
     /**
-     * Creates new form AEmergencyJPanel
+     * Creates new form DispatcherJPanel
      */
-    public DriverJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount account) {
+    public DriverJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
-        this.workPane = workPane;
         this.system = system;
-        this.driverUserAccount = account;
-        
-        populateWorkQueueTable();
-        
-        tblDriverWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                int selectedRowIndex = tblDriverWQ.getSelectedRow();
-                if (selectedRowIndex < 0) {
-                    txtCallerName.setText("");
-                    txtContact.setText("");
-                    txtLocation.setText("");
-                    //txtMessage.setText("");
-                    
-                    return;
-                }
-                
-                 driverWorkRequest = (WorkRequest) tblDriverWQ.getValueAt(selectedRowIndex, 0);
-                if (driverWorkRequest != null){
-                    Profile callerInfo = driverWorkRequest.getCaller().getCallerDetails();
-                    txtCallerName.setText(callerInfo.getFirstName() +" "+callerInfo.getLastName());
-                    txtContact.setText(String.valueOf(callerInfo.getPhone()));
-                    txtLocation.setText(driverWorkRequest.getCaller().getLocation());
-                    //txtMessage.setText(driverWorkRequest.getMessage());
-                     JPanel map = MapsUtil.mapWayPoint(driverWorkRequest.getCaller().getCoordinates());
-                    displayPanel(maps, map);
-                     if (driverWorkRequest.getStatus().equals("Transport Care Reqduired") ||
-                            driverWorkRequest.getStatus().equals("Scene Assessment in progress")) {
-                       // btnHospitalTransfer.setEnabled(true);
-                        btnTransferToHosp.setEnabled(false);
-                        // go to HospitalTransferJPanel screen
-                    } else if (!driverWorkRequest.getStatus().equals("Open")) {
-                        btnTransferToHosp.setEnabled(false);
-                    }
-                   
-                }
-            }
-        });
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.account = account;
+
+        volunteerAvailable = account.getProfileDetails().isAvailable();
+
+        if (!volunteerAvailable) {
+            ThankYouMessageJPanel panel = new ThankYouMessageJPanel();
+            displayPanel(workpane, panel);
+            return;
+        }
+
+        avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
+        JPanel driverPanel = new DriverHomeJPanel(mainPane, workpane, account, organization, enterprise, system);
+        displayPanel(workpane, driverPanel);
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -92,27 +78,6 @@ public class DriverJPanel extends javax.swing.JPanel {
         parentFrame.pack();
         parentFrame.setLocationRelativeTo(null);
     }
-    
-    public void populateWorkQueueTable(){
-        DefaultTableModel driverTableModel = (DefaultTableModel) tblDriverWQ.getModel();
-        driverTableModel.setRowCount(0);
-        
-        WorkQueue workQueue = driverUserAccount.getWorkQueue();
-        if(workQueue != null){
-            List<WorkRequest> driverWorkRequestList = workQueue.getWorkRequestList();
-            if (CollectionUtils.isNotEmpty(driverWorkRequestList)){
-                for(WorkRequest wr : driverWorkRequestList) {
-                    Object[] row = new Object[4];
-                    row[0] = wr;
-                    row[1] = wr.getCaller().getLocation();
-                    row[2] = wr.getEmergencyLevel();
-                    row[3] = wr.getStatus();
-                    driverTableModel.addRow(row);
-                }
-            }
-        }
-    }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -123,186 +88,410 @@ public class DriverJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        driver1 = new Business.Role.Voluntary.Driver();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblDriverWQ = new javax.swing.JTable();
-        maps = new javax.swing.JLayeredPane();
-        btnTransferToHosp = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        txtCallerName = new javax.swing.JTextField();
-        txtContact = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        menuTab = new javax.swing.JPanel();
+        menuPanel = new keeptoo.KGradientPanel();
+        home = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        txtLocation = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        home1 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        availablityBtn = new javax.swing.JPanel();
+        avaliablityIcon = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        workpane = new javax.swing.JLayeredPane();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        closeButton = new javax.swing.JLabel();
+        minimizeButton = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(990, 590));
-        setMinimumSize(new java.awt.Dimension(990, 590));
-        setPreferredSize(new java.awt.Dimension(990, 590));
-        setRequestFocusEnabled(false);
+        setMaximumSize(new java.awt.Dimension(1200, 675));
+        setMinimumSize(new java.awt.Dimension(1200, 675));
+        setPreferredSize(new java.awt.Dimension(1200, 675));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(0, 1));
+        jPanel1.setBackground(new java.awt.Color(38, 38, 38));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 990, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
-        );
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Icon_64px.gif"))); // NOI18N
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
-
-        tblDriverWQ.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Request No.", "Location", "Emergency Level", "Request Status"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblDriverWQ);
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("IRIS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(6, 6, 6)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        maps.setPreferredSize(new java.awt.Dimension(600, 200));
-        maps.setLayout(new java.awt.CardLayout());
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 90));
 
-        btnTransferToHosp.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        btnTransferToHosp.setText("Transfer To Hospital");
-        btnTransferToHosp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTransferToHospActionPerformed(evt);
+        menuTab.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        menuPanel.setkEndColor(new java.awt.Color(114, 114, 114));
+        menuPanel.setkStartColor(new java.awt.Color(38, 38, 38));
+        menuPanel.setMinimumSize(new java.awt.Dimension(50, 551));
+        menuPanel.setPreferredSize(new java.awt.Dimension(210, 551));
+        menuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        home.setOpaque(false);
+        home.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                homeMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                homeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                homeMouseExited(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel1.setText("Name:");
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/home_24px.png"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel2.setText("Phone Number:");
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Home");
 
-        jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel3.setText("Address:");
+        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
+        home.setLayout(homeLayout);
+        homeLayout.setHorizontalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        homeLayout.setVerticalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(374, 374, 374)
-                .addComponent(btnTransferToHosp)
+        menuPanel.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 190, -1));
+
+        home1.setOpaque(false);
+        home1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                home1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                home1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                home1MouseExited(evt);
+            }
+        });
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/Logout_24px.png"))); // NOI18N
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("Logout");
+
+        javax.swing.GroupLayout home1Layout = new javax.swing.GroupLayout(home1);
+        home1.setLayout(home1Layout);
+        home1Layout.setHorizontalGroup(
+            home1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, home1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        home1Layout.setVerticalGroup(
+            home1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        menuPanel.add(home1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 190, -1));
+
+        availablityBtn.setOpaque(false);
+        availablityBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                availablityBtnMouseExited(evt);
+            }
+        });
+
+        avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png"))); // NOI18N
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Available?");
+
+        javax.swing.GroupLayout availablityBtnLayout = new javax.swing.GroupLayout(availablityBtn);
+        availablityBtn.setLayout(availablityBtnLayout);
+        availablityBtnLayout.setHorizontalGroup(
+            availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, availablityBtnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(avaliablityIcon)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtContact)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                            .addComponent(txtLocation)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(btnTransferToHosp)
-                .addGap(26, 26, 26))
+        availablityBtnLayout.setVerticalGroup(
+            availablityBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(avaliablityIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
+
+        menuPanel.add(availablityBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
+
+        menuTab.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 210, 590));
+
+        workpane.setMaximumSize(new java.awt.Dimension(990, 590));
+        workpane.setMinimumSize(new java.awt.Dimension(990, 590));
+        workpane.setLayout(new java.awt.CardLayout());
+        menuTab.add(workpane, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 990, 590));
+
+        add(menuTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, 590));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/volunteer.png"))); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 3, 18)); // NOI18N
+        jLabel8.setText("Welcome Driver!");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel7)
+                .addGap(35, 35, 35)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(422, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 790, 90));
+
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_30px.png"))); // NOI18N
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                closeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                closeButtonMouseExited(evt);
+            }
+        });
+        add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 20, -1, -1));
+
+        minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png"))); // NOI18N
+        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseExited(evt);
+            }
+        });
+        add(minimizeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 20, -1, 30));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTransferToHospActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferToHospActionPerformed
-        // TODO add your handling code here:
-        
-        HospitalTransferJPanel htjp = new HospitalTransferJPanel(mainPane, workPane, system, driverUserAccount, driverWorkRequest);
-        displayPanel(workPane, htjp);
-        
-        
-        
-        
-    }//GEN-LAST:event_btnTransferToHospActionPerformed
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this);
+        parentFrame.dispose();
+    }//GEN-LAST:event_closeButtonMouseClicked
+
+    private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_rev_30px.png")));
+    }//GEN-LAST:event_closeButtonMouseEntered
+
+    private void closeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseExited
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/close_30px.png")));
+    }//GEN-LAST:event_closeButtonMouseExited
+
+    private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this);
+        parentFrame.setState(Frame.ICONIFIED);
+    }//GEN-LAST:event_minimizeButtonMouseClicked
+
+    private void minimizeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseEntered
+        //        minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_rev_24px.png")));
+    }//GEN-LAST:event_minimizeButtonMouseEntered
+
+    private void minimizeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseExited
+        minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/minimize_24px.png")));
+    }//GEN-LAST:event_minimizeButtonMouseExited
+
+    private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
+
+    }//GEN-LAST:event_homeMouseClicked
+
+    private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
+        home.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_homeMouseEntered
+
+    private void homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseExited
+        home.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_homeMouseExited
+
+    private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
+        MainJFrame.dB4OUtil.storeSystem(system);
+        LoginJPanel icjp = new LoginJPanel(mainPane, system);
+        displayPanel(mainPane, icjp);
+    }//GEN-LAST:event_home1MouseClicked
+
+    private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered
+        home1.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_home1MouseEntered
+
+    private void home1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseExited
+        home1.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_home1MouseExited
+
+    private void availablityBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseClicked
+        if (!volunteerAvailable) {
+            avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_on_80px.png")));
+            JPanel driverPanel = new DriverHomeJPanel(mainPane, workpane, account, organization, enterprise, system);
+            displayPanel(workpane, driverPanel);
+        } else {
+            avaliablityIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/switch_off_80px.png")));
+            ThankYouMessageJPanel t = new ThankYouMessageJPanel();
+            displayPanel(workpane, t);
+        }
+
+        volunteerAvailable = !volunteerAvailable;
+        for (Network network : system.getNetworkList()) {
+            Enterprise voluntaryEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue());
+            for (Organization organization : voluntaryEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                UserAccountDirectory accountDirectory = organization.getUserAccountDirectory();
+                if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())
+                        && accountDirectory.findAccount(account.getUsername()) != null) {
+                    account.getProfileDetails().setAvailable(volunteerAvailable);
+                    accountDirectory.findAccount(account.getUsername()).setProfileDetails(account.getProfileDetails());
+//                    organization.setUserAccountDirectory(accountDirectory);
+                    break;
+                }
+            }
+            
+        }
+    }//GEN-LAST:event_availablityBtnMouseClicked
+
+    private void availablityBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseEntered
+        availablityBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_availablityBtnMouseEntered
+
+    private void availablityBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availablityBtnMouseExited
+        availablityBtn.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, MapsUtil.tabColor));
+    }//GEN-LAST:event_availablityBtnMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnTransferToHosp;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel availablityBtn;
+    private javax.swing.JLabel avaliablityIcon;
+    private javax.swing.JLabel closeButton;
+    private Business.Role.Voluntary.Driver driver1;
+    private javax.swing.JPanel home;
+    private javax.swing.JPanel home1;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLayeredPane maps;
-    private javax.swing.JTable tblDriverWQ;
-    private javax.swing.JTextField txtCallerName;
-    private javax.swing.JTextField txtContact;
-    private javax.swing.JTextField txtLocation;
+    private keeptoo.KGradientPanel menuPanel;
+    private javax.swing.JPanel menuTab;
+    private javax.swing.JLabel minimizeButton;
+    private javax.swing.JLayeredPane workpane;
     // End of variables declaration//GEN-END:variables
+    private void collapseMenu(int min, int max) {
+
+        menuPanel.setSize(min, 551);
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = min; i <= max; i += 3) {
+                        Thread.sleep(1);
+                        menuPanel.setSize(i, 551);
+                        workpane.setBounds(i, 0, 790, 550);
+                    }
+                } catch (Exception e) {
+                    System.out.println("...");
+                }
+
+            }
+        };
+
+        th.start();
+        this.updateUI();
+    }
+
+    private void openMenu(int min, int max) {
+        menuPanel.setSize(max, 551);
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = max; i >= min; i -= 3) {
+                        Thread.sleep(1);
+                        menuPanel.setSize(i, 551);
+                        workpane.setBounds(i, 0, 790, 550);
+                    }
+                } catch (Exception e) {
+                    System.out.println("...");
+                }
+            }
+        };
+        th.start();
+        this.updateUI();
+    }
 }

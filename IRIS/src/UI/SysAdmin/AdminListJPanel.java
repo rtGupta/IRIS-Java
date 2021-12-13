@@ -19,11 +19,14 @@ import Business.UserAccount.UserAccount;
 import Business.UserAccount.UserAccountDirectory;
 import Business.Utilities.Profile;
 import UI.MainJFrame;
+import Util.MapsUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JLayeredPane;
@@ -300,17 +303,17 @@ public class AdminListJPanel extends javax.swing.JPanel {
                                         .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
                                             .addComponent(radbtnMale)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGap(18, 18, 18)
                                             .addComponent(radbtnFemale)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(radbtnNotToSay))
                                         .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addContainerGap())
                     .addGroup(EnterpriseADminJPanelLayout.createSequentialGroup()
                         .addComponent(btnDeleteUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(52, 52, 52)
+                        .addGap(80, 80, 80)
                         .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(153, 153, 153))))
+                        .addGap(125, 125, 125))))
         );
         EnterpriseADminJPanelLayout.setVerticalGroup(
             EnterpriseADminJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,8 +361,9 @@ public class AdminListJPanel extends javax.swing.JPanel {
 
         add(EnterpriseADminJPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, -1, 270));
 
+        enterprise.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         enterprise.setText("Enterprise: ");
-        add(enterprise, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 190, 40));
+        add(enterprise, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 320, 40));
 
         btnViewUser.setBackground(new java.awt.Color(255, 255, 255));
         btnViewUser.setText("View User");
@@ -496,11 +500,13 @@ public class AdminListJPanel extends javax.swing.JPanel {
                     }
                 }
             }
+            populateEnterpriseAdminTable(selectedEnterprise);
+            enableAllFields(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
+            return;
         }
-        populateEnterpriseAdminTable(selectedEnterprise);
-        enableAllFields(true);
+
     }//GEN-LAST:event_btnUpdateAdminActionPerformed
 
     private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
@@ -524,6 +530,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
                             UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
                             if (accountDirectory != null && CollectionUtils.isNotEmpty(accountDirectory.getUserAccountList())) {
                                 if (accountDirectory.removeUserAccount(selectedUser)) {
+                                    system.deleteUsername(selectedUser.getUsername());
                                     JOptionPane.showMessageDialog(this, "User details deleted Successfully!!");
                                 } else {
                                     JOptionPane.showMessageDialog(this, "User details delete operation failed!!");
@@ -544,7 +551,7 @@ public class AdminListJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         //String selectedEnterpriseAdmin = cmbboxEnterprise.getSelectedItem() != null ? String.valueOf(cmbboxEnterprise.getSelectedItem()) : null;
-
+        simpleDateFormat.setLenient(false);
         try {
             String userName = txtUserName.getText();
             String password = txtPassword.getText();
@@ -552,14 +559,17 @@ public class AdminListJPanel extends javax.swing.JPanel {
             String lastName = txtLastName.getText();
             String phoneNumber = txtPhoneNumber.getText();
             String email = txtEmail.getText();
-            Date dob = simpleDateFormat.parse(String.valueOf(txtDateOfBirth.getText()));
-            String gender = buttonGroup1.getSelection().getActionCommand();
             String home = txtAddress.getText();
             String work = txtWorkAddress.getText();
 
             Matcher emailMatcher = emailPattern.matcher(email);
             Matcher phoneRegexMatcher = phonePattern.matcher(phoneNumber);
             Matcher passworMatcher = passwordPattern.matcher(password);
+
+            if (!system.isUniqueUsername(userName)) {
+                JOptionPane.showMessageDialog(this, "Please enter a unique user Name");
+                return;
+            }
 
             //add address and work address
             if (StringUtils.isBlank(userName)) {
@@ -568,10 +578,10 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(password) || !passworMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid password");
                 return;
-            } else if (StringUtils.isBlank(firstName)) {
+            } else if (StringUtils.isBlank(firstName) || StringUtils.isNumeric(firstName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid first Name");
                 return;
-            } else if (StringUtils.isBlank(lastName)) {
+            } else if (StringUtils.isBlank(lastName) || StringUtils.isNumeric(lastName)) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid last Name");
                 return;
             } else if (StringUtils.isBlank(email) || !emailMatcher.matches()) {
@@ -581,14 +591,29 @@ public class AdminListJPanel extends javax.swing.JPanel {
             } else if (StringUtils.isBlank(phoneNumber) || !phoneRegexMatcher.matches()) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
                 return;
-            } else if (StringUtils.isBlank(gender)) {
+            } else if (buttonGroup1.getSelection() == null || StringUtils.isBlank(buttonGroup1.getSelection().getActionCommand())) {
                 JOptionPane.showMessageDialog(this, "Please select an option for gender");
                 return;
             } else if (StringUtils.isBlank(home)) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                JOptionPane.showMessageDialog(this, "Please enter a valid home address");
                 return;
             } else if (StringUtils.isBlank(work)) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid phone number");
+                JOptionPane.showMessageDialog(this, "Please enter a valid work address");
+                return;
+            }
+
+            String gender = buttonGroup1.getSelection().getActionCommand();
+            Date dob = simpleDateFormat.parse(String.valueOf(txtDateOfBirth.getText()));
+
+            double[] homeCoords = MapsUtil.getGeoPointFromAddress(home);
+            if (homeCoords[0] == 0 || homeCoords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid home address");
+                return;
+            }
+
+            double[] coords = MapsUtil.getGeoPointFromAddress(work);
+            if (coords[0] == 0 || coords[1] == 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid work address");
                 return;
             }
 
@@ -596,39 +621,42 @@ public class AdminListJPanel extends javax.swing.JPanel {
             for (Enterprise enterprise : enterpriseDirectory.getEnterpriseList()) {
                 if (enterprise != null && StringUtils.equalsIgnoreCase(enterprise.getEnterpriseType().getValue(), selectedEnterprise)) {
                     UserAccountDirectory accountDirectory = enterprise.getUserAccountDirectory();
-                    if (accountDirectory != null && accountDirectory.checkIfUsernameIsUnique(userName)) {
-                        Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
-                        Role role = null;
-                        switch (enterprise.getEnterpriseType().getValue()) {
-                            case "Enterprise911":
-                                role = new Enterprise911Admin();
-                                break;
-                            case "FirstResponderEnterprise":
-                                role = new FirstRespAdmin();
-                                break;
-                            case "HealthcareEnterprise":
-                                role = new HealthCareAdmin();
-                                break;
-                        }
-                        if (role != null) {
-                            userAccount = accountDirectory.createUserAccount(userName, password, role, userProfile);
-                        }
-                        if (userAccount == null) {
-                            JOptionPane.showMessageDialog(this, "User creation failed");
-                        }
-                        enterprise.setUserAccountDirectory(accountDirectory);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Enter a unique user name");
+//                    if (accountDirectory != null && accountDirectory.checkIfUsernameIsUnique(userName)) {
+                    Profile userProfile = new Profile(firstName, lastName, gender, email, Long.valueOf(phoneNumber), dob, home, work);
+                    Role role = null;
+                    switch (enterprise.getEnterpriseType().getValue()) {
+                        case "Enterprise911":
+                            role = new Enterprise911Admin();
+                            break;
+                        case "FirstResponderEnterprise":
+                            role = new FirstRespAdmin();
+                            break;
+                        case "HealthcareEnterprise":
+                            role = new HealthCareAdmin();
+                            break;
+                    }
+                    if (role != null) {
+                        userAccount = accountDirectory.createUserAccount(userName, password, role, userProfile);
+                    }
+                    if (userAccount == null) {
+                        JOptionPane.showMessageDialog(this, "User creation failed");
                         return;
                     }
+                    enterprise.setUserAccountDirectory(accountDirectory);
+                    system.addUsername(userName);
+//                }
+//                else {
+//                        JOptionPane.showMessageDialog(this, "Enter a unique user name");
+//                        return;
+//                    }
                     break;
                 }
             }
-
+            populateEnterpriseAdminTable(selectedEnterprise);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Enter a valid date of birth in yyyy-MM-dd.");
+            Logger.getLogger(AdminListJPanel.class.getName()).log(Level.SEVERE, null, e);
         }
-        populateEnterpriseAdminTable(selectedEnterprise);
     }//GEN-LAST:event_btnCreateAdminActionPerformed
 
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed

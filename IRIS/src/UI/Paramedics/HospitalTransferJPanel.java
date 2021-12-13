@@ -50,7 +50,7 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         this.paramedicWorkRequest = request;
         hospitalLocations = new ArrayList<>();
         loadHospitalDropdown();
-        JPanel map = MapsUtil.publishMap(this.paramedicWorkRequest.getCaller().getCoordinates(), hospitalLocations);
+        JPanel map = MapsUtil.publishHospitalMap(this.paramedicWorkRequest.getCaller().getCoordinates(), hospitalLocations);
         displayPanel(maps, map);
     }
 
@@ -122,6 +122,11 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel1.setText("Hospital:");
@@ -203,9 +208,17 @@ public class HospitalTransferJPanel extends javax.swing.JPanel {
         userAccount.getWorkQueue()
                         .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Transferred to Hospital");
         // display Paramedic's HomeJPanel.
-        HomeJPanel phjp = new HomeJPanel(mainPane, workPane, system, userAccount);
-        displayPanel(workPane, phjp);
+//        HomeJPanel phjp = new HomeJPanel(mainPane, workPane, system, userAccount);
+//        displayPanel(workPane, phjp);
+        
+        ParamedicHistoryJPanel php = new ParamedicHistoryJPanel(mainPane, workPane, system, userAccount);
+        displayPanel(workPane, php);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JPanel map = MapsUtil.publishHospitalMap(this.paramedicWorkRequest.getCaller().getCoordinates(), hospitalLocations);
+        displayPanel(maps, map);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

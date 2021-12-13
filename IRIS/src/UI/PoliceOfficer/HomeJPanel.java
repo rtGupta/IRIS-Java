@@ -35,52 +35,16 @@ public class HomeJPanel extends javax.swing.JPanel {
     EcoSystem system;
     UserAccount policeUserAccount;
     WorkRequest policeWorkRequest;
+
     /**
      * Creates new form AEmergencyJPanel
      */
-    public HomeJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount account) {
+    public HomeJPanel(JLayeredPane mainPane, JLayeredPane workPane, EcoSystem system, UserAccount account) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
         this.policeUserAccount = account;
-        //btnHospitalTransfer.setEnabled(false);
-        
-        populateWorkQueueTable();
-        
-        tblPoliceWQ.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                int selectedRowIndex = tblPoliceWQ.getSelectedRow();
-                if (selectedRowIndex < 0) {
-                    txtCallerName.setText("");
-                    txtContact.setText("");
-                    txtLocation.setText("");
-                    txtMessage.setText("");
-                    
-                    return;
-                }
-                
-                policeWorkRequest = (WorkRequest) tblPoliceWQ.getValueAt(selectedRowIndex, 0);
-                if (policeWorkRequest != null){
-                    Profile callerInfo = policeWorkRequest.getCaller().getCallerDetails();
-                    txtCallerName.setText(callerInfo.getFirstName() +" "+callerInfo.getLastName());
-                    txtContact.setText(String.valueOf(callerInfo.getPhone()));
-                    txtLocation.setText(policeWorkRequest.getCaller().getLocation());
-                    txtMessage.setText(policeWorkRequest.getMessage());
-                     JPanel map = MapsUtil.mapWayPoint(policeWorkRequest.getCaller().getCoordinates());
-                    displayPanel(maps, map);
-                     if (policeWorkRequest.getStatus().equals("Transport Care Reqduired") ||
-                            policeWorkRequest.getStatus().equals("Scene Assessment in progress")) {
-                       // btnHospitalTransfer.setEnabled(true);
-                        btnAcknowledge.setEnabled(false);
-                        // go to HospitalTransferJPanel screen
-                    } else if (!policeWorkRequest.getStatus().equals("Open")) {
-                        btnAcknowledge.setEnabled(false);
-                    }
-                   
-                }
-            }
-        });
         
     }
 
@@ -94,27 +58,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         parentFrame.setLocationRelativeTo(null);
     }
 
-    public void populateWorkQueueTable(){
-        DefaultTableModel policeTableModel = (DefaultTableModel) tblPoliceWQ.getModel();
-        policeTableModel.setRowCount(0);
-        
-        WorkQueue workQueue = policeUserAccount.getWorkQueue();
-        if(workQueue != null){
-            List<WorkRequest> policeWorkRequestList = workQueue.getWorkRequestList();
-            if (CollectionUtils.isNotEmpty(policeWorkRequestList)){
-                for(WorkRequest wr : policeWorkRequestList) {
-                    Object[] row = new Object[4];
-                    row[0] = wr;
-                    row[1] = wr.getCaller().getLocation();
-                    row[2] = wr.getEmergencyLevel();
-                    row[3] = wr.getStatus();
-                    policeTableModel.addRow(row);
-                }
-            }
-        }
-    }
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,26 +68,15 @@ public class HomeJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblPoliceWQ = new javax.swing.JTable();
-        txtCallerName = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        txtContact = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtLocation = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtMessage = new javax.swing.JTextArea();
-        btnAcknowledge = new javax.swing.JButton();
-        maps = new javax.swing.JLayeredPane();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
         setMinimumSize(new java.awt.Dimension(990, 590));
         setPreferredSize(new java.awt.Dimension(990, 590));
         setRequestFocusEnabled(false);
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setPreferredSize(new java.awt.Dimension(0, 1));
 
@@ -159,193 +91,21 @@ public class HomeJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 2));
 
-        tblPoliceWQ.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Request No.", "Location", "Emergency Level", "Request Status"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("<html><h1>Police Officer</h1><p style=\"font-size:130%;\">A police officer is a warranted law employee of a police force. To provide a prompt response in emergencies, the police often coordinate their operations with fire and emergency medical services. Police are also trained to assist persons in distress, such as motorists whose cars have broken down and people experiencing a medical emergency. Police are typically trained in basic first aid such as CPR.</p></html>");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 950, 200));
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblPoliceWQ);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel1.setText("Name:");
-
-        jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel2.setText("Phone Number:");
-
-        jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel3.setText("Address:");
-
-        jLabel4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel4.setText("Message:");
-
-        txtMessage.setColumns(20);
-        txtMessage.setRows(5);
-        jScrollPane2.setViewportView(txtMessage);
-
-        btnAcknowledge.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        btnAcknowledge.setText("Acknowledge");
-        btnAcknowledge.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAcknowledgeActionPerformed(evt);
-            }
-        });
-
-        maps.setLayout(new java.awt.CardLayout());
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2)
-                            .addComponent(txtLocation))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(411, 411, 411)
-                .addComponent(btnAcknowledge)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane2, txtCallerName, txtContact, txtLocation});
-
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtContact)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtLocation)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(maps))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                .addComponent(btnAcknowledge)
-                .addGap(31, 31, 31))
-        );
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resource/police car.gif"))); // NOI18N
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 940, 360));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAcknowledgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcknowledgeActionPerformed
-        // TODO add your handling code here:
-        
-        if(policeWorkRequest != null){
-            if (policeWorkRequest.getStatus().equals("Open")){
-                policeWorkRequest.setStatus("Scene Assessment in progress");
-                policeWorkRequest.getSender().getWorkQueue()
-                        .findWorkRequestByID(policeWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-                for (UserAccount receieverAccount : policeWorkRequest.getReceivers()){
-                    receieverAccount.getWorkQueue()
-                            .findWorkRequestByID(policeWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-                }
-                
-                policeUserAccount.getWorkQueue()
-                        .findWorkRequestByID(policeWorkRequest.getWorkRequestID()).setStatus("Scene Assessment in progress");
-                    populateWorkQueueTable();
-                
-                if (policeWorkRequest.getEmergencyLevel() == 'C') {
-                    // go to the medicalRecords screen and pass workRequest object.
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "The work request is already in progress!");
-            }   
-                
-                
-                
-          
-        }
-        
-        
-    }//GEN-LAST:event_btnAcknowledgeActionPerformed
 
-
-    
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAcknowledge;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLayeredPane maps;
-    private javax.swing.JTable tblPoliceWQ;
-    private javax.swing.JTextField txtCallerName;
-    private javax.swing.JTextField txtContact;
-    private javax.swing.JTextField txtLocation;
-    private javax.swing.JTextArea txtMessage;
     // End of variables declaration//GEN-END:variables
 }

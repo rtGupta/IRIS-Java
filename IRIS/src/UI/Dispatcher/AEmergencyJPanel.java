@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -86,9 +87,9 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         }
     }
 
-    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double []> p) {
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double[]> p) {
+        drpdown.addItem(null);
         for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
-//            System.out.println(paramedicAccount.getUsername());
             drpdown.addItem(acc);
             p.add(acc.getProfileDetails().getLocation());
         }
@@ -250,22 +251,25 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // set receivers for the WR.
+        if (jComboBox1.getSelectedItem() != null) {
         workRequest.setReceiver((UserAccount) jComboBox1.getSelectedItem());
+        } 
+        if ( jComboBox2.getSelectedItem() != null){
         workRequest.setReceiver((UserAccount) jComboBox2.getSelectedItem());
+        }
+        if(jComboBox3.getSelectedItem() != null){
         workRequest.setReceiver((UserAccount) jComboBox3.getSelectedItem());
+        }
         
         // set sender of the WR as the current dispatcher.
         workRequest.setSender(userAccount);
@@ -274,16 +278,23 @@ public class AEmergencyJPanel extends javax.swing.JPanel {
         // push the WR in the work queue of all the receivers and senders?
         userAccount.getWorkQueue().getWorkRequestList().add(workRequest);
         workRequest.getReceivers().forEach(receiver -> {
-            receiver.getWorkQueue().getWorkRequestList().add(workRequest);
+            
+                receiver.getWorkQueue().getWorkRequestList().add(workRequest);
+            
         });
         // redirect to the dispatcher home screen.
-        IncomingCallsJPanel icjp = new IncomingCallsJPanel(mainPane, workPane, system, userAccount);
-        displayPanel(workPane, icjp);
+//        DispatcherHomeJPanel dhjp = new DispatcherHomeJPanel(mainPane, workPane, system, userAccount);
+//        displayPanel(workPane, dhjp);
         
+        CallsHistoryJPanel chjp = new CallsHistoryJPanel(mainPane, workPane, system, userAccount);
+        displayPanel(workPane, chjp);
+        
+        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       JPanel map = MapsUtil.publishMap(caller.getCoordinates(), policeLocations, fireFighterLocations, paramedicLocations);
+        JPanel map = MapsUtil.publishMap(caller.getCoordinates(), policeLocations, fireFighterLocations, paramedicLocations);
         displayPanel(maps, map);
     }//GEN-LAST:event_jButton2ActionPerformed
 
