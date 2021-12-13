@@ -5,13 +5,24 @@
 package UI.Paramedics;
 
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.FirstResponder.EMTOrganization;
+import Business.Organization.Organization;
+import Business.Organization._911.Physician911Organization;
+import Business.Role.Enterprise911.Physician911;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.WorkRequest;
 import Util.CameraUtil;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.bytedeco.javacv.FrameGrabber;
 
 /**
@@ -43,6 +54,26 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         this.paramedicUserAccount = account;
         this.request = request;
         VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_paramedic";
+
+        loadPhysicianDropDown();
+    }
+
+    private void loadPhysicianDropDown() {
+        for (Network network : system.getNetworkList()) {
+            Enterprise frEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.Enterprise911.getValue());
+            for (Organization org : frEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                if (org instanceof Physician911Organization) {
+                    this.loadValues(org, jComboBox1);
+                }
+            }
+        }
+    }
+
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown) {
+        for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
+            drpdown.addItem(acc);
+        }
     }
 
     /**
@@ -62,7 +93,7 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
         cameraBtn = new javax.swing.JLabel();
         submitBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(990, 590));
@@ -212,6 +243,23 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cameraBtnMouseClicked
 
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
+        request.setReceiver((UserAccount) jComboBox1.getSelectedItem());        
+        request.setStatus("Awaiting Physician's review");
+
+        // update status of this WR in sender's workqueue as well.
+        paramedicUserAccount.getWorkQueue()
+                .findWorkRequestByID(request.getWorkRequestID()).setStatus("Awaiting Physician's review");
+        // update status of this WR in receiver's work queue as well.
+        request.getReceivers().forEach(receiver -> {
+            if (receiver.getRole() instanceof Physician911) {
+                receiver.getWorkQueue().getWorkRequestList().add(request);
+            } else {
+                receiver.getWorkQueue().findWorkRequestByID(request.getWorkRequestID()).setStatus("Awaiting Physician's review");
+            }
+        });
+        
+        paramedicUserAccount.getWorkQueue()
+                        .findWorkRequestByID(request.getWorkRequestID()).setStatus("Awaiting Physician's review");
         if (!messageRecorded) {
             JOptionPane.showMessageDialog(this, "Please record video message!");
             return;
@@ -220,13 +268,25 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
             cu.stopCamera();
         }
         
+        // redirect to Paramedic's home screen.
+        HomeJPanel phjp = new HomeJPanel(mainPane, workPane, system, paramedicUserAccount);
+        displayPanel(workPane, phjp);
     }//GEN-LAST:event_submitBtnActionPerformed
 
+    public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        lpane.repaint();
+        lpane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel camera;
     private javax.swing.JLabel cameraBtn;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -235,11 +295,12 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
     private javax.swing.JButton submitBtn;
     // End of variables declaration//GEN-END:variables
 
-    public void stopCamera(){
+    public void stopCamera() {
         if (cu != null) {
             cu.stopCamera();
         }
     }
+
     @Override
     protected void finalize() throws Throwable {
         super.finalize(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
@@ -247,5 +308,5 @@ public class MessageToPhysicianJPanel extends javax.swing.JPanel {
             cu.stopCamera();
         }
     }
-    
+
 }
