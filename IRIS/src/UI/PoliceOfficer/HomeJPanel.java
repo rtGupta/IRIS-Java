@@ -44,7 +44,7 @@ public class HomeJPanel extends javax.swing.JPanel {
         this.workPane = workPane;
         this.system = system;
         this.policeUserAccount = account;
-        btnHospitalTransfer.setEnabled(false);
+        //btnHospitalTransfer.setEnabled(false);
         
         populateWorkQueueTable();
         
@@ -71,7 +71,7 @@ public class HomeJPanel extends javax.swing.JPanel {
                     displayPanel(maps, map);
                      if (policeWorkRequest.getStatus().equals("Transport Care Reqduired") ||
                             policeWorkRequest.getStatus().equals("Scene Assessment in progress")) {
-                        btnHospitalTransfer.setEnabled(true);
+                       // btnHospitalTransfer.setEnabled(true);
                         btnAcknowledge.setEnabled(false);
                         // go to HospitalTransferJPanel screen
                     } else if (!policeWorkRequest.getStatus().equals("Open")) {
@@ -138,7 +138,6 @@ public class HomeJPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtMessage = new javax.swing.JTextArea();
         btnAcknowledge = new javax.swing.JButton();
-        btnHospitalTransfer = new javax.swing.JButton();
         maps = new javax.swing.JLayeredPane();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -160,8 +159,8 @@ public class HomeJPanel extends javax.swing.JPanel {
             .addGap(0, 2, Short.MAX_VALUE)
         );
 
-        jPanel1.setBackground(new java.awt.Color(255, 51, 51));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 14))); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Emergencies Required Attention", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
 
         tblPoliceWQ.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -225,24 +224,7 @@ public class HomeJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnHospitalTransfer.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        btnHospitalTransfer.setText("Transfer To Hospital");
-        btnHospitalTransfer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHospitalTransferActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout mapsLayout = new javax.swing.GroupLayout(maps);
-        maps.setLayout(mapsLayout);
-        mapsLayout.setHorizontalGroup(
-            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
-        );
-        mapsLayout.setVerticalGroup(
-            mapsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        maps.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -264,23 +246,23 @@ public class HomeJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCallerName, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnAcknowledge)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2)
+                            .addComponent(txtLocation))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnHospitalTransfer)
-                            .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(maps, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(411, 411, 411)
+                .addComponent(btnAcknowledge)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAcknowledge, btnHospitalTransfer});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane2, txtCallerName, txtContact, txtLocation});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,11 +289,9 @@ public class HomeJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(maps))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHospitalTransfer)
-                    .addComponent(btnAcknowledge))
-                .addGap(25, 25, 25))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addComponent(btnAcknowledge)
+                .addGap(31, 31, 31))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -347,19 +327,12 @@ public class HomeJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnAcknowledgeActionPerformed
 
-    private void btnHospitalTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospitalTransferActionPerformed
-        // TODO add your handling code here:
-        HospitalTransferJPanel htjp = new HospitalTransferJPanel(mainPane, workPane, system, policeUserAccount, policeWorkRequest);
-        displayPanel(workPane, htjp);
-    }//GEN-LAST:event_btnHospitalTransferActionPerformed
-
 
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAcknowledge;
-    private javax.swing.JButton btnHospitalTransfer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
