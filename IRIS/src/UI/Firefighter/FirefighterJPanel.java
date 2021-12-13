@@ -6,6 +6,8 @@ package UI.Firefighter;
 
 import UI.Paramedics.*;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import UI.MainScreens.LoginJPanel;
 import Util.MapsUtil;
@@ -30,17 +32,24 @@ public class FirefighterJPanel extends javax.swing.JPanel {
     boolean menuCollapse = false;
     JLayeredPane mainPane;
     boolean menuButton = false;
-    EcoSystem system;
-    UserAccount userAccount;
+    private EcoSystem system;
+    private Organization organization;
+    private Enterprise enterprise;
+    private UserAccount userAccount;
+    
     HomeJPanel icjp;
 
     /**
      * Creates new form DispatcherJPanel
      */
-    public FirefighterJPanel(JLayeredPane mainPane) {
+    public FirefighterJPanel(JLayeredPane mainPane, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
         initComponents();
         this.mainPane = mainPane;
         this.system = system;
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.userAccount = account;
+        
         icjp = new HomeJPanel(mainPane, workpane, system, userAccount);
         displayPanel(workpane, icjp);
     }
