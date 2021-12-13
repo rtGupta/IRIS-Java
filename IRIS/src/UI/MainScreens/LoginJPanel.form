@@ -209,7 +209,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="277" max="32767" attributes="0"/>
+                  <EmptySpace pref="275" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="minimizeButton" min="-2" max="-2" attributes="0"/>
@@ -224,41 +224,18 @@
                   </Group>
               </Group>
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="Physician" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jRadioButton4" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="Dispatcher" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="Hospital" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="Paramedics" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel10" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="txtLoginUserName" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="jSeparator1" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="jLabel11" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="jSeparator2" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="txtLoginPassword" alignment="1" pref="413" max="32767" attributes="0"/>
-                              <Component id="kGradientPanel2" alignment="1" max="32767" attributes="0"/>
-                              <Component id="jLabel13" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                  <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabel10" alignment="1" pref="413" max="32767" attributes="0"/>
+                      <Component id="txtLoginUserName" alignment="1" pref="413" max="32767" attributes="0"/>
+                      <Component id="jSeparator1" alignment="1" pref="413" max="32767" attributes="0"/>
+                      <Component id="jLabel11" alignment="1" pref="413" max="32767" attributes="0"/>
+                      <Component id="jSeparator2" alignment="1" pref="413" max="32767" attributes="0"/>
+                      <Component id="txtLoginPassword" alignment="1" pref="413" max="32767" attributes="0"/>
+                      <Component id="kGradientPanel2" alignment="1" max="32767" attributes="0"/>
+                      <Component id="jLabel13" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="92" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -286,21 +263,9 @@
                   <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="kGradientPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace pref="24" max="32767" attributes="0"/>
                   <Component id="jLabel13" min="-2" pref="27" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Hospital" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="Paramedics" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="Dispatcher" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel12" alignment="3" min="-2" pref="65" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Physician" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -407,33 +372,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JRadioButton" name="Physician">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Physician"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="Hospital">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Hospital"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="Dispatcher">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Dispatcher"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton4">
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="Paramedics">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Paramedics"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel12">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Just For Testing"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

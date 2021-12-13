@@ -148,7 +148,7 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(990, 395));
 
-        jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel2.setText("Personal Information : ");
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
@@ -169,7 +169,7 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
 
         jLabel8.setText("kgs");
 
-        jLabel9.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel9.setText("Vitals Check : ");
 
         jLabel10.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
@@ -209,10 +209,10 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
         jLabel21.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel21.setText("Systolic : ");
 
-        jLabel22.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
+        jLabel22.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel22.setText("Medical History : ");
 
-        jLabel23.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
+        jLabel23.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel23.setText("Please check all the ailments that are applicable");
 
         chkbxDiabetes.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
@@ -385,7 +385,7 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
                         .addComponent(txtHighBP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel19)
                         .addComponent(jLabel21)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel22)

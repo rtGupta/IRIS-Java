@@ -10,8 +10,11 @@ import Business.WorkQueue.WorkRequest;
 import UI.Hospital.*;
 import Util.FileExistUtil;
 import Util.VideoUtil;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -22,8 +25,8 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
     JLayeredPane mainPane;
     JLayeredPane workPane;
     private EcoSystem system;
-    private UserAccount paramedicUserAccount;
-    WorkRequest request;
+    private UserAccount physicianUserAccount;
+    WorkRequest physicianWorkRequest;
     final String VIDEO_FILE_NAME;
 
     /**
@@ -34,9 +37,19 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
         this.mainPane = mainPane;
         this.workPane = workPane;
         this.system = system;
-        this.paramedicUserAccount = account;
-        this.request = request;
+        this.physicianUserAccount = account;
+        this.physicianWorkRequest = request;
         VIDEO_FILE_NAME = request.getCaller().getCallerDetails().getFirstName() + request.getWorkRequestID() + "_paramedic";
+    }
+
+    public void displayPanel(JLayeredPane lpane, JPanel panel) {
+        lpane.removeAll();
+        lpane.add(panel);
+        lpane.repaint();
+        lpane.revalidate();
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(mainPane);
+        parentFrame.pack();
+        parentFrame.setLocationRelativeTo(null);
     }
 
     /**
@@ -172,7 +185,34 @@ public class MessageFromParamedicJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+//        MessageToParamedicJPanel mpjp = new MessageToParamedicJPanel(mainPane, workPane, system, physicianUserAccount, physicianRequest);
+//        displayPanel(workPane, mpjp);
+
+        if (physicianWorkRequest.isIRISeligible()) {
+            physicianWorkRequest.setStatus("Transport Care Required");
+            physicianWorkRequest.getSender().getWorkQueue()
+                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
+                receiverAccount.getWorkQueue()
+                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+            });
+
+            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+        } else {
+            // prescription submission screen flow?
+            physicianWorkRequest.setStatus("Resolved"); // resolve here or transfer the control back to paramedic?
+            physicianWorkRequest.getSender().getWorkQueue()
+                    .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            physicianWorkRequest.getReceivers().forEach(receiverAccount -> {
+                receiverAccount.getWorkQueue()
+                        .findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            });
+
+            physicianUserAccount.getWorkQueue().findWorkRequestByID(physicianWorkRequest.getWorkRequestID()).setStatus("Transport Care Required");
+        }
+        // Redirect to Physician Home screen
+        PhysicianHomeJPanel phjp = new PhysicianHomeJPanel(mainPane, workPane, system, physicianUserAccount);
+        displayPanel(workPane, phjp);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
