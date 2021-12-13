@@ -443,6 +443,21 @@ public class MedicalRecordsJPanel extends javax.swing.JPanel {
             // go to video recording screen - assign physician and add WR to physician's WQ and change status in senders and receivers.
             MessageToPhysicianJPanel mtjp = new MessageToPhysicianJPanel(mainPane, workPane, system, paramedicUserAccount, paramedicWorkRequest);
             displayPanel(workPane, mtjp);
+        } else {
+            // prescription submission screen flow?
+            paramedicWorkRequest.setStatus("Resolved"); // resolve here or transfer the control back to paramedic?
+            paramedicWorkRequest.getSender().getWorkQueue()
+                    .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            paramedicWorkRequest.getReceivers().forEach(receiverAccount -> {
+                receiverAccount.getWorkQueue()
+                        .findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            });
+
+            paramedicUserAccount.getWorkQueue().findWorkRequestByID(paramedicWorkRequest.getWorkRequestID()).setStatus("Resolved");
+            
+            // Redirect to Paramedic Home
+            HomeJPanel hjp = new HomeJPanel(mainPane, workPane, system, paramedicUserAccount);
+            displayPanel(workPane, hjp);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
