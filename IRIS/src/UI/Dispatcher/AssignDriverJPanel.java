@@ -4,7 +4,18 @@
  */
 package UI.Dispatcher;
 
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.Organization;
+import Business.Organization.Voluntary.VoluntaryTransportOrganization;
+import Business.Role.Voluntary.Driver;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.WorkRequest;
 import Util.MapsUtil;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -19,15 +30,47 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
 
     JLayeredPane mainPane;
     JLayeredPane workPane;
+    private EcoSystem system;
+    private UserAccount userAccount;
+    private WorkRequest driverWorkRequest;
+    List<double[]> driverLocations;
+    
+    
     /**
-     * Creates new form AEmergencyJPanel
+     * Creates new form AssignDriverJPanel
      */
-    public AssignDriverJPanel(JLayeredPane mainPane,JLayeredPane workPane) {
+    public AssignDriverJPanel(JLayeredPane mainPane,JLayeredPane workPane, EcoSystem system, UserAccount account, WorkRequest request) {
         initComponents();
         this.mainPane = mainPane;
         this.workPane = workPane;
-        JPanel map = MapsUtil.defaultMap();
+        this.system = system;
+        this.userAccount = account;
+        this.driverWorkRequest = request;
+        driverLocations = new ArrayList<>();
+        loadDriverDropdown();
+        JPanel map = MapsUtil.publishMap(this.driverWorkRequest.getCaller().getCoordinates(), driverLocations);
         displayPanel(maps, map);
+        
+    }
+    
+    private void loadDriverDropdown() {
+        for (Network network : system.getNetworkList()) {
+            Enterprise volunteerEnterprise = network.getEnterpriseDirectory()
+                    .findEnterprise(Enterprise.EnterpriseType.VoluntaryEnterprise.getValue());
+            for (Organization org : volunteerEnterprise.getOrganizationDirectory().getOrganizationList()) {
+                if (org instanceof VoluntaryTransportOrganization) {
+                    this.loadValues(org, driverDropdown, driverLocations);
+                }
+            }
+        }
+    }
+
+    private void loadValues(Organization org, JComboBox<UserAccount> drpdown, List<double[]> p) {
+        for (UserAccount acc : org.getUserAccountDirectory().getUserAccountList()) {
+//            System.out.println(paramedicAccount.getUsername());
+            drpdown.addItem(acc);
+            p.add(acc.getProfileDetails().getLocation());
+        }
     }
 
     public void displayPanel(JLayeredPane lpane, JPanel panel) {
@@ -50,7 +93,7 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        driverDropdown = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         maps = new javax.swing.JLayeredPane();
         jButton2 = new javax.swing.JButton();
@@ -64,8 +107,19 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 15)); // NOI18N
         jLabel1.setText("Volunteer Driver:");
 
+        driverDropdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                driverDropdownActionPerformed(evt);
+            }
+        });
+
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Dispatch");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         maps.setMaximumSize(new java.awt.Dimension(0, 325));
         maps.setMinimumSize(new java.awt.Dimension(0, 325));
@@ -99,7 +153,7 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(28, 28, 28)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(driverDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(89, 89, 89)))
@@ -121,7 +175,7 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(driverDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addGap(30, 30, 30))
@@ -132,11 +186,40 @@ public class AssignDriverJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void driverDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_driverDropdownActionPerformed
+        // TODO add your handling code here:
+        driverWorkRequest.setReceiver((UserAccount) driverDropdown.getSelectedItem());
+    }//GEN-LAST:event_driverDropdownActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        driverWorkRequest.setStatus("Assigned Volunteer Driver");
+        
+        driverWorkRequest.getSender().getWorkQueue().findWorkRequestByID(driverWorkRequest.getWorkRequestID()).setStatus("Assigned Volunteer Driver");
+        driverWorkRequest.getReceivers().forEach(receiver -> {
+            if (receiver.getRole() instanceof Driver){
+                receiver.getWorkQueue().getWorkRequestList().add(driverWorkRequest);
+            } else {
+                receiver.getWorkQueue().findWorkRequestByID(driverWorkRequest.getWorkRequestID()).setStatus("Assigned Volunteer Driver");
+                
+            }
+        });
+        userAccount.getWorkQueue()
+                .findWorkRequestByID(driverWorkRequest.getWorkRequestID()).setStatus("Assigned Volunteer Driver");
+        
+//         HomeJPanel phjp = new HomeJPanel(mainPane, workPane, system, userAccount);
+//        displayPanel(workPane, phjp);
+        
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox driverDropdown;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLayeredPane maps;
